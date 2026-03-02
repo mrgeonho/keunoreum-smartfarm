@@ -86,11 +86,11 @@
             
             <div class="flex items-center gap-6 md:gap-10">
                 <div class="hidden md:flex items-center space-x-8 text-[13px] font-black text-gray-500 tracking-widest uppercase">
-                    <button onclick="scrollToSection('about')" class="hover:text-emerald-700 transition" data-tkey="nav_about">ABOUT</button>
-                    <button onclick="scrollToSection('product')" class="hover:text-emerald-700 transition" data-tkey="nav_product">PRODUCT</button>
-                    <button onclick="scrollToSection('benefit')" class="hover:text-emerald-700 transition" data-tkey="nav_benefit">MODELS</button>
-                    <button onclick="scrollToSection('technology')" class="hover:text-emerald-700 transition" data-tkey="nav_tour">3D TOUR</button>
-                    <button onclick="scrollToSection('contact')" class="bg-emerald-900 text-white px-8 py-4 rounded-2xl shadow-xl hover:bg-black transition" data-tkey="nav_consult">CONSULT</button>
+                    <button onclick="scrollToSection('about')" class="hover:text-emerald-700 transition" data-tkey="nav_about">회사소개</button>
+                    <button onclick="scrollToSection('product')" class="hover:text-emerald-700 transition" data-tkey="nav_product">제품안내</button>
+                    <button onclick="scrollToSection('benefit')" class="hover:text-emerald-700 transition" data-tkey="nav_benefit">분양모델</button>
+                    <button onclick="scrollToSection('technology')" class="hover:text-emerald-700 transition" data-tkey="nav_tour">3D 투어</button>
+                    <button onclick="scrollToSection('contact')" class="bg-emerald-900 text-white px-8 py-4 rounded-2xl shadow-xl hover:bg-black transition" data-tkey="nav_consult">상담 신청</button>
                 </div>
                 <div class="lang-toggle hidden md:flex">
                     <button onclick="changeLang('ko')" id="lang-ko" class="lang-btn active">KO</button>
@@ -107,11 +107,11 @@
             <button id="menu-close" class="text-3xl text-gray-800"><i class="fas fa-times"></i></button>
         </div>
         <div class="flex flex-col space-y-8 text-2xl font-black text-gray-800 text-left uppercase">
-            <button onclick="scrollToSection('about'); toggleMenu(false);" data-tkey="nav_about">ABOUT</button>
-            <button onclick="scrollToSection('product'); toggleMenu(false);" data-tkey="nav_product">PRODUCT</button>
-            <button onclick="scrollToSection('benefit'); toggleMenu(false);" data-tkey="nav_benefit">MODELS</button>
-            <button onclick="scrollToSection('technology'); toggleMenu(false);" data-tkey="nav_tour">3D TOUR</button>
-            <button onclick="scrollToSection('contact'); toggleMenu(false);" class="bg-emerald-700 text-white text-center py-4 rounded-2xl" data-tkey="nav_consult">CONSULT</button>
+            <button onclick="scrollToSection('about'); toggleMenu(false);" data-tkey="nav_about">회사소개</button>
+            <button onclick="scrollToSection('product'); toggleMenu(false);" data-tkey="nav_product">제품안내</button>
+            <button onclick="scrollToSection('benefit'); toggleMenu(false);" data-tkey="nav_benefit">분양모델</button>
+            <button onclick="scrollToSection('technology'); toggleMenu(false);" data-tkey="nav_tour">3D 투어</button>
+            <button onclick="scrollToSection('contact'); toggleMenu(false);" class="bg-emerald-700 text-white text-center py-4 rounded-2xl" data-tkey="nav_consult">상담 신청</button>
         </div>
         <div class="mt-auto flex gap-4">
             <button onclick="changeLang('ko'); toggleMenu(false);" class="flex-1 bg-gray-100 py-3 rounded-xl font-bold">한국어</button>
@@ -257,7 +257,7 @@
         </div>
     </section>
 
-    <!-- 🌟 3D 시뮬레이터 (에러 완전 해결 & 실사 렌더링) 🌟 -->
+    <!-- 🌟 3D 시뮬레이터 (텍스처 입힌 초실감 렌더링) 🌟 -->
     <section id="technology" class="py-40 bg-gray-50 overflow-hidden border-t border-gray-200">
         <div class="max-w-[1600px] mx-auto px-8 text-center">
             
@@ -272,7 +272,7 @@
                 <div class="lg:col-span-1 space-y-6 text-left">
                     <div class="iot-panel reveal">
                         <div class="flex justify-between items-center border-b border-gray-100 pb-6 mb-8 text-left">
-                            <h4 class="text-2xl font-black text-gray-900 tracking-tighter uppercase" data-tkey="dash_title">Dashboard</h4>
+                            <h4 class="text-2xl font-black text-gray-900 tracking-tighter uppercase" data-tkey="dash_title">관제 대시보드</h4>
                             <div class="flex items-center gap-3 bg-emerald-50 px-4 py-2 rounded-full border border-emerald-100">
                                 <span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span>
                                 <span class="text-[10px] font-black text-emerald-700 uppercase tracking-widest">Live Sync</span>
@@ -281,26 +281,26 @@
                         
                         <div class="grid grid-cols-1 gap-4 text-left">
                             <div class="sensor-card flex justify-between items-center">
-                                <label class="text-[10px] text-gray-400 font-black tracking-widest uppercase" data-tkey="sens_temp">TEMP</label>
+                                <label class="text-[10px] text-gray-400 font-black tracking-widest uppercase" data-tkey="sens_temp">실내 온도</label>
                                 <p class="sensor-val" id="val-temp">16.2°C</p>
                             </div>
                             <div class="sensor-card flex justify-between items-center">
-                                <label class="text-[10px] text-gray-400 font-black tracking-widest uppercase" data-tkey="sens_hum">HUMIDITY</label>
+                                <label class="text-[10px] text-gray-400 font-black tracking-widest uppercase" data-tkey="sens_hum">습도</label>
                                 <p class="sensor-val" id="val-hum">94%</p>
                             </div>
                             <div class="sensor-card flex justify-between items-center">
-                                <label class="text-[10px] text-gray-400 font-black tracking-widest uppercase" data-tkey="sens_co2">CO2</label>
+                                <label class="text-[10px] text-gray-400 font-black tracking-widest uppercase" data-tkey="sens_co2">CO2 농도</label>
                                 <p class="sensor-val" id="val-co2">580</p>
                             </div>
                         </div>
 
                         <div class="space-y-4 pt-8 text-center">
                             <button id="btn-door" class="w-full bg-black text-white py-5 rounded-2xl font-black text-sm tracking-widest shadow-2xl hover:bg-emerald-800 transition-all uppercase" data-tkey="btn_door">
-                                <i class="fas fa-door-open mr-3"></i> Open Module Door
+                                <i class="fas fa-door-open mr-3"></i> 모듈 출입문 열기
                             </button>
                             <div class="grid grid-cols-2 gap-4 text-center">
-                                <button id="btn-light" class="bg-emerald-50 text-emerald-700 py-5 rounded-2xl font-black text-[10px] tracking-widest border border-emerald-200 uppercase transition-all" data-tkey="btn_light">LED OFF</button>
-                                <button id="btn-mist" class="bg-gray-100 text-gray-400 py-5 rounded-2xl font-black text-[10px] tracking-widest border border-gray-200 uppercase transition-all" data-tkey="btn_mist">MIST OFF</button>
+                                <button id="btn-light" class="bg-emerald-50 text-emerald-700 border-emerald-200 py-5 rounded-2xl font-black text-[10px] tracking-widest border uppercase transition-all" data-tkey="btn_light">LED 끄기</button>
+                                <button id="btn-mist" class="bg-gray-100 text-gray-400 border-gray-200 py-5 rounded-2xl font-black text-[10px] tracking-widest border uppercase transition-all" data-tkey="btn_mist">가습 켜기</button>
                             </div>
                         </div>
                         
@@ -315,10 +315,10 @@
                 <div class="lg:col-span-3 relative reveal">
                     <div id="canvas-parent">
                         <div id="canvas-container"></div>
-                        <div id="loading-text" data-tkey="loading">Engine Synchronizing...</div>
+                        <div id="loading-text" data-tkey="loading">엔진 동기화 중...</div>
                     </div>
                     <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex gap-8 z-20">
-                        <button onclick="cameraTo('outside')" class="bg-white/95 backdrop-blur shadow-2xl px-12 py-5 rounded-full text-xs font-black text-gray-900 hover:bg-black hover:text-white transition-all border border-gray-100 uppercase tracking-widest" data-tkey="btn_outside">외부 관찰</button>
+                        <button onclick="cameraTo('outside')" class="bg-white/95 backdrop-blur shadow-2xl px-12 py-5 rounded-full text-xs font-black text-gray-900 hover:bg-black hover:text-white transition-all border border-gray-100 uppercase tracking-widest" data-tkey="btn_outside">외부 전경</button>
                         <button onclick="cameraTo('inside')" class="bg-emerald-700/95 backdrop-blur shadow-2xl px-12 py-5 rounded-full text-xs font-black text-white hover:bg-black transition-all border border-emerald-500 uppercase tracking-widest" data-tkey="btn_inside">내부 진입</button>
                     </div>
                 </div>
@@ -332,7 +332,7 @@
             <div class="form-card reveal text-center border-2 border-emerald-50">
                 <div class="text-center mb-20">
                     <div class="title-underline mb-6">
-                        <h2 class="text-5xl font-black text-gray-950 uppercase tracking-tighter" data-tkey="form_title">Consultation</h2>
+                        <h2 class="text-5xl font-black text-gray-950 uppercase tracking-tighter" data-tkey="form_title">분양 상담 신청서</h2>
                     </div>
                     <p class="text-gray-400 text-xl font-light" data-tkey="form_p">전문 상담원이 영업일 기준 24시간 이내에 직접 연락드립니다.</p>
                 </div>
@@ -342,37 +342,37 @@
                     
                     <div class="grid md:grid-cols-2 gap-x-12 gap-y-10 text-left text-gray-500">
                         <div class="space-y-3">
-                            <label class="text-xs font-black uppercase tracking-widest" data-tkey="form_name">Name *</label>
+                            <label class="text-xs font-black uppercase tracking-widest" data-tkey="form_name">성함 (실명) *</label>
                             <input type="text" name="성함" placeholder="홍길동" required class="input-field">
                         </div>
                         <div class="space-y-3">
-                            <label class="text-xs font-black uppercase tracking-widest" data-tkey="form_phone">Contact *</label>
+                            <label class="text-xs font-black uppercase tracking-widest" data-tkey="form_phone">연락처 *</label>
                             <input type="tel" name="연락처" placeholder="010-0000-0000" required class="input-field">
                         </div>
                         <div class="space-y-3 text-left">
-                            <label class="text-xs font-black uppercase tracking-widest" data-tkey="form_land">Land Ownership</label>
+                            <label class="text-xs font-black uppercase tracking-widest" data-tkey="form_land">토지 보유 현황</label>
                             <select name="토지보유" class="input-field appearance-none">
-                                <option value="보유중" data-tkey="opt_land_1">Owned</option>
-                                <option value="임대희망" data-tkey="opt_land_2">Request Renting</option>
-                                <option value="위탁상담" data-tkey="opt_land_3">Managed Model</option>
+                                <option value="보유중" data-tkey="opt_land_1">직접 토지 보유 중</option>
+                                <option value="임대희망" data-tkey="opt_land_2">임대 부지 추천 희망</option>
+                                <option value="위탁상담" data-tkey="opt_land_3">위탁 운영 모델 상담</option>
                             </select>
                         </div>
                         <div class="space-y-3 text-left">
-                            <label class="text-xs font-black uppercase tracking-widest" data-tkey="form_budget">Budget</label>
+                            <label class="text-xs font-black uppercase tracking-widest" data-tkey="form_budget">투자 가용 예산</label>
                             <select name="예산" class="input-field appearance-none">
-                                <option value="1-3억">100M ~ 300M KRW</option>
-                                <option value="3-5억">300M ~ 500M KRW</option>
-                                <option value="5억이상">Over 500M KRW</option>
+                                <option value="1-3억" data-tkey="opt_budget_1">1억 원 ~ 3억 원</option>
+                                <option value="3-5억" data-tkey="opt_budget_2">3억 원 ~ 5억 원</option>
+                                <option value="5억이상" data-tkey="opt_budget_3">5억 원 이상</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="space-y-3 text-left text-gray-500">
-                        <label class="text-xs font-black uppercase tracking-widest" data-tkey="form_msg">Details</label>
-                        <textarea name="문의사항" rows="5" class="input-field resize-none" placeholder="궁금한 사항을 상세히 남겨주세요."></textarea>
+                        <label class="text-xs font-black uppercase tracking-widest" data-tkey="form_msg">상세 문의 내용</label>
+                        <textarea name="문의사항" rows="5" class="input-field resize-none" placeholder="수익률 산출 근거, PF 연계 등 궁금하신 점을 상세히 남겨주세요."></textarea>
                     </div>
 
-                    <button type="submit" id="submit-btn" class="btn-premium w-full shadow-2xl uppercase tracking-widest" data-tkey="form_submit">Submit Consult</button>
+                    <button type="submit" id="submit-btn" class="btn-premium w-full shadow-2xl uppercase tracking-widest" data-tkey="form_submit">상담 신청 완료</button>
                 </form>
             </div>
         </div>
@@ -390,7 +390,7 @@
 
     <script>
         /* -----------------------------------------------------------
-           🌐 다국어 번역 시스템
+           🌐 다국어 번역 시스템 (한국어 기본값으로 완전 재정렬)
            ----------------------------------------------------------- */
         const translations = {
             ko: {
@@ -414,7 +414,8 @@
                 form_title: "분양 상담 신청서", form_p: "전문 상담원이 영업일 기준 24시간 이내에 직접 연락드립니다.",
                 form_name: "성함 (실명) *", form_phone: "연락처 *", form_land: "토지 보유 현황",
                 form_budget: "투자 가용 예산", form_msg: "상세 문의 내용", form_submit: "상담 신청 완료",
-                opt_land_1: "직접 토지 보유 중", opt_land_2: "임대 부지 추천 희망", opt_land_3: "위탁 운영 모델 상담"
+                opt_land_1: "직접 토지 보유 중", opt_land_2: "임대 부지 추천 희망", opt_land_3: "위탁 운영 모델 상담",
+                opt_budget_1: "1억 원 ~ 3억 원", opt_budget_2: "3억 원 ~ 5억 원", opt_budget_3: "5억 원 이상"
             },
             en: {
                 nav_about: "ABOUT", nav_product: "PRODUCT", nav_benefit: "MODELS", nav_tour: "3D REAL TOUR", nav_consult: "CONSULT",
@@ -434,10 +435,11 @@
                 dash_title: "OS DASHBOARD", sens_temp: "TEMP", sens_hum: "HUMIDITY", sens_co2: "CO2",
                 btn_door: "OPEN MODULE DOOR", btn_light: "LED OFF", btn_mist: "MIST ON",
                 loading: "ENGINE SYNCING...", btn_outside: "OUTSIDE VIEW", btn_inside: "INSIDE TOUR",
-                form_title: "Consultation", form_p: "A professional consultant will contact you within 24 hours.",
+                form_title: "Consultation Form", form_p: "A professional consultant will contact you within 24 hours.",
                 form_name: "NAME (FULL NAME) *", form_phone: "CONTACT *", form_land: "LAND OWNERSHIP",
                 form_budget: "AVAILABLE BUDGET", form_msg: "DETAILS", form_submit: "SUBMIT REQUEST",
-                opt_land_1: "Owned", opt_land_2: "Request Renting", opt_land_3: "Managed Model"
+                opt_land_1: "Owned", opt_land_2: "Request Renting", opt_land_3: "Managed Model",
+                opt_budget_1: "100M ~ 300M KRW", opt_budget_2: "300M ~ 500M KRW", opt_budget_3: "Over 500M KRW"
             }
         };
 
@@ -449,7 +451,6 @@
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('lang-' + lang).classList.add('active');
 
-            // 버튼 상태 텍스트 업데이트
             const lightBtn = document.getElementById('btn-light');
             if(lightBtn) lightBtn.innerText = isLightOn ? (lang === 'en' ? "LED OFF" : "LED 끄기") : (lang === 'en' ? "LED ON" : "LED 켜기");
             const mistBtn = document.getElementById('btn-mist');
@@ -474,37 +475,80 @@
         }
 
         /* -----------------------------------------------------------
-           ✨ Three.js Hyper-Biological Engine (WebGL Iterator Error Fixed)
+           ✨ Three.js Hyper-Biological Engine (텍스처 제너레이터 탑재)
            ----------------------------------------------------------- */
         let scene, camera, renderer, controls, clock = new THREE.Clock();
         let doorGroup, ledStrips = [];
         let isDoorOpen = false, isLightOn = true, isMistOn = false;
         let substrateMesh, stemMesh, capMesh, mistParticles;
 
+        // 🌟 절차적 텍스처(Procedural Texture) 생성 함수
+        function generateTexture(type) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512; canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+
+            if (type === 'substrate') {
+                // 톱밥 배지 질감: 진한 갈색 바탕 + 하얀 균사체(Mycelium)
+                ctx.fillStyle = '#2c1b12'; 
+                ctx.fillRect(0, 0, 512, 512);
+                for(let i=0; i<15000; i++) {
+                    ctx.fillStyle = Math.random() > 0.5 ? '#3b2818' : '#1a0f0a';
+                    ctx.fillRect(Math.random()*512, Math.random()*512, 3, 3);
+                }
+                ctx.fillStyle = '#ffffff'; 
+                ctx.globalAlpha = 0.15;
+                for(let i=0; i<300; i++) {
+                    ctx.beginPath(); 
+                    ctx.arc(Math.random()*512, Math.random()*512, Math.random()*12, 0, Math.PI*2); 
+                    ctx.fill();
+                }
+            } else if (type === 'stem') {
+                // 버섯 기둥 질감: 세로로 결이 있는 섬유질
+                ctx.fillStyle = '#f5f5dc'; 
+                ctx.fillRect(0, 0, 512, 512);
+                ctx.fillStyle = '#e3dac9'; 
+                ctx.globalAlpha = 0.6;
+                for(let i=0; i<4000; i++) {
+                    ctx.fillRect(Math.random()*512, Math.random()*512, 2, Math.random()*60 + 20);
+                }
+            } else if (type === 'cap') {
+                // 버섯 갓 질감: 불규칙한 표면 갈라짐
+                ctx.fillStyle = '#4e342e'; 
+                ctx.fillRect(0, 0, 512, 512);
+                ctx.fillStyle = '#3e2723'; 
+                ctx.globalAlpha = 0.7;
+                for(let i=0; i<8000; i++) {
+                    ctx.fillRect(Math.random()*512, Math.random()*512, Math.random()*5, Math.random()*5);
+                }
+            }
+
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            return texture;
+        }
+
         function init3D() {
             const container = document.getElementById('canvas-container');
             if(!container) return;
             const w = container.clientWidth, h = container.clientHeight;
 
-            // 1. Scene
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0x050505); 
             scene.fog = new THREE.FogExp2(0x050505, 0.035);
 
-            // 2. Camera
             camera = new THREE.PerspectiveCamera(35, w/h, 0.1, 1000);
             camera.position.set(24, 16, 24);
 
-            // 3. Renderer
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(w, h);
             renderer.setPixelRatio(window.devicePixelRatio || 1);
             renderer.shadowMap.enabled = true;
             renderer.toneMapping = THREE.ACESFilmicToneMapping;
-            renderer.toneMappingExposure = 1.3; 
+            renderer.toneMappingExposure = 1.2; 
             container.appendChild(renderer.domElement);
 
-            // 4. Controls
             if (typeof THREE.OrbitControls !== 'undefined') {
                 controls = new THREE.OrbitControls(camera, renderer.domElement);
                 controls.enableDamping = true;
@@ -512,9 +556,10 @@
                 controls.autoRotateSpeed = 0.25;
             }
 
-            // 5. Lighting (에러 방지를 위해 hex 값 주입 방식 사용)
-            scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-            const mainLight = new THREE.DirectionalLight(0xffffff, 1.8);
+            const ambient = new THREE.AmbientLight(new THREE.Color(0xffffff), 0.5);
+            scene.add(ambient);
+            
+            const mainLight = new THREE.DirectionalLight(new THREE.Color(0xfff5e6), 2.0); 
             mainLight.position.set(20, 40, 20); 
             mainLight.castShadow = true;
             scene.add(mainLight);
@@ -536,7 +581,11 @@
             mistParticles = new THREE.Points(
                 geo, 
                 new THREE.PointsMaterial({ 
-                    color: 0xffffff, size: 0.03, transparent: true, opacity: 0, blending: THREE.AdditiveBlending 
+                    color: new THREE.Color(0xffffff), 
+                    size: 0.02, 
+                    transparent: true, 
+                    opacity: 0, 
+                    blending: THREE.AdditiveBlending 
                 })
             );
             scene.add(mistParticles);
@@ -555,58 +604,56 @@
             let L = (type==='50')?32:(type==='30')?22:18, W = 5.5;
             
             // 컨테이너
-            const shell = new THREE.Mesh(
-                new THREE.BoxGeometry(W, 4.5, L), 
-                new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2, metalness: 0.1, side: THREE.DoubleSide })
-            );
+            const shellMat = new THREE.MeshStandardMaterial({ 
+                color: new THREE.Color(0xffffff), roughness: 0.2, metalness: 0.1, side: THREE.DoubleSide
+            });
+            const shell = new THREE.Mesh(new THREE.BoxGeometry(W, 4.5, L), shellMat);
             shell.position.y = 1.8;
             farmGroup.add(shell);
 
-            const frame = new THREE.Mesh(
-                new THREE.BoxGeometry(W+0.4, 4.6, L+0.4), 
-                new THREE.MeshStandardMaterial({ color: 0x111827, side: THREE.BackSide })
-            );
+            const frameMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0x111827), side: THREE.BackSide });
+            const frame = new THREE.Mesh(new THREE.BoxGeometry(W+0.4, 4.6, L+0.4), frameMat);
             frame.position.copy(shell.position);
             farmGroup.add(frame);
 
             // 도어
             const doorPivot = new THREE.Group();
-            const door = new THREE.Mesh(
-                new THREE.BoxGeometry(W-0.3, 4.3, 0.2), 
-                new THREE.MeshStandardMaterial({ color: 0x050505 })
-            );
+            const doorMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0x050505) });
+            const door = new THREE.Mesh(new THREE.BoxGeometry(W-0.3, 4.3, 0.2), doorMat);
             door.position.x = (W-0.3)/2;
             doorPivot.add(door);
             doorPivot.position.set(-(W-0.3)/2, 1.8, L/2);
             doorGroup = doorPivot;
             farmGroup.add(doorPivot);
 
-            // 🌟 철제 선반(Rack) 재질
-            const rackMat = new THREE.MeshStandardMaterial({ color: 0x8892b0, metalness: 0.6, roughness: 0.4 });
-
-            // 🌟 배지 (원기둥 형태, 위로 세워짐)
-            const logs = 2 * 4 * 16 * 2; // 2열, 4층, 16칸, 칸당 2개
-            const subGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.55, 32); 
-            // 실사 렌더링 에러 방지를 위해 MeshStandardMaterial 사용
-            const subMat = new THREE.MeshStandardMaterial({ color: 0x3b2818, roughness: 0.9 });
+            // 🌟 텍스처 및 모델링 적용 🌟
+            const rackMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0x8892b0), metalness: 0.6, roughness: 0.4 });
+            
+            // 배지: 텍스처 적용
+            const subTex = generateTexture('substrate');
+            const subGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.55, 32);
+            const logs = 2 * 4 * 16 * 2; 
+            const subMat = new THREE.MeshStandardMaterial({ map: subTex, roughness: 0.9 });
             substrateMesh = new THREE.InstancedMesh(subGeo, subMat, logs);
             substrateMesh.castShadow = true; substrateMesh.receiveShadow = true;
 
-            // 🌟 버섯 기둥 (유기적 비정형 곡선)
+            // 버섯 기둥
             const pts = [];
             for (let i = 0; i < 20; i++) {
                 const r = (Math.sin(i * 0.15) * 0.05 + 0.08); 
                 pts.push(new THREE.Vector2(r, i * 0.02));
             }
+            const stemTex = generateTexture('stem');
             const stemGeo = new THREE.LatheGeometry(pts, 24); 
-            const stemMat = new THREE.MeshStandardMaterial({ color: 0xf5f5dc, roughness: 0.9 });
+            const stemMat = new THREE.MeshStandardMaterial({ map: stemTex, roughness: 0.9 });
             stemMesh = new THREE.InstancedMesh(stemGeo, stemMat, logs * 3);
             stemMesh.castShadow = true;
             
-            // 🌟 버섯 갓
+            // 버섯 갓
+            const capTex = generateTexture('cap');
             const capGeo = new THREE.SphereGeometry(0.12, 32, 24, 0, Math.PI*2, 0, Math.PI/1.55);
             capGeo.scale(1.4, 0.65, 1.4); capGeo.translate(0, 0.35, 0);
-            const capMat = new THREE.MeshStandardMaterial({ color: 0x4e342e, roughness: 0.6 });
+            const capMat = new THREE.MeshStandardMaterial({ map: capTex, roughness: 0.6 });
             capMesh = new THREE.InstancedMesh(capGeo, capMat, logs * 3);
             capMesh.castShadow = true;
             
@@ -616,50 +663,45 @@
             for(let c=0; c<2; c++){
                 const x = (c===0)?-1.7:1.7;
 
-                // 세로 기둥 (랙 프레임)
+                // 랙(프레임) 기둥
                 for (let zIdx=0; zIdx<=18; zIdx+=6) {
                     const zPos = -(L/2) + 2.5 + zIdx*1.2;
                     const pillar1 = new THREE.Mesh(new THREE.BoxGeometry(0.05, 4, 0.05), rackMat);
                     pillar1.position.set(x - 0.45, 1.8, zPos);
                     farmGroup.add(pillar1);
-                    
                     const pillar2 = new THREE.Mesh(new THREE.BoxGeometry(0.05, 4, 0.05), rackMat);
                     pillar2.position.set(x + 0.45, 1.8, zPos);
                     farmGroup.add(pillar2);
                 }
 
                 for(let t=0; t<4; t++){
-                    const y = t*1.0 + 0.3; // 층 기준 높이
+                    const y = t*1.0 + 0.3;
                     
-                    // 선반 판넬
                     const shelf = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.02, L-2), rackMat);
                     shelf.position.set(x, y, 0);
                     farmGroup.add(shelf);
 
-                    // LED 조명
-                    const ledMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 2 });
+                    const ledMat = new THREE.MeshStandardMaterial({ 
+                        color: new THREE.Color(0xffffff), emissive: new THREE.Color(0xffffff), emissiveIntensity: 1.5 
+                    });
                     const led = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.02, L-2), ledMat);
-                    led.position.set(x, y + 0.85, 0); 
-                    farmGroup.add(led); 
-                    ledStrips.push(led);
+                    led.position.set(x, y + 0.65, 0); farmGroup.add(led); ledStrips.push(led);
 
-                    // 배지 배치
+                    // 배지 및 버섯 배치
                     for(let zIdx=0; zIdx<16; zIdx++){
                         const z = -(L/2) + 3.0 + zIdx*0.8;
                         
-                        // 하나의 라인에 2개의 배지를 나란히 배치
                         for(let sx=-1; sx<=1; sx+=2) {
-                            d.position.set(x + sx*0.25, y + 0.28, z); // 선반 위, 높이 절반 고려
+                            d.position.set(x + sx*0.25, y + 0.28, z); 
                             d.rotation.y = (Math.random()-0.5)*0.5; 
                             d.updateMatrix(); 
                             if(lIdx < logs) substrateMesh.setMatrixAt(lIdx++, d.matrix);
                             
-                            // 배지 윗면에서 버섯 자라남
                             const count = 2 + Math.floor(Math.random()*2); 
                             for(let m=0; m<count; m++){
                                 if(mIdx >= logs*3) break;
                                 md.position.copy(d.position);
-                                md.position.y += 0.28; // 배지 상단에서 시작
+                                md.position.y += 0.28; 
                                 md.position.x += (Math.random()-0.5)*0.12;
                                 md.position.z += (Math.random()-0.5)*0.12;
                                 
@@ -678,7 +720,6 @@
                 }
             }
             
-            // 필수: GPU로 인스턴스 데이터 전송 (렌더링 누락 방지)
             substrateMesh.instanceMatrix.needsUpdate = true;
             stemMesh.instanceMatrix.needsUpdate = true;
             capMesh.instanceMatrix.needsUpdate = true;
@@ -689,13 +730,11 @@
 
         function animate() {
             requestAnimationFrame(animate);
-            const time = clock.getElapsedTime();
             if(controls) controls.update();
             
             if(isDoorOpen) doorGroup.rotation.y = THREE.MathUtils.lerp(doorGroup.rotation.y, Math.PI/1.2, 0.08);
             else doorGroup.rotation.y = THREE.MathUtils.lerp(doorGroup.rotation.y, 0, 0.08);
             
-            // 가습 및 LED 상태 업데이트
             if(isMistOn && mistParticles) {
                 mistParticles.material.opacity = THREE.MathUtils.lerp(mistParticles.material.opacity, 0.4, 0.05);
                 const pos = mistParticles.geometry.attributes.position.array;
@@ -737,14 +776,15 @@
             }
         }
 
-        // 제어 이벤트 바인딩
+        // 이벤트 바인딩
         document.getElementById('btn-door').onclick = function() { isDoorOpen = !isDoorOpen; };
         
         document.getElementById('btn-light').onclick = function() {
             isLightOn = !isLightOn;
-            const targetColor = isLightOn ? 0xffffff : 0x000000;
+            const targetColor = isLightOn ? new THREE.Color(0xffffff) : new THREE.Color(0x000000);
             ledStrips.forEach(s => {
-                s.material.emissive.setHex(targetColor);
+                s.material.emissive = targetColor;
+                s.material.needsUpdate = true;
             });
             this.classList.toggle('bg-emerald-50');
             this.classList.toggle('text-emerald-700');
@@ -797,14 +837,15 @@
             window.addEventListener("scroll", revealOnScroll);
             revealOnScroll();
 
+            // 렌더링 로딩 타이밍 확보
             setTimeout(() => { 
                 init3D(); 
-                changeLang('ko'); 
+                changeLang('ko'); // 명시적 한글 셋팅
                 onWindowResize(); 
             }, 100);
         };
 
-        // 이메일 전송 API
+        // 이메일 폼 로직
         document.getElementById('contact-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.querySelector('button[type="submit"]');
