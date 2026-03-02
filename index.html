@@ -13,212 +13,153 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Noto Sans KR', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; }
+        body { font-family: 'Noto Sans KR', sans-serif; scroll-behavior: smooth; background-color: #ffffff; color: #1a1a1a; overflow-x: hidden; }
         .hero-gradient {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&q=80&w=2000');
-            background-size: cover;
-            background-position: center;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&q=80&w=2000');
+            background-size: cover; background-position: center;
         }
         
-        .white-nav {
-            background-color: #ffffff !important;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
+        .white-nav { background-color: #ffffff !important; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); }
+        .logo-blend { mix-blend-mode: multiply; filter: contrast(1.1); }
 
-        .logo-blend {
-            mix-blend-mode: multiply; 
-            filter: contrast(1.1);
-        }
-
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.22, 1, 0.36, 1); }
         .reveal.visible { opacity: 1; transform: translateY(0); } 
         
-        .tab-content, .tech-content { display: none; }
-        .tab-content.active, .tech-content.active { display: block; animation: fadeIn 0.5s ease forwards; }
+        /* 탭 메뉴 스타일 */
+        .tab-content { display: none; }
+        .tab-content.active { display: flex; animation: fadeIn 0.5s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* 3D 캔버스 컨테이너 */
-        #canvas-container {
-            width: 100%;
-            height: 600px;
-            background: radial-gradient(circle, #27272a 0%, #09090b 100%);
-            border-radius: 40px;
-            overflow: hidden;
-            cursor: grab;
-            position: relative;
+        /* 3D 캔버스 영역 */
+        #canvas-parent { width: 100%; height: 750px; position: relative; border-radius: 50px; overflow: hidden; background: #050505; }
+        #canvas-container { width: 100%; height: 100%; cursor: grab; display: block; }
+
+        .iot-panel {
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(30px);
+            border: 2px solid #10b981; border-radius: 40px; padding: 32px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
         }
-        #canvas-container:active { cursor: grabbing; }
+        .sensor-card { background: #ffffff; border: 1px solid #f1f5f9; padding: 22px; border-radius: 26px; transition: all 0.4s ease; }
+        .sensor-card:hover { border-color: #10b981; transform: translateY(-8px); }
+        .sensor-val { color: #064e3b; font-family: 'Courier New', monospace; font-weight: 900; font-size: 1.8rem; }
 
         #loading-text {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            color: #10b981; font-weight: 900; letter-spacing: 0.2em;
-            pointer-events: none; transition: opacity 0.5s;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            z-index: 10;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: #10b981; font-weight: 900; letter-spacing: 0.5em; z-index: 10; text-transform: uppercase;
         }
 
-        .control-panel {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.2);
+        .lang-toggle { display: flex; background: #f1f5f9; padding: 4px; border-radius: 12px; gap: 4px; }
+        .lang-btn { padding: 6px 16px; border-radius: 8px; font-size: 12px; font-weight: 900; transition: all 0.3s; cursor: pointer; border: none; outline: none; }
+        .lang-btn.active { background: #10b981; color: white; }
+
+        .form-card { background: #ffffff; border-radius: 60px; padding: 60px; border: 1px solid #f1f5f9; box-shadow: 0 50px 100px -30px rgba(0,0,0,0.1); }
+        .input-group { margin-bottom: 1.5rem; }
+        .input-group label { display: block; font-size: 0.75rem; font-weight: 900; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; }
+        .input-field { width: 100%; padding: 1.4rem; border-radius: 1.5rem; border: 2px solid #f1f5f9; background: #f8fafc; outline: none; transition: all 0.3s; font-weight: 600; font-size: 1rem; text-align: left; }
+        .input-field:focus { border-color: #10b981; background: #ffffff; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.05); }
+        
+        .btn-premium {
+            background: linear-gradient(135deg, #059669 0%, #064e3b 100%);
+            color: white; padding: 1.5rem 3rem; border-radius: 1.5rem; font-weight: 900;
+            font-size: 1.25rem; transition: all 0.4s; box-shadow: 0 20px 40px rgba(6, 78, 59, 0.3); width: 100%;
         }
-        .img-placeholder { background-color: #f3f4f6; }
+        .btn-premium:hover { transform: translateY(-5px); box-shadow: 0 30px 60px rgba(6, 78, 59, 0.4); }
+
+        .title-underline { position: relative; display: inline-block; margin-bottom: 1.5rem; }
+        .title-underline::after { content: ''; position: absolute; bottom: 8px; left: 0; width: 100%; height: 12px; background: #d1fae5; z-index: -1; }
     </style>
 </head>
-<body class="text-gray-900 overflow-x-hidden">
+<body>
 
     <!-- 상단 네비게이션 -->
     <nav class="fixed w-full z-50 white-nav border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <div class="flex items-center gap-3 cursor-pointer group" onclick="scrollToSection('home')">
-                <div class="h-10 w-12 flex items-center justify-center bg-white overflow-hidden">
-                    <img src="https://lh3.googleusercontent.com/XUst99nN96SNLc4efHYHvtbUv1m_iIMbp9Msmopa5R4UQVxOf9uXqlV4ImoKUNw9qJ_DKCZXD098XJHCw5v98PPbi7HxCS0suZPnqsTfUxnk38l1mA-w=w700-h500-n" 
-                         alt="큰오름 심볼" 
-                         class="h-full w-auto object-contain logo-blend transition-transform group-hover:scale-105"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="hidden w-10 h-10 bg-emerald-700 rounded-lg items-center justify-center text-white">
-                        <i class="fas fa-leaf text-xl"></i>
-                    </div>
+        <div class="max-w-7xl mx-auto px-6 h-24 flex justify-between items-center">
+            <div class="flex items-center gap-4 cursor-pointer group" onclick="scrollToSection('home')">
+                <div class="h-12 w-14 flex items-center justify-center bg-white overflow-hidden rounded-xl border border-gray-100">
+                    <img src="https://lh3.googleusercontent.com/XUst99nN96SNLc4efHYHvtbUv1m_iIMbp9Msmopa5R4UQVxOf9uXqlV4ImoKUNw9qJ_DKCZXD098XJHCw5v98PPbi7HxCS0suZPnqsTfUxnk38l1mA-w=w700-h500-n" alt="로고" class="h-full w-auto object-contain logo-blend transition-transform group-hover:scale-105">
                 </div>
-                <div class="flex flex-col border-l border-gray-200 pl-3 py-1">
-                    <span class="text-[9px] text-gray-500 font-bold uppercase tracking-[0.2em] leading-none mb-1">AGRICULTURAL CORP</span>
-                    <span class="text-lg font-black tracking-tighter text-emerald-950 leading-none">농업회사법인 큰오름주식회사</span>
+                <div class="flex flex-col border-l border-gray-100 pl-4 text-left">
+                    <span class="text-xl font-black tracking-tighter text-emerald-950 uppercase leading-none mb-1">Keunoreum Corp</span>
+                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest leading-none">Smart Farm Metaverse</span>
                 </div>
             </div>
             
-            <div class="hidden md:flex items-center space-x-8 text-sm font-bold text-gray-600">
-                <button onclick="scrollToSection('about')" class="hover:text-emerald-700 transition">회사소개</button>
-                <button onclick="scrollToSection('technology')" class="hover:text-emerald-700 transition">3D모듈구동</button>
-                <button onclick="scrollToSection('product')" class="hover:text-emerald-700 transition">참송이버섯</button>
-                <button onclick="scrollToSection('benefit')" class="hover:text-emerald-700 transition">분양안내</button>
-                <button onclick="scrollToSection('contact')" class="bg-emerald-700 text-white px-6 py-3 rounded-full hover:bg-emerald-800 transition shadow-lg">분양 상담 신청</button>
+            <div class="flex items-center gap-6 md:gap-10">
+                <div class="hidden md:flex items-center space-x-8 text-[13px] font-black text-gray-500 tracking-widest uppercase">
+                    <button onclick="scrollToSection('about')" class="hover:text-emerald-700 transition" data-tkey="nav_about">ABOUT</button>
+                    <button onclick="scrollToSection('product')" class="hover:text-emerald-700 transition" data-tkey="nav_product">PRODUCT</button>
+                    <button onclick="scrollToSection('benefit')" class="hover:text-emerald-700 transition" data-tkey="nav_benefit">MODELS</button>
+                    <button onclick="scrollToSection('technology')" class="hover:text-emerald-700 transition" data-tkey="nav_tour">3D TOUR</button>
+                    <button onclick="scrollToSection('contact')" class="bg-emerald-900 text-white px-8 py-4 rounded-2xl shadow-xl hover:bg-black transition" data-tkey="nav_consult">CONSULT</button>
+                </div>
+                <div class="lang-toggle hidden md:flex">
+                    <button onclick="changeLang('ko')" id="lang-ko" class="lang-btn active">KO</button>
+                    <button onclick="changeLang('en')" id="lang-en" class="lang-btn">EN</button>
+                </div>
+                <button class="md:hidden text-2xl text-emerald-900" id="menu-open"><i class="fas fa-bars"></i></button>
             </div>
-
-            <button class="md:hidden text-2xl text-emerald-900" id="menu-open">
-                <i class="fas fa-bars"></i>
-            </button>
         </div>
     </nav>
 
     <!-- 모바일 메뉴 -->
-    <div id="mobile-menu" class="fixed inset-0 bg-white z-[60] flex flex-col p-10 md:hidden">
+    <div id="mobile-menu" class="fixed inset-0 bg-white z-[60] flex flex-col p-10 hidden">
         <div class="flex justify-end mb-10">
             <button id="menu-close" class="text-3xl text-gray-800"><i class="fas fa-times"></i></button>
         </div>
-        <div class="flex flex-col space-y-8 text-2xl font-bold text-gray-800 text-left">
-            <button onclick="scrollToSection('about'); toggleMenu(false);">회사소개</button>
-            <button onclick="scrollToSection('technology'); toggleMenu(false);">3D모듈구동</button>
-            <button onclick="scrollToSection('product'); toggleMenu(false);">참송이버섯</button>
-            <button onclick="scrollToSection('benefit'); toggleMenu(false);">분양안내</button>
-            <button onclick="scrollToSection('contact'); toggleMenu(false);" class="bg-emerald-700 text-white text-center py-4 rounded-2xl">상담 신청</button>
+        <div class="flex flex-col space-y-8 text-2xl font-black text-gray-800 text-left uppercase">
+            <button onclick="scrollToSection('about'); toggleMenu(false);" data-tkey="nav_about">ABOUT</button>
+            <button onclick="scrollToSection('product'); toggleMenu(false);" data-tkey="nav_product">PRODUCT</button>
+            <button onclick="scrollToSection('benefit'); toggleMenu(false);" data-tkey="nav_benefit">MODELS</button>
+            <button onclick="scrollToSection('technology'); toggleMenu(false);" data-tkey="nav_tour">3D TOUR</button>
+            <button onclick="scrollToSection('contact'); toggleMenu(false);" class="bg-emerald-700 text-white text-center py-4 rounded-2xl" data-tkey="nav_consult">CONSULT</button>
+        </div>
+        <div class="mt-auto flex gap-4">
+            <button onclick="changeLang('ko'); toggleMenu(false);" class="flex-1 bg-gray-100 py-3 rounded-xl font-bold">한국어</button>
+            <button onclick="changeLang('en'); toggleMenu(false);" class="flex-1 bg-gray-100 py-3 rounded-xl font-bold">English</button>
         </div>
     </div>
 
-    <!-- 히어로 섹션 -->
-    <section id="home" class="hero-gradient h-screen flex items-center relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 w-full text-white z-10 pt-20">
-            <div class="max-w-4xl text-center md:text-left mx-auto md:mx-0">
-                <h2 class="text-emerald-400 font-bold tracking-[0.3em] mb-4 text-sm md:text-base reveal uppercase">Spatial Smart Farm Industry</h2>
-                <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black leading-[1.2] mb-8 reveal" style="transition-delay: 200ms;">
-                    기술로 빚은 자연<br>
-                    <span class="text-emerald-400 underline decoration-4 underline-offset-8 whitespace-nowrap">수익의 가치를 더하다</span>
-                </h1>
-                <p class="text-lg md:text-2xl text-gray-200 mb-12 font-light leading-relaxed reveal" style="transition-delay: 400ms;">
-                    국내 최초 3D 실사형 디지털 트윈 시스템으로 관리되는 참송이버섯 스마트팜.<br>
-                    정밀한 데이터와 압도적 인프라가 확실한 수익을 만듭니다.
-                </p>
-                <div class="flex flex-wrap justify-center md:justify-start gap-4 reveal" style="transition-delay: 600ms;">
-                    <button onclick="scrollToSection('technology')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-10 py-5 rounded-2xl font-bold text-lg transition flex items-center gap-3 shadow-xl">
-                        3D 농장 시뮬레이션 <i class="fas fa-cube text-sm"></i>
-                    </button>
-                </div>
+    <!-- 히어로 -->
+    <section id="home" class="hero-gradient h-[85vh] flex items-center relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-8 w-full text-white z-10 text-center md:text-left pt-20">
+            <h2 class="text-emerald-400 font-bold tracking-[0.3em] mb-4 text-sm md:text-base reveal uppercase">Spatial Smart Farm Industry</h2>
+            <h1 class="text-6xl md:text-8xl font-black leading-tight mb-8 reveal tracking-tighter uppercase" data-tkey="hero_h1">
+                Hyper<br><span class="text-emerald-400 underline decoration-4 underline-offset-8">Biological</span>
+            </h1>
+            <p class="text-xl md:text-3xl text-gray-100 mb-14 font-light reveal leading-relaxed max-w-4xl" data-tkey="hero_p">
+                그림이 아닌 실제 생명력을 가진 참송이버섯 디지털 트윈.<br>재배 현장의 생태 시스템을 3D로 완벽하게 체험하십시오.
+            </p>
+            <div class="flex flex-wrap justify-center md:justify-start gap-6 reveal">
+                <button onclick="scrollToSection('technology')" class="bg-white text-black px-12 py-6 rounded-3xl font-black text-xl hover:bg-emerald-400 transition-all duration-500 shadow-2xl flex items-center gap-3" data-tkey="hero_btn">
+                    투어 시작하기 <i class="fas fa-cube text-sm"></i>
+                </button>
             </div>
         </div>
     </section>
 
-    <!-- 섹션: 3D 시뮬레이터 -->
-    <section id="technology" class="py-24 bg-gray-900 text-white overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16 reveal">
-                <span class="text-emerald-500 font-bold tracking-[0.2em] uppercase mb-4 block text-sm text-center">Keunoreum 3D Control Center</span>
-                <h2 class="text-4xl md:text-5xl font-black mb-6 text-center italic">초실감형 3D 스마트팜 모듈</h2>
-                <p class="text-gray-400 text-lg max-w-2xl mx-auto text-center">실제 참송이버섯 재배동의 철제 다단 선반과 배지를 완벽하게 구현했습니다. 공기의 흐름과 빛의 변화를 직접 체험하세요.</p>
-            </div>
-
-            <div class="grid lg:grid-cols-3 gap-10 items-start">
-                <div class="order-2 lg:order-1 space-y-6">
-                    <div class="control-panel p-8 rounded-[40px] space-y-6 shadow-2xl">
-                        <h4 class="text-xl font-bold border-b border-white/10 pb-4 text-emerald-400">Facility Controls</h4>
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="font-bold text-emerald-50">Growth LED</p>
-                                    <p class="text-xs text-gray-400 font-medium">생육 최적 파장 조명</p>
-                                </div>
-                                <button id="btn-light" class="w-14 h-8 bg-gray-700 rounded-full relative transition-colors duration-300 shadow-inner">
-                                    <div class="w-6 h-6 bg-white rounded-full absolute top-1 left-1 transition-transform duration-300" id="toggle-light"></div>
-                                </button>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="font-bold text-emerald-50">Ventilation Fan</p>
-                                    <p class="text-xs text-gray-400 font-medium">공기 정화 순환 시스템</p>
-                                </div>
-                                <button id="btn-vent" class="w-14 h-8 bg-gray-700 rounded-full relative transition-colors duration-300 shadow-inner">
-                                    <div class="w-6 h-6 bg-white rounded-full absolute top-1 left-1 transition-transform duration-300" id="toggle-vent"></div>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="pt-4 border-t border-white/10 space-y-3">
-                            <p class="text-xs text-emerald-400 font-bold tracking-widest">FARM SIZE (규모 선택)</p>
-                            <div class="grid grid-cols-3 gap-2">
-                                <button onclick="changeFarmSize('25')" id="btn-size-25" class="size-btn bg-emerald-600 py-3 rounded-xl text-xs font-bold transition shadow-lg hover:bg-emerald-500">25평형</button>
-                                <button onclick="changeFarmSize('30')" id="btn-size-30" class="size-btn bg-white/10 hover:bg-white/20 py-3 rounded-xl text-xs font-bold transition">30평형</button>
-                                <button onclick="changeFarmSize('50')" id="btn-size-50" class="size-btn bg-white/10 hover:bg-white/20 py-3 rounded-xl text-xs font-bold transition">50평형</button>
-                            </div>
-                            <p class="text-[11px] text-gray-400 mt-2 text-center leading-relaxed">버튼 클릭 시 해당 평수에 맞춰<br>선반과 버섯 배지가 실시간 렌더링됩니다.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-2 order-1 lg:order-2 reveal relative">
-                    <div id="canvas-container" class="border border-gray-700 shadow-[0_0_50px_rgba(16,185,129,0.15)]">
-                        <div id="loading-text"><i class="fas fa-spinner fa-spin mr-2"></i>BUILDING PHOTOREALISTIC FARM...</div>
-                    </div>
-                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/60 backdrop-blur-md px-6 py-2 rounded-full text-xs text-gray-300 whitespace-nowrap border border-white/10">
-                        <i class="fas fa-mouse mr-2"></i>마우스를 올리면 자동 회전이 멈춥니다
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 섹션: 회사소개 -->
+    <!-- 복구된 회사소개 섹션 -->
     <section id="about" class="py-32 bg-white overflow-hidden text-center md:text-left">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid md:grid-cols-2 gap-20 items-center">
                 <div class="reveal">
                     <span class="text-emerald-600 font-bold tracking-widest uppercase mb-4 block text-sm">Real Assets</span>
-                    <h2 class="text-4xl md:text-5xl font-black mb-8 text-gray-900 leading-tight">가장 정직한 현장에서<br>최고의 버섯이 자랍니다.</h2>
-                    <p class="text-gray-600 text-lg leading-relaxed mb-10">
+                    <h2 class="text-4xl md:text-5xl font-black mb-8 text-gray-900 leading-tight" data-tkey="about_title">가장 정직한 현장에서<br>최고의 버섯이 자랍니다.</h2>
+                    <p class="text-gray-600 text-lg leading-relaxed mb-10" data-tkey="about_desc">
                         큰오름주식회사의 스마트팜은 3D 가상 기술을 넘어 실제 대규모 생산 기지를 운영하고 있습니다. 정밀 데이터 분석을 통해 참송이버섯의 생육 단계를 24시간 밀착 관리합니다.
                     </p>
                     <div class="grid grid-cols-2 gap-8">
                         <div class="p-8 bg-gray-50 rounded-[40px] border border-gray-100 shadow-sm hover:shadow-md transition">
                             <div class="text-4xl font-black text-emerald-700 mb-2">24h</div>
-                            <p class="text-sm text-gray-500 font-bold uppercase tracking-widest">자동 관제</p>
+                            <p class="text-sm text-gray-500 font-bold uppercase tracking-widest" data-tkey="about_f1">자동 관제</p>
                         </div>
                         <div class="p-8 bg-gray-50 rounded-[40px] border border-gray-100 shadow-sm hover:shadow-md transition">
                             <div class="text-4xl font-black text-emerald-700 mb-2">High</div>
-                            <p class="text-sm text-gray-500 font-bold uppercase tracking-widest">수익 보장</p>
+                            <p class="text-sm text-gray-500 font-bold uppercase tracking-widest" data-tkey="about_f2">수익 보장</p>
                         </div>
                     </div>
                 </div>
                 <div class="relative reveal" style="transition-delay: 300ms;">
-                    <div class="aspect-square rounded-[60px] overflow-hidden shadow-2xl border-4 border-white img-placeholder relative group">
+                    <div class="aspect-square rounded-[60px] overflow-hidden shadow-2xl border-4 border-white relative group">
                         <img src="KakaoTalk_20260223_204716345_01.jpg" 
                              onerror="this.src='https://images.unsplash.com/photo-1594488426057-3f9547da9be7?auto=format&fit=crop&q=80&w=1200'"
                              alt="참송이버섯 재배 현장" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
@@ -229,11 +170,11 @@
         </div>
     </section>
 
-    <!-- 섹션: 제품안내 -->
+    <!-- 복구된 제품안내 섹션 -->
     <section id="product" class="py-32 bg-gray-50 text-center">
         <div class="max-w-7xl mx-auto px-6">
-            <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6 reveal">주력 생산 품종</h2>
-            <p class="text-gray-500 text-xl mb-20 reveal max-w-2xl mx-auto text-center">기술력으로 완성한 고부가가치 농작물, 프리미엄 참송이버섯입니다.</p>
+            <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6 reveal" data-tkey="prod_title">주력 생산 품종</h2>
+            <p class="text-gray-500 text-xl mb-20 reveal max-w-2xl mx-auto text-center" data-tkey="prod_desc">기술력으로 완성한 고부가가치 농작물, 프리미엄 참송이버섯입니다.</p>
 
             <div class="grid md:grid-cols-3 gap-8 text-center">
                 <div class="reveal group">
@@ -242,549 +183,271 @@
                              onerror="this.src='https://images.unsplash.com/photo-1595181144065-c23f104d498f?auto=format&fit=crop&q=80&w=1200'"
                              alt="프리미엄 참송이" class="w-full h-full object-contain group-hover:scale-110 transition duration-700 drop-shadow-2xl">
                     </div>
-                    <h4 class="text-2xl font-bold mb-2">프리미엄 참송이</h4>
+                    <h4 class="text-2xl font-bold mb-2 text-gray-900" data-tkey="prod_1">프리미엄 참송이</h4>
                 </div>
                 
                 <div class="reveal group" style="transition-delay: 200ms;">
-                    <div class="overflow-hidden rounded-[40px] mb-6 aspect-square shadow-lg bg-white relative border border-gray-100 img-placeholder">
+                    <div class="overflow-hidden rounded-[40px] mb-6 aspect-square shadow-lg bg-white relative border border-gray-100">
                         <img src="https://images.unsplash.com/photo-1530836361253-efad5cb2f620?auto=format&fit=crop&q=80&w=1200" 
                              alt="정밀 재배 기술" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                     </div>
-                    <h4 class="text-2xl font-bold mb-2">스마트팜 정밀 재배</h4>
+                    <h4 class="text-2xl font-bold mb-2 text-gray-900" data-tkey="prod_2">스마트팜 정밀 재배</h4>
                 </div>
                 
                 <div class="reveal group" style="transition-delay: 400ms;">
-                    <div class="overflow-hidden rounded-[40px] mb-6 aspect-square shadow-lg bg-white relative border border-gray-100 img-placeholder">
+                    <div class="overflow-hidden rounded-[40px] mb-6 aspect-square shadow-lg bg-white relative border border-gray-100">
                         <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=1200" 
                              alt="미래 농업 솔루션" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                     </div>
-                    <h4 class="text-2xl font-bold mb-2 text-gray-800 text-center">고부가가치 농업</h4>
+                    <h4 class="text-2xl font-bold mb-2 text-gray-900" data-tkey="prod_3">고부가가치 농업</h4>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 🌟 섹션: 분양안내 (첨부하신 사진 디자인으로 전면 교체) 🌟 -->
+    <!-- 복구된 분양안내 탭 섹션 -->
     <section id="benefit" class="py-32 bg-white text-center">
         <div class="max-w-7xl mx-auto px-6">
-            
-            <!-- 제목 스타일 복구 -->
             <div class="inline-block relative mb-12 reveal">
-                <h2 class="text-4xl md:text-5xl font-black text-gray-900 z-10 relative px-4">분양 모델 상세 안내</h2>
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 z-10 relative px-4" data-tkey="tab_title">분양 모델 상세 안내</h2>
                 <div class="absolute bottom-1 left-0 w-full h-4 bg-emerald-200 -z-0"></div>
             </div>
             
-            <!-- 탭 버튼 스타일 복구 -->
             <div class="flex flex-wrap justify-center mb-16 gap-3 reveal bg-white p-2 rounded-full shadow-sm inline-flex">
-                <button onclick="showTab('tab-basic')" id="btn-tab-basic" class="tab-btn px-8 py-3 rounded-full font-bold transition-all active bg-emerald-700 text-white">위탁 운영형</button>
-                <button onclick="showTab('tab-premium')" id="btn-tab-premium" class="tab-btn px-8 py-3 rounded-full font-bold transition-all bg-gray-100 text-gray-500 hover:bg-gray-200">직접 운영형</button>
-                <button onclick="showTab('tab-custom')" id="btn-tab-custom" class="tab-btn px-8 py-3 rounded-full font-bold transition-all bg-gray-100 text-gray-500 hover:bg-gray-200">부지 개발형</button>
+                <button onclick="showTab('tab-basic')" id="btn-tab-basic" class="tab-btn px-8 py-3 rounded-full font-bold transition-all active bg-emerald-700 text-white" data-tkey="tab_1">위탁 운영형</button>
+                <button onclick="showTab('tab-premium')" id="btn-tab-premium" class="tab-btn px-8 py-3 rounded-full font-bold transition-all bg-gray-100 text-gray-500 hover:bg-gray-200" data-tkey="tab_2">직접 운영형</button>
+                <button onclick="showTab('tab-custom')" id="btn-tab-custom" class="tab-btn px-8 py-3 rounded-full font-bold transition-all bg-gray-100 text-gray-500 hover:bg-gray-200" data-tkey="tab_3">부지 개발형</button>
             </div>
 
-            <!-- 내용 박스: 연두색 배경 적용 -->
-            <div id="tab-basic" class="tab-content active reveal">
-                <div class="bg-emerald-50 p-8 md:p-12 rounded-[40px] flex flex-col md:flex-row items-center gap-12 text-left shadow-sm">
-                    <div class="md:w-1/2 p-4">
-                        <h3 class="text-3xl md:text-4xl font-black mb-6 text-gray-900 leading-tight">위탁 운영형:<br>전문가 전담 관리 시스템</h3>
-                        <p class="text-gray-700 mb-10 leading-relaxed text-lg">재배부터 유통까지 본사가 책임집니다. 투자자는 정기 배당 수익에만 집중할 수 있는 안정형 모델입니다.</p>
-                        <button onclick="scrollToSection('contact')" class="bg-emerald-700 hover:bg-emerald-800 text-white px-8 py-4 rounded-xl font-bold shadow-lg transition">상담 예약하기</button>
-                    </div>
-                    <div class="md:w-1/2">
-                        <img src="https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&q=80&w=800" class="rounded-[30px] shadow-lg w-full object-cover aspect-video" alt="위탁운영">
-                    </div>
+            <!-- 위탁 운영형 -->
+            <div id="tab-basic" class="tab-content active reveal flex-col md:flex-row items-center gap-12 bg-emerald-50 p-8 md:p-12 rounded-[40px] text-left shadow-sm">
+                <div class="md:w-1/2 p-4">
+                    <h3 class="text-3xl md:text-4xl font-black mb-6 text-gray-900 leading-tight" data-tkey="tab1_h3">위탁 운영형:<br>전문가 전담 관리 시스템</h3>
+                    <p class="text-gray-700 mb-10 leading-relaxed text-lg" data-tkey="tab1_p">재배부터 유통까지 본사가 책임집니다. 투자자는 정기 배당 수익에만 집중할 수 있는 안정형 모델입니다.</p>
+                    <button onclick="scrollToSection('contact')" class="bg-emerald-700 hover:bg-emerald-800 text-white px-8 py-4 rounded-xl font-bold shadow-lg transition" data-tkey="tab_btn">상담 예약하기</button>
+                </div>
+                <div class="md:w-1/2 w-full">
+                    <img src="https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&q=80&w=800" class="rounded-[30px] shadow-lg w-full object-cover aspect-video" alt="위탁운영">
                 </div>
             </div>
 
-            <div id="tab-premium" class="tab-content reveal">
-                <div class="bg-emerald-50 p-8 md:p-12 rounded-[40px] flex flex-col md:flex-row items-center gap-12 text-left shadow-sm">
-                    <div class="md:w-1/2 p-4">
-                        <h3 class="text-3xl md:text-4xl font-black mb-6 text-gray-900 leading-tight">직접 운영형:<br>경영 및 기술 전수</h3>
-                        <p class="text-gray-700 mb-10 leading-relaxed text-lg">직접 농장을 운영하며 큰오름의 독자적 솔루션과 재배 노하우를 전수받아 수익을 극대화합니다.</p>
-                        <button onclick="scrollToSection('contact')" class="bg-emerald-700 hover:bg-emerald-800 text-white px-8 py-4 rounded-xl font-bold shadow-lg transition">상담 예약하기</button>
-                    </div>
-                    <div class="md:w-1/2">
-                        <img src="https://images.unsplash.com/photo-1574943322230-030f81d8355b?auto=format&fit=crop&q=80&w=800" class="rounded-[30px] shadow-lg w-full object-cover aspect-video" alt="직접운영">
-                    </div>
+            <!-- 직접 운영형 -->
+            <div id="tab-premium" class="tab-content reveal flex-col md:flex-row items-center gap-12 bg-emerald-50 p-8 md:p-12 rounded-[40px] text-left shadow-sm">
+                <div class="md:w-1/2 p-4">
+                    <h3 class="text-3xl md:text-4xl font-black mb-6 text-gray-900 leading-tight" data-tkey="tab2_h3">직접 운영형:<br>경영 및 기술 전수</h3>
+                    <p class="text-gray-700 mb-10 leading-relaxed text-lg" data-tkey="tab2_p">직접 농장을 운영하며 큰오름의 독자적 솔루션과 재배 노하우를 전수받아 수익을 극대화합니다.</p>
+                    <button onclick="scrollToSection('contact')" class="bg-emerald-700 hover:bg-emerald-800 text-white px-8 py-4 rounded-xl font-bold shadow-lg transition" data-tkey="tab_btn">상담 예약하기</button>
+                </div>
+                <div class="md:w-1/2 w-full">
+                    <img src="https://images.unsplash.com/photo-1574943322230-030f81d8355b?auto=format&fit=crop&q=80&w=800" class="rounded-[30px] shadow-lg w-full object-cover aspect-video" alt="직접운영">
                 </div>
             </div>
 
-            <div id="tab-custom" class="tab-content reveal">
-                <div class="bg-emerald-50 p-8 md:p-12 rounded-[40px] flex flex-col md:flex-row items-center gap-12 text-left shadow-sm">
-                    <div class="md:w-1/2 p-4">
-                        <h3 class="text-3xl md:text-4xl font-black mb-6 text-gray-900 leading-tight">부지 개발형:<br>토지 가치 창조</h3>
-                        <p class="text-gray-700 mb-10 leading-relaxed text-lg">유휴 부지를 현대적 참송이버섯 단지로 개발하여 지가 상승과 장기 운영 수익을 동시에 노리는 프로젝트입니다.</p>
-                        <button onclick="scrollToSection('contact')" class="bg-emerald-700 hover:bg-emerald-800 text-white px-8 py-4 rounded-xl font-bold shadow-lg transition">상담 예약하기</button>
+            <!-- 부지 개발형 -->
+            <div id="tab-custom" class="tab-content reveal flex-col md:flex-row items-center gap-12 bg-emerald-50 p-8 md:p-12 rounded-[40px] text-left shadow-sm">
+                <div class="md:w-1/2 p-4">
+                    <h3 class="text-3xl md:text-4xl font-black mb-6 text-gray-900 leading-tight" data-tkey="tab3_h3">부지 개발형:<br>토지 가치 창조</h3>
+                    <p class="text-gray-700 mb-10 leading-relaxed text-lg" data-tkey="tab3_p">유휴 부지를 현대적 참송이버섯 단지로 개발하여 지가 상승과 장기 운영 수익을 동시에 노리는 프로젝트입니다.</p>
+                    <button onclick="scrollToSection('contact')" class="bg-emerald-700 hover:bg-emerald-800 text-white px-8 py-4 rounded-xl font-bold shadow-lg transition" data-tkey="tab_btn">상담 예약하기</button>
+                </div>
+                <div class="md:w-1/2 w-full">
+                    <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=800" class="rounded-[30px] shadow-lg w-full object-cover aspect-video" alt="부지개발">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3D 시뮬레이터 -->
+    <section id="technology" class="py-40 bg-gray-50 overflow-hidden border-t border-gray-200">
+        <div class="max-w-[1600px] mx-auto px-8 text-center">
+            
+            <div class="text-center mb-16 reveal">
+                <span class="text-emerald-500 font-bold tracking-[0.2em] uppercase mb-4 block text-sm text-center">Keunoreum 3D Control Center</span>
+                <h2 class="text-4xl md:text-5xl font-black mb-6 text-center italic" data-tkey="tech_title">초실감형 3D 스마트팜 모듈</h2>
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto text-center" data-tkey="tech_desc">실제 참송이버섯 재배동의 철제 다단 선반과 배지를 완벽하게 구현했습니다. 공기의 흐름과 빛의 변화를 직접 체험하세요.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-4 gap-12 items-start">
+                
+                <div class="lg:col-span-1 space-y-6 text-left">
+                    <div class="iot-panel reveal">
+                        <div class="flex justify-between items-center border-b border-gray-100 pb-6 mb-8 text-left">
+                            <h4 class="text-2xl font-black text-gray-900 tracking-tighter uppercase" data-tkey="dash_title">Dashboard</h4>
+                            <div class="flex items-center gap-3 bg-emerald-50 px-4 py-2 rounded-full border border-emerald-100">
+                                <span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span>
+                                <span class="text-[10px] font-black text-emerald-700 uppercase tracking-widest">Live Sync</span>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 gap-4 text-left">
+                            <div class="sensor-card flex justify-between items-center">
+                                <label class="text-[10px] text-gray-400 font-black tracking-widest uppercase" data-tkey="sens_temp">TEMP</label>
+                                <p class="sensor-val" id="val-temp">16.2°C</p>
+                            </div>
+                            <div class="sensor-card flex justify-between items-center">
+                                <label class="text-[10px] text-gray-400 font-black tracking-widest uppercase" data-tkey="sens_hum">HUMIDITY</label>
+                                <p class="sensor-val" id="val-hum">94%</p>
+                            </div>
+                            <div class="sensor-card flex justify-between items-center">
+                                <label class="text-[10px] text-gray-400 font-black tracking-widest uppercase" data-tkey="sens_co2">CO2</label>
+                                <p class="sensor-val" id="val-co2">580</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4 pt-8 text-center">
+                            <button id="btn-door" class="w-full bg-black text-white py-5 rounded-2xl font-black text-sm tracking-widest shadow-2xl hover:bg-emerald-800 transition-all uppercase" data-tkey="btn_door">
+                                <i class="fas fa-door-open mr-3"></i> Open Module Door
+                            </button>
+                            <div class="grid grid-cols-2 gap-4 text-center">
+                                <button id="btn-light" class="bg-gray-100 text-gray-400 py-5 rounded-2xl font-black text-[10px] tracking-widest border border-gray-200 uppercase transition-all" data-tkey="btn_light">LED OFF</button>
+                                <button id="btn-mist" class="bg-gray-100 text-gray-400 py-5 rounded-2xl font-black text-[10px] tracking-widest border border-gray-200 uppercase transition-all" data-tkey="btn_mist">MIST OFF</button>
+                            </div>
+                        </div>
+                        
+                        <div class="pt-8 border-t border-gray-100 grid grid-cols-3 gap-2">
+                            <button onclick="changeFarmSize('25')" id="btn-size-25" class="size-btn bg-emerald-700 text-white py-3 rounded-xl text-[10px] font-black transition-all">25PY</button>
+                            <button onclick="changeFarmSize('30')" id="btn-size-30" class="size-btn bg-gray-100 text-gray-400 py-3 rounded-xl text-[10px] font-black transition-all">30PY</button>
+                            <button onclick="changeFarmSize('50')" id="btn-size-50" class="size-btn bg-gray-100 text-gray-400 py-3 rounded-xl text-[10px] font-black transition-all">50PY</button>
+                        </div>
                     </div>
-                    <div class="md:w-1/2">
-                        <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=800" class="rounded-[30px] shadow-lg w-full object-cover aspect-video" alt="부지개발">
+                </div>
+
+                <div class="lg:col-span-3 relative reveal">
+                    <div id="canvas-parent">
+                        <div id="canvas-container"></div>
+                        <div id="loading-text" data-tkey="loading">Engine Synchronizing...</div>
+                    </div>
+                    <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex gap-8 z-20">
+                        <button onclick="cameraTo('outside')" class="bg-white/95 backdrop-blur shadow-2xl px-12 py-5 rounded-full text-xs font-black text-gray-900 hover:bg-black hover:text-white transition-all border border-gray-100 uppercase tracking-widest" data-tkey="btn_outside">외부 관찰</button>
+                        <button onclick="cameraTo('inside')" class="bg-emerald-700/95 backdrop-blur shadow-2xl px-12 py-5 rounded-full text-xs font-black text-white hover:bg-black transition-all border border-emerald-500 uppercase tracking-widest" data-tkey="btn_inside">내부 진입</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 섹션: 상담신청 -->
-    <section id="contact" class="py-32 bg-gray-50">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-            <div class="bg-white rounded-[50px] p-10 md:p-16 shadow-2xl shadow-gray-200 reveal">
-                <div class="text-center mb-12">
-                    <h2 class="text-4xl font-black mb-4 text-gray-900 text-center">분양 상담 신청</h2>
-                    <p class="text-emerald-700 font-bold text-center">원하시는 상담 내용을 남겨주세요.</p>
+    <!-- 상담 신청서 -->
+    <section id="contact" class="py-40 bg-white">
+        <div class="max-w-4xl mx-auto px-8">
+            <div class="form-card reveal text-center border-2 border-emerald-50">
+                <div class="text-center mb-20">
+                    <div class="title-underline mb-6">
+                        <h2 class="text-5xl font-black text-gray-950 uppercase tracking-tighter" data-tkey="form_title">Consultation</h2>
+                    </div>
+                    <p class="text-gray-400 text-xl font-light" data-tkey="form_p">전문 상담원이 영업일 기준 24시간 이내에 직접 연락드립니다.</p>
                 </div>
                 
-                <!-- 🌟 Web3Forms 기반의 완벽한 신청 폼 🌟 -->
-                <form action="https://api.web3forms.com/submit" method="POST" class="space-y-6 text-left" id="contact-form">
-                    
-                    <!-- 사진에서 확인된 대표님 Access Key 적용 -->
+                <form action="https://api.web3forms.com/submit" method="POST" id="contact-form" class="space-y-12">
                     <input type="hidden" name="access_key" value="6eb35124-7887-4ea7-927d-2b810533166a">
                     
-                    <div class="grid md:grid-cols-2 gap-6 text-left">
-                        <div class="space-y-2 text-left">
-                            <label class="text-xs font-black text-gray-400 uppercase ml-2">성함</label>
-                            <input type="text" name="성함" placeholder="홍길동" required class="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-emerald-500 outline-none font-medium">
+                    <div class="grid md:grid-cols-2 gap-x-12 gap-y-10 text-left text-gray-500">
+                        <div class="space-y-3">
+                            <label class="text-xs font-black uppercase tracking-widest" data-tkey="form_name">Name *</label>
+                            <input type="text" name="성함" placeholder="홍길동" required class="input-field">
                         </div>
-                        <div class="space-y-2 text-left">
-                            <label class="text-xs font-black text-gray-400 uppercase ml-2">연락처</label>
-                            <input type="tel" name="연락처" placeholder="010-0000-0000" required class="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-emerald-500 outline-none font-medium">
+                        <div class="space-y-3">
+                            <label class="text-xs font-black uppercase tracking-widest" data-tkey="form_phone">Contact *</label>
+                            <input type="tel" name="연락처" placeholder="010-0000-0000" required class="input-field">
+                        </div>
+                        <div class="space-y-3 text-left">
+                            <label class="text-xs font-black uppercase tracking-widest" data-tkey="form_land">Land Ownership</label>
+                            <select name="토지보유" class="input-field appearance-none">
+                                <option value="보유중" data-tkey="opt_land_1">Owned</option>
+                                <option value="임대희망" data-tkey="opt_land_2">Request Renting</option>
+                                <option value="위탁상담" data-tkey="opt_land_3">Managed Model</option>
+                            </select>
+                        </div>
+                        <div class="space-y-3 text-left">
+                            <label class="text-xs font-black uppercase tracking-widest" data-tkey="form_budget">Budget</label>
+                            <select name="예산" class="input-field appearance-none">
+                                <option value="1-3억">100M ~ 300M KRW</option>
+                                <option value="3-5억">300M ~ 500M KRW</option>
+                                <option value="5억이상">Over 500M KRW</option>
+                            </select>
                         </div>
                     </div>
 
-                    <div class="space-y-2 text-left">
-                        <label class="text-xs font-black text-gray-400 uppercase ml-2">관심 분양 모델</label>
-                        <select name="관심모델" class="w-full bg-emerald-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-emerald-500 outline-none font-bold text-emerald-900 shadow-sm cursor-pointer">
-                            <option value="위탁 운영형">위탁 운영형 (전문가 전담 관리)</option>
-                            <option value="직접 운영형">직접 운영형 (기술 전수 및 직접 경영)</option>
-                            <option value="부지 개발형">부지 개발형 (유휴 토지 가치 창조)</option>
-                        </select>
+                    <div class="space-y-3 text-left text-gray-500">
+                        <label class="text-xs font-black uppercase tracking-widest" data-tkey="form_msg">Details</label>
+                        <textarea name="문의사항" rows="5" class="input-field resize-none"></textarea>
                     </div>
 
-                    <div class="space-y-2 text-left">
-                        <label class="text-xs font-black text-gray-400 uppercase ml-2">기타 문의사항</label>
-                        <textarea name="문의사항" rows="4" placeholder="예산, 토지 보유 여부 등 궁금하신 점을 남겨주세요." class="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-emerald-500 outline-none font-medium resize-none"></textarea>
-                    </div>
-
-                    <div class="flex items-center gap-3 ml-2 pt-2">
-                        <input type="checkbox" id="privacy-check" required class="w-5 h-5 accent-emerald-600 cursor-pointer">
-                        <label for="privacy-check" class="text-sm text-gray-500 font-medium cursor-pointer">개인정보 수집 및 상담 목적 이용에 동의합니다.</label>
-                    </div>
-
-                    <button type="submit" id="submit-btn" class="w-full py-5 bg-emerald-700 text-white font-black rounded-2xl hover:bg-emerald-800 transition shadow-xl shadow-emerald-700/20 text-lg mt-4">
-                        분양 상담 신청하기
-                    </button>
+                    <button type="submit" id="submit-btn" class="btn-premium w-full shadow-2xl uppercase tracking-widest" data-tkey="form_submit">Submit Consult</button>
                 </form>
             </div>
         </div>
     </section>
 
-    <!-- 푸터 -->
-    <footer class="bg-gray-900 text-white py-20 text-sm">
-        <div class="max-w-7xl mx-auto px-6 text-center md:text-left flex flex-col md:flex-row justify-between items-start gap-12">
-            <div>
-                <div class="flex items-center gap-3 mb-6 justify-center md:justify-start">
-                    <div class="h-10 flex items-center gap-3">
-                        <img src="https://lh3.googleusercontent.com/XUst99nN96SNLc4efHYHvtbUv1m_iIMbp9Msmopa5R4UQVxOf9uXqlV4ImoKUNw9qJ_DKCZXD098XJHCw5v98PPbi7HxCS0suZPnqsTfUxnk38l1mA-w=w700-h500-n" 
-                             alt="푸터 로고" class="h-full w-auto object-contain logo-blend brightness-0 invert">
-                        <span class="text-xl font-black text-white leading-none">농업회사법인 큰오름주식회사</span>
-                    </div>
-                </div>
-                <p class="text-gray-500 leading-relaxed mx-auto md:mx-0 text-center md:text-left">
-                    본사: 서울특별시 강남구 테헤란로 큰오름타워<br>
-                    대표이사: 김오름 | 사업자번호: 123-45-67890<br>
-                    고객지원: 1588-0000 | contact@keunoreum.com
-                </p>
+    <footer class="bg-black text-white py-32 text-center">
+        <div class="max-w-7xl mx-auto px-8 text-center">
+            <h3 class="text-3xl font-black mb-6 tracking-tighter uppercase">Keunoreum Smart Farm</h3>
+            <p class="text-gray-600 text-sm font-bold uppercase tracking-widest">Global Agricultural Innovation Center</p>
+            <div class="mt-20 pt-10 border-t border-white/5 text-gray-700 text-[10px] font-black uppercase">
+                © 2026 KEUNOREUM CO., LTD. ALL RIGHTS RESERVED.
             </div>
-            <div class="flex flex-wrap gap-8 text-gray-400 font-bold justify-center md:justify-start">
-                <button onclick="scrollToSection('about')" class="hover:text-white transition">회사소개</button>
-                <button onclick="scrollToSection('product')" class="hover:text-white transition">참송이버섯</button>
-                <button onclick="scrollToSection('benefit')" class="hover:text-white transition">분양안내</button>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto px-6 mt-10 py-8 border-t border-gray-800 text-gray-600 text-[10px] font-bold tracking-widest text-center md:text-left">
-            &copy; 2026 KEUNOREUM CO., LTD. ALL RIGHTS RESERVED.
         </div>
     </footer>
 
     <script>
         /* -----------------------------------------------------------
-           ✨ Three.js 3D Smart Farm Simulator ✨
+           🌐 다국어 번역 시스템 (확장됨)
            ----------------------------------------------------------- */
-        let scene, camera, renderer, farmGroup, mainLight, growthLight;
-        let particles; 
-        let isLightOn = false, isVentRotating = false;
-        let ventFans = [], ledStrips = [], controls;
-        let substrateMesh, stemMesh, capMesh; 
-        let clock = new THREE.Clock();
-
-        function createSubstrateTexture() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 512; canvas.height = 512;
-            const ctx = canvas.getContext('2d');
-            
-            ctx.fillStyle = '#2c1e16';
-            ctx.fillRect(0, 0, 512, 512);
-            
-            for(let i=0; i<8000; i++) { 
-                ctx.fillStyle = Math.random() > 0.5 ? '#8b5a2b' : '#d2b48c';
-                ctx.globalAlpha = Math.random() * 0.5 + 0.1;
-                ctx.fillRect(Math.random()*512, Math.random()*512, Math.random()*3+1, Math.random()*3+1);
+        const translations = {
+            ko: {
+                nav_about: "회사소개", nav_product: "제품안내", nav_benefit: "분양모델", nav_tour: "3D 실감 투어", nav_consult: "상담 신청",
+                hero_h1: "Hyper<br><span class='text-emerald-400 underline decoration-4 underline-offset-8'>Biological</span>",
+                hero_p: "그림이 아닌 실제 생명력을 가진 참송이버섯 디지털 트윈.<br>재배 현장의 생태 시스템을 3D로 완벽하게 체험하십시오.",
+                hero_btn: "투어 시작하기 <i class='fas fa-cube text-sm'></i>",
+                about_title: "가장 정직한 현장에서<br>최고의 버섯이 자랍니다.",
+                about_desc: "큰오름주식회사의 스마트팜은 3D 가상 기술을 넘어 실제 대규모 생산 기지를 운영하고 있습니다. 정밀 데이터 분석을 통해 참송이버섯의 생육 단계를 24시간 밀착 관리합니다.",
+                about_f1: "자동 관제", about_f2: "수익 보장",
+                prod_title: "주력 생산 품종", prod_desc: "기술력으로 완성한 고부가가치 농작물, 프리미엄 참송이버섯입니다.",
+                prod_1: "프리미엄 참송이", prod_2: "스마트팜 정밀 재배", prod_3: "고부가가치 농업",
+                tab_title: "분양 모델 상세 안내", tab_1: "위탁 운영형", tab_2: "직접 운영형", tab_3: "부지 개발형",
+                tab1_h3: "위탁 운영형:<br>전문가 전담 관리 시스템", tab1_p: "재배부터 유통까지 본사가 책임집니다. 투자자는 정기 배당 수익에만 집중할 수 있는 안정형 모델입니다.",
+                tab2_h3: "직접 운영형:<br>경영 및 기술 전수", tab2_p: "직접 농장을 운영하며 큰오름의 독자적 솔루션과 재배 노하우를 전수받아 수익을 극대화합니다.",
+                tab3_h3: "부지 개발형:<br>토지 가치 창조", tab3_p: "유휴 부지를 현대적 참송이버섯 단지로 개발하여 지가 상승과 장기 운영 수익을 동시에 노리는 프로젝트입니다.",
+                tab_btn: "상담 예약하기", tech_title: "초실감형 3D 스마트팜 모듈", tech_desc: "실제 참송이버섯 재배동의 철제 다단 선반과 배지를 완벽하게 구현했습니다. 공기의 흐름과 빛의 변화를 직접 체험하세요.",
+                dash_title: "관제 대시보드", sens_temp: "실내 온도", sens_hum: "습도", sens_co2: "CO2 농도",
+                btn_door: "모듈 출입문 열기", btn_light: "LED 끄기", btn_mist: "가습 끄기",
+                loading: "엔진 동기화 중...", btn_outside: "외부 전경", btn_inside: "내부 진입",
+                form_title: "분양 상담 신청서", form_p: "전문 상담원이 영업일 기준 24시간 이내에 직접 연락드립니다.",
+                form_name: "성함 (실명) *", form_phone: "연락처 *", form_land: "토지 보유 현황",
+                form_budget: "투자 가용 예산", form_msg: "상세 문의 내용", form_submit: "상담 신청 완료",
+                opt_land_1: "직접 토지 보유 중", opt_land_2: "임대 부지 추천 희망", opt_land_3: "위탁 운영 모델 상담"
+            },
+            en: {
+                nav_about: "ABOUT", nav_product: "PRODUCT", nav_benefit: "MODELS", nav_tour: "3D REAL TOUR", nav_consult: "CONSULT",
+                hero_h1: "HYPER<br><span class='text-emerald-400 underline decoration-4 underline-offset-8'>BIOLOGICAL</span>",
+                hero_p: "A digital twin of Pine Mushrooms with real biological vitality.<br>Experience the farm ecosystem in 3D.",
+                hero_btn: "START TOUR <i class='fas fa-cube text-sm'></i>",
+                about_title: "The best mushrooms grow<br>in the most honest fields.",
+                about_desc: "Beyond 3D virtual technology, Keunoreum operates real large-scale production bases. We closely manage the growth stages of Pine Mushrooms 24/7.",
+                about_f1: "AUTO CONTROL", about_f2: "HIGH RETURN",
+                prod_title: "CORE PRODUCTS", prod_desc: "Premium Pine Mushrooms, a high-value crop perfected by technology.",
+                prod_1: "Premium Pine Mushroom", prod_2: "Precision Smart Farming", prod_3: "High Value Agriculture",
+                tab_title: "INVESTMENT MODELS", tab_1: "Managed Operation", tab_2: "Direct Operation", tab_3: "Site Development",
+                tab1_h3: "Managed Operation:<br>Expert Management", tab1_p: "We handle everything from cultivation to distribution. A stable model focusing on dividend returns.",
+                tab2_h3: "Direct Operation:<br>Tech Transfer", tab2_p: "Operate the farm yourself and maximize profits by inheriting our exclusive solutions and know-how.",
+                tab3_h3: "Site Development:<br>Land Value Creation", tab3_p: "Develop idle land into a modern mushroom complex, aiming for both land value appreciation and long-term profit.",
+                tab_btn: "Book a Consultation", tech_title: "Hyper-Realistic 3D Module", tech_desc: "Perfectly implemented multi-tier steel shelves and substrates. Experience air flow and lighting changes.",
+                dash_title: "OS DASHBOARD", sens_temp: "TEMP", sens_hum: "HUMIDITY", sens_co2: "CO2",
+                btn_door: "OPEN MODULE DOOR", btn_light: "LED OFF", btn_mist: "MIST OFF",
+                loading: "ENGINE SYNCING...", btn_outside: "OUTSIDE VIEW", btn_inside: "INSIDE TOUR",
+                form_title: "Consultation", form_p: "A professional consultant will contact you within 24 hours.",
+                form_name: "NAME (FULL NAME) *", form_phone: "CONTACT *", form_land: "LAND OWNERSHIP",
+                form_budget: "AVAILABLE BUDGET", form_msg: "DETAILS", form_submit: "SUBMIT REQUEST",
+                opt_land_1: "Owned", opt_land_2: "Request Renting", opt_land_3: "Managed Model"
             }
-            for(let i=0; i<150; i++) {
-                ctx.fillStyle = '#ffffff';
-                ctx.globalAlpha = Math.random() * 0.25;
-                ctx.beginPath();
-                ctx.arc(Math.random()*512, Math.random()*512, Math.random()*20 + 5, 0, Math.PI*2);
-                ctx.fill();
-            }
-            
-            const tex = new THREE.CanvasTexture(canvas);
-            tex.anisotropy = 16; 
-            return tex;
-        }
+        };
 
-        function init3D() {
-            const container = document.getElementById('canvas-container');
-            const loadingText = document.getElementById('loading-text');
-            if(!container) return;
-            
-            const width = container.clientWidth;
-            const height = container.clientHeight;
-
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x1a202c); 
-            scene.fog = new THREE.FogExp2(0x1a202c, 0.05);
-            
-            camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-            
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(width, height);
-            renderer.setPixelRatio(window.devicePixelRatio);
-            
-            renderer.toneMapping = THREE.ACESFilmicToneMapping;
-            renderer.toneMappingExposure = 1.1;
-            renderer.shadowMap.enabled = true;
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-            
-            container.appendChild(renderer.domElement);
-
-            if (typeof THREE.OrbitControls !== 'undefined') {
-                controls = new THREE.OrbitControls(camera, renderer.domElement);
-                controls.enableDamping = true;
-                controls.dampingFactor = 0.05;
-                controls.maxPolarAngle = Math.PI / 2 - 0.05; 
-                controls.minDistance = 2;
-                controls.maxDistance = 20;
-                controls.autoRotate = true;
-                controls.autoRotateSpeed = 0.5; 
-            }
-
-            const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
-            scene.add(hemiLight);
-
-            mainLight = new THREE.DirectionalLight(0xffeadd, 1.2);
-            mainLight.position.set(5, 10, 5);
-            mainLight.castShadow = true;
-            mainLight.shadow.mapSize.width = 1024;
-            mainLight.shadow.mapSize.height = 1024;
-            mainLight.shadow.bias = -0.001; 
-            scene.add(mainLight);
-
-            growthLight = new THREE.PointLight(0xcc00ff, 0, 50);
-            growthLight.position.set(0, 4, 0);
-            scene.add(growthLight);
-
-            farmGroup = new THREE.Group();
-            scene.add(farmGroup);
-            
-            const floorGeo = new THREE.PlaneGeometry(50, 50);
-            const floorMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.9, metalness: 0.1 });
-            const floor = new THREE.Mesh(floorGeo, floorMat);
-            floor.rotation.x = -Math.PI / 2;
-            floor.receiveShadow = true;
-            floor.position.y = -0.5;
-            scene.add(floor);
-
-            createParticles();
-            buildFarmSize('25');
-
-            if(loadingText) loadingText.style.opacity = '0';
-
-            window.addEventListener('resize', onWindowResize, false);
-            animate();
-        }
-
-        function createParticles() {
-            const particleCount = 1500;
-            const particleGeo = new THREE.BufferGeometry();
-            const particlePos = new Float32Array(particleCount * 3);
-            
-            for(let i=0; i < particleCount * 3; i++) {
-                particlePos[i] = (Math.random() - 0.5) * 20; 
-            }
-            
-            particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
-            const particleMat = new THREE.PointsMaterial({
-                color: 0xaaddff,
-                size: 0.05,
-                transparent: true,
-                opacity: 0.3,
-                blending: THREE.AdditiveBlending
+        function changeLang(lang) {
+            document.querySelectorAll('[data-tkey]').forEach(el => {
+                const key = el.getAttribute('data-tkey');
+                if (translations[lang][key]) el.innerHTML = translations[lang][key];
             });
-            
-            particles = new THREE.Points(particleGeo, particleMat);
-            scene.add(particles);
-        }
-
-        function buildFarmSize(type) {
-            while(farmGroup.children.length > 0){ 
-                farmGroup.remove(farmGroup.children[0]); 
-            }
-            ventFans = [];
-            ledStrips = [];
-
-            let cols, lengthCount, zDepth;
-            if (type === '25') {
-                cols = 4; lengthCount = 6; zDepth = 6;
-                camera.position.set(5, 3, 7);
-            } else if (type === '30') {
-                cols = 5; lengthCount = 8; zDepth = 8;
-                camera.position.set(6, 4, 9);
-            } else if (type === '50') {
-                cols = 7; lengthCount = 12; zDepth = 12;
-                camera.position.set(8, 5, 13);
-            }
-
-            const xSpacing = 1.3;  
-            const ySpacing = 0.85; 
-            const tiers = 4;       
-            const zSpacing = zDepth / lengthCount;
-            const startX = -((cols - 1) * xSpacing) / 2;
-            const startZ = -zDepth / 2;
-
-            const rackMat = new THREE.MeshStandardMaterial({ color: 0x64748b, metalness: 0.8, roughness: 0.4 });
-            const ledMat = new THREE.MeshStandardMaterial({ color: 0x222222, emissive: 0x000000, emissiveIntensity: 0 });
-
-            const totalSubstrates = cols * tiers * lengthCount;
-            const mushroomsPerSub = 3;
-            const totalMushrooms = totalSubstrates * mushroomsPerSub;
-
-            const subGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.5, 16);
-            subGeo.rotateZ(Math.PI / 2);
-            const subTex = createSubstrateTexture();
-            const subMat = new THREE.MeshPhysicalMaterial({ map: subTex, roughness: 0.6, clearcoat: 0.2, clearcoatRoughness: 0.3 });
-            
-            const stemGeo = new THREE.CylinderGeometry(0.04, 0.05, 0.18, 12);
-            stemGeo.translate(0, 0.09, 0);
-            const stemMat = new THREE.MeshStandardMaterial({ color: 0xe8e0d5, roughness: 0.9 });
-
-            const capGeo = new THREE.SphereGeometry(0.055, 16, 16);
-            capGeo.scale(1, 0.8, 1);
-            capGeo.translate(0, 0.18, 0); 
-            const capMat = new THREE.MeshPhysicalMaterial({ color: 0x5c3a21, roughness: 0.7, clearcoat: 0.1 });
-
-            substrateMesh = new THREE.InstancedMesh(subGeo, subMat, totalSubstrates);
-            stemMesh = new THREE.InstancedMesh(stemGeo, stemMat, totalMushrooms);
-            capMesh = new THREE.InstancedMesh(capGeo, capMat, totalMushrooms);
-            
-            substrateMesh.castShadow = true; substrateMesh.receiveShadow = true;
-            stemMesh.castShadow = true; capMesh.castShadow = true;
-
-            let subIndex = 0; let mushIndex = 0;
-            const dummy = new THREE.Object3D();
-            const mushDummy = new THREE.Object3D();
-
-            for (let i = 0; i < cols; i++) {
-                let xPos = startX + i * xSpacing;
-                
-                const pillarGeo = new THREE.BoxGeometry(0.05, tiers * ySpacing, 0.05);
-                const p1 = new THREE.Mesh(pillarGeo, rackMat); p1.position.set(xPos, (tiers*ySpacing)/2 - 0.5, startZ); p1.castShadow = true; farmGroup.add(p1);
-                const p2 = new THREE.Mesh(pillarGeo, rackMat); p2.position.set(xPos, (tiers*ySpacing)/2 - 0.5, -startZ); p2.castShadow = true; farmGroup.add(p2);
-
-                for (let level = 0; level < tiers; level++) {
-                    let yPos = level * ySpacing;
-                    
-                    const barGeo = new THREE.BoxGeometry(0.4, 0.02, zDepth + 0.2);
-                    const bar = new THREE.Mesh(barGeo, rackMat);
-                    bar.position.set(xPos, yPos - 0.15, 0);
-                    bar.castShadow = true; bar.receiveShadow = true;
-                    farmGroup.add(bar);
-
-                    const ledGeo = new THREE.BoxGeometry(0.02, 0.02, zDepth);
-                    const led = new THREE.Mesh(ledGeo, ledMat);
-                    led.position.set(xPos, yPos + 0.65, 0); 
-                    farmGroup.add(led);
-                    ledStrips.push(led);
-
-                    for (let j = 0; j < lengthCount; j++) {
-                        let zPos = startZ + j * zSpacing + 0.5;
-                        
-                        dummy.position.set(xPos, yPos, zPos);
-                        dummy.rotation.set(0, (Math.random()-0.5)*0.3, 0); 
-                        dummy.updateMatrix();
-                        substrateMesh.setMatrixAt(subIndex++, dummy.matrix);
-
-                        for(let m = 0; m < mushroomsPerSub; m++) {
-                            mushDummy.position.copy(dummy.position);
-                            const angle = Math.random() * Math.PI - Math.PI/2;
-                            const r = 0.12;
-                            mushDummy.position.x += Math.sin(angle) * r;
-                            mushDummy.position.y += Math.cos(angle) * r;
-                            mushDummy.position.z += (Math.random() - 0.5) * 0.35;
-                            mushDummy.rotation.z = -angle;
-                            mushDummy.rotation.x = (Math.random() - 0.5) * 0.5;
-                            const scale = 0.6 + Math.random() * 0.5;
-                            mushDummy.scale.set(scale, scale, scale);
-
-                            mushDummy.updateMatrix();
-                            stemMesh.setMatrixAt(mushIndex, mushDummy.matrix);
-                            capMesh.setMatrixAt(mushIndex, mushDummy.matrix);
-                            mushIndex++;
-                        }
-                    }
-                }
-            }
-
-            farmGroup.add(substrateMesh);
-            farmGroup.add(stemMesh);
-            farmGroup.add(capMesh);
-
-            const fanGeo = new THREE.CylinderGeometry(0.6, 0.6, 0.1, 32);
-            fanGeo.rotateX(Math.PI / 2);
-            const fanMat = new THREE.MeshStandardMaterial({ color: 0x111827 });
-            const fan = new THREE.Mesh(fanGeo, fanMat);
-            fan.position.set(0, tiers * ySpacing + 0.5, -zDepth/2 - 1);
-            
-            const bladeGeo = new THREE.BoxGeometry(1.1, 0.15, 0.02);
-            const bladeMat = new THREE.MeshStandardMaterial({color: 0xe2e8f0, metalness: 0.5});
-            const blade1 = new THREE.Mesh(bladeGeo, bladeMat);
-            const blade2 = new THREE.Mesh(bladeGeo, bladeMat);
-            blade2.rotation.z = Math.PI / 2;
-            fan.add(blade1); fan.add(blade2);
-
-            farmGroup.add(fan);
-            ventFans.push(blade1, blade2);
-
-            if(controls) controls.target.set(0, Math.max(1, (tiers*ySpacing)/2), 0);
-            updateLightState();
-        }
-
-        function onWindowResize() {
-            const container = document.getElementById('canvas-container');
-            if(!container || !camera || !renderer) return;
-            camera.aspect = container.clientWidth / container.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(container.clientWidth, container.clientHeight);
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            const time = clock.getElapsedTime();
-
-            if (controls) controls.update();
-            
-            if (isVentRotating && ventFans.length > 0) {
-                ventFans.forEach(f => f.rotation.z -= 0.3); 
-            }
-
-            if (particles) {
-                const positions = particles.geometry.attributes.position.array;
-                for (let i = 1; i < positions.length; i += 3) {
-                    positions[i] += 0.005; 
-                    if (positions[i] > 10) positions[i] = -2; 
-                }
-                particles.geometry.attributes.position.needsUpdate = true;
-            }
-
-            if (isLightOn && growthLight) {
-                growthLight.intensity = 2 + Math.sin(time * 2) * 0.5;
-            }
-
-            if(renderer && scene && camera) {
-                renderer.render(scene, camera);
-            }
-        }
-
-        function updateLightState() {
-            const dot = document.getElementById('toggle-light');
-            const btnLight = document.getElementById('btn-light');
-            if(!btnLight) return;
-
-            if (isLightOn) {
-                dot.style.transform = 'translateX(1.5rem)';
-                btnLight.classList.replace('bg-gray-700', 'bg-emerald-500');
-                if(mainLight) mainLight.intensity = 0.3; 
-                ledStrips.forEach(strip => {
-                    strip.material.emissive.setHex(0xcc00ff);
-                    strip.material.emissiveIntensity = 2;
-                });
-            } else {
-                dot.style.transform = 'translateX(0)';
-                btnLight.classList.replace('bg-emerald-500', 'bg-gray-700');
-                if(mainLight) mainLight.intensity = 1.2; 
-                ledStrips.forEach(strip => {
-                    strip.material.emissive.setHex(0x000000);
-                    strip.material.emissiveIntensity = 0;
-                });
-                if(growthLight) growthLight.intensity = 0;
-            }
-        }
-
-        const btnLight = document.getElementById('btn-light');
-        if(btnLight) {
-            btnLight.onclick = function() {
-                isLightOn = !isLightOn;
-                updateLightState();
-            };
-        }
-
-        const btnVent = document.getElementById('btn-vent');
-        if(btnVent) {
-            btnVent.onclick = function() {
-                isVentRotating = !isVentRotating;
-                const dot = document.getElementById('toggle-vent');
-                if (isVentRotating) {
-                    dot.style.transform = 'translateX(1.5rem)';
-                    btnVent.classList.replace('bg-gray-700', 'bg-emerald-500');
-                } else {
-                    dot.style.transform = 'translateX(0)';
-                    btnVent.classList.replace('bg-emerald-500', 'bg-gray-700');
-                }
-            };
-        }
-
-        function changeFarmSize(size) {
-            document.querySelectorAll('.size-btn').forEach(btn => {
-                btn.classList.remove('bg-emerald-600', 'shadow-lg', 'hover:bg-emerald-500');
-                btn.classList.add('bg-white/10', 'hover:bg-white/20');
-            });
-            const clickedBtn = document.getElementById('btn-size-' + size);
-            if(clickedBtn) {
-                clickedBtn.classList.remove('bg-white/10', 'hover:bg-white/20');
-                clickedBtn.classList.add('bg-emerald-600', 'shadow-lg', 'hover:bg-emerald-500');
-            }
-            buildFarmSize(size);
-        }
-
-        /* -----------------------------------------------------------
-           UI/UX 일반 함수 
-           ----------------------------------------------------------- */
-        
-        function reveal() {
-            const reveals = document.querySelectorAll(".reveal");
-            reveals.forEach(el => {
-                if (el.getBoundingClientRect().top < window.innerHeight - 120) {
-                    el.classList.add("visible");
-                }
-            });
-        }
-
-        function scrollToSection(sectionId) {
-            const element = document.getElementById(sectionId);
-            if (element) {
-                const headerOffset = 80;
-                const elementPosition = element.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-            }
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('lang-' + lang).classList.add('active');
         }
 
         function showTab(tabId) {
@@ -804,30 +467,271 @@
             }
         }
 
-        window.addEventListener("scroll", reveal);
-        
-        const menuOpen = document.getElementById('menu-open');
-        const menuClose = document.getElementById('menu-close');
+        /* -----------------------------------------------------------
+           ✨ Three.js Hyper-Biological Engine (WebGL Fix & PBR Standard)
+           ----------------------------------------------------------- */
+        let scene, camera, renderer, controls, clock = new THREE.Clock();
+        let doorGroup, ledStrips = [];
+        let isDoorOpen = false, isLightOn = true, isMistOn = false;
+        let substrateMesh, stemMesh, capMesh, mistParticles;
+
+        function init3D() {
+            const container = document.getElementById('canvas-container');
+            if(!container) return;
+            const w = container.clientWidth, h = container.clientHeight;
+
+            // 1. Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x050505); 
+            scene.fog = new THREE.FogExp2(0x050505, 0.035);
+
+            // 2. Camera
+            camera = new THREE.PerspectiveCamera(35, w/h, 0.1, 1000);
+            camera.position.set(24, 16, 24);
+
+            // 3. Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(w, h);
+            renderer.setPixelRatio(window.devicePixelRatio || 1);
+            renderer.shadowMap.enabled = true;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2; 
+            container.appendChild(renderer.domElement);
+
+            // 4. Controls
+            if (typeof THREE.OrbitControls !== 'undefined') {
+                controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.autoRotate = true;
+                controls.autoRotateSpeed = 0.25;
+            }
+
+            // 5. Lighting (Strict hex values to prevent uniform3fv error)
+            const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+            scene.add(ambient);
+            
+            const mainLight = new THREE.DirectionalLight(0xffffff, 1.8);
+            mainLight.position.set(20, 40, 20); 
+            mainLight.castShadow = true;
+            scene.add(mainLight);
+
+            buildFarm('25');
+            createMist();
+            
+            document.getElementById('loading-text').style.opacity = '0';
+            window.addEventListener('resize', onWindowResize);
+            animate();
+        }
+
+        function createMist() {
+            const count = 10000;
+            const geo = new THREE.BufferGeometry();
+            const pos = new Float32Array(count * 3);
+            for(let i=0; i<count*3; i++) pos[i] = (Math.random()-0.5)*50;
+            geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+            mistParticles = new THREE.Points(geo, new THREE.PointsMaterial({ 
+                color: 0xffffff, size: 0.02, transparent: true, opacity: 0, blending: THREE.AdditiveBlending 
+            }));
+            scene.add(mistParticles);
+        }
+
+        function buildFarm(type) {
+            if(scene.getObjectByName('farm_module')) {
+                const old = scene.getObjectByName('farm_module');
+                scene.remove(old);
+            }
+            
+            const farmGroup = new THREE.Group();
+            farmGroup.name = 'farm_module';
+            ledStrips = [];
+
+            let L = (type==='50')?32:(type==='30')?22:18, W = 5.5;
+            
+            // 컨테이너
+            const shell = new THREE.Mesh(
+                new THREE.BoxGeometry(W, 4.5, L), 
+                new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2, metalness: 0.1, side: THREE.DoubleSide })
+            );
+            shell.position.y = 1.8;
+            farmGroup.add(shell);
+
+            const frame = new THREE.Mesh(
+                new THREE.BoxGeometry(W+0.4, 4.6, L+0.4), 
+                new THREE.MeshStandardMaterial({ color: 0x111827, side: THREE.BackSide })
+            );
+            frame.position.copy(shell.position);
+            farmGroup.add(frame);
+
+            // 도어
+            const doorPivot = new THREE.Group();
+            const door = new THREE.Mesh(new THREE.BoxGeometry(W-0.3, 4.3, 0.2), new THREE.MeshStandardMaterial({ color: 0x050505 }));
+            door.position.x = (W-0.3)/2;
+            doorPivot.add(door);
+            doorPivot.position.set(-(W-0.3)/2, 1.8, L/2);
+            doorGroup = doorPivot;
+            farmGroup.add(doorPivot);
+
+            // 참송이버섯 알고리즘 (Pine Mushroom) - 두꺼운 기둥
+            const pts = [];
+            for (let i = 0; i < 20; i++) {
+                const r = (Math.sin(i * 0.15) * 0.05 + 0.09); 
+                pts.push(new THREE.Vector2(r, i * 0.02));
+            }
+            const stemGeo = new THREE.LatheGeometry(pts, 24); 
+            const capGeo = new THREE.SphereGeometry(0.12, 32, 24, 0, Math.PI*2, 0, Math.PI/1.55);
+            capGeo.scale(1.6, 0.65, 1.6); capGeo.translate(0, 0.38, 0);
+
+            const logs = 2 * 4 * 18;
+            
+            // WebGL 오류 원천 차단: MeshStandardMaterial 사용 및 16진수 직접 주입
+            substrateMesh = new THREE.InstancedMesh(
+                new THREE.CylinderGeometry(0.2, 0.2, 0.8, 32), 
+                new THREE.MeshStandardMaterial({ color: 0x2c1b12, roughness: 0.6 }), 
+                logs
+            );
+            substrateMesh.geometry.rotateZ(Math.PI/2);
+            
+            stemMesh = new THREE.InstancedMesh(
+                stemGeo, 
+                new THREE.MeshStandardMaterial({ color: 0xf7f4ea, roughness: 0.9 }), 
+                logs * 6
+            );
+            
+            capMesh = new THREE.InstancedMesh(
+                capGeo, 
+                new THREE.MeshStandardMaterial({ color: 0x4b322a, roughness: 0.6 }), 
+                logs * 6
+            );
+            
+            let lIdx=0, mIdx=0;
+            const d = new THREE.Object3D(), md = new THREE.Object3D();
+            for(let c=0; c<2; c++){
+                const x = (c===0)?-1.7:1.7;
+                for(let t=0; t<4; t++){
+                    const y = t*1.05 + 0.6;
+                    
+                    const led = new THREE.Mesh(
+                        new THREE.BoxGeometry(0.9, 0.05, L-3), 
+                        new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 2 })
+                    );
+                    led.position.set(x, y+0.85, 0); farmGroup.add(led); ledStrips.push(led);
+
+                    for(let zIdx=0; zIdx<18; zIdx++){
+                        const z = -(L/2) + 2.5 + zIdx*1.2;
+                        d.position.set(x, y, z); d.rotation.y = (Math.random()-0.5)*0.8; d.updateMatrix(); 
+                        substrateMesh.setMatrixAt(lIdx++, d.matrix);
+                        for(let m=0; m<3; m++){
+                            if(mIdx >= logs*6) break;
+                            md.position.copy(d.position);
+                            const angle = (Math.random()*Math.PI) - Math.PI/2;
+                            md.position.x += Math.sin(angle)*0.22; md.position.y += Math.cos(angle)*0.22;
+                            md.rotation.z = -angle; md.scale.setScalar(0.7 + Math.random()*1.5);
+                            md.updateMatrix(); 
+                            stemMesh.setMatrixAt(mIdx, md.matrix); capMesh.setMatrixAt(mIdx, md.matrix); mIdx++;
+                        }
+                    }
+                }
+            }
+            farmGroup.add(substrateMesh, stemMesh, capMesh);
+            scene.add(farmGroup);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+            if(controls) controls.update();
+            if(isDoorOpen) doorGroup.rotation.y = THREE.MathUtils.lerp(doorGroup.rotation.y, Math.PI/1.2, 0.08);
+            else doorGroup.rotation.y = THREE.MathUtils.lerp(doorGroup.rotation.y, 0, 0.08);
+            
+            if(isMistOn && mistParticles) {
+                mistParticles.material.opacity = THREE.MathUtils.lerp(mistParticles.material.opacity, 0.4, 0.05);
+                const pos = mistParticles.geometry.attributes.position.array;
+                for(let i=1; i<pos.length; i+=3) { pos[i]+=0.035; if(pos[i]>15) pos[i]=-8; }
+                mistParticles.geometry.attributes.position.needsUpdate = true;
+            } else if (mistParticles) {
+                mistParticles.material.opacity = THREE.MathUtils.lerp(mistParticles.material.opacity, 0, 0.05);
+            }
+
+            if(renderer && scene && camera) renderer.render(scene, camera);
+        }
+
+        function cameraTo(view) {
+            if(!controls) return;
+            controls.autoRotate = false;
+            if(view === 'inside') { isDoorOpen = true; camera.position.set(0, 2.5, 12); controls.target.set(0, 2.0, -8); }
+            else { camera.position.set(26, 18, 26); controls.target.set(0, 2.0, 0); }
+        }
+
+        function onWindowResize() {
+            const container = document.getElementById('canvas-parent');
+            if(!container || !renderer || !camera) return;
+            const w = container.clientWidth, h = container.clientHeight;
+            renderer.setSize(w, h);
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+        }
+
+        function scrollToSection(id) { 
+            const el = document.getElementById(id);
+            if(el) window.scrollTo({ top: el.offsetTop - 100, behavior: 'smooth' }); 
+        }
+
         function toggleMenu(isOpen) {
             const menu = document.getElementById('mobile-menu');
-            if(menu) menu.classList.toggle('open', isOpen);
-            document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+            if(menu) {
+                menu.style.display = isOpen ? 'flex' : 'none';
+                document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+            }
         }
-        if(menuOpen) menuOpen.onclick = () => toggleMenu(true);
-        if(menuClose) menuClose.onclick = () => toggleMenu(false);
 
-        document.addEventListener("DOMContentLoaded", function() {
-            reveal(); 
-            showTab('tab-basic'); 
-            init3D(); 
-        });
+        // 이벤트 리스너 바인딩
+        document.getElementById('btn-door').onclick = function() { isDoorOpen = !isDoorOpen; };
+        document.getElementById('btn-light').onclick = function() {
+            isLightOn = !isLightOn;
+            const targetColor = isLightOn ? 0xffffff : 0x000000;
+            ledStrips.forEach(s => s.material.emissive.setHex(targetColor));
+        };
+        document.getElementById('btn-mist').onclick = function() { isMistOn = !isMistOn; };
+        document.getElementById('menu-open').onclick = function() { toggleMenu(true); };
+        document.getElementById('menu-close').onclick = function() { toggleMenu(false); };
 
-        // 🌟 이메일 전송 API 로직 🌟
+        function changeFarmSize(s) { 
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.classList.replace('bg-emerald-700', 'bg-gray-100');
+                btn.classList.replace('text-white', 'text-gray-400');
+            });
+            const activeBtn = document.getElementById('btn-size-'+s);
+            if(activeBtn) {
+                activeBtn.classList.replace('bg-gray-100', 'bg-emerald-700');
+                activeBtn.classList.replace('text-gray-400', 'text-white');
+            }
+            buildFarm(s); 
+            setTimeout(() => onWindowResize(), 50); 
+        }
+
+        window.onload = () => {
+            const reveals = document.querySelectorAll(".reveal");
+            const revealOnScroll = () => {
+                reveals.forEach(el => {
+                    if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add("visible");
+                });
+            };
+            window.addEventListener("scroll", revealOnScroll);
+            revealOnScroll();
+
+            setTimeout(() => { 
+                init3D(); 
+                changeLang('ko'); 
+                onWindowResize(); 
+            }, 100);
+        };
+
+        // Web3Forms API 전송 로직
         document.getElementById('contact-form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const btn = document.getElementById('submit-btn');
+            const btn = document.querySelector('button[type="submit"]');
             const originalText = btn.innerText;
-            btn.innerText = '정보 전송 중...'; 
+            btn.innerText = '전송 중... / Sending...'; 
             btn.disabled = true;
 
             const formData = new FormData(this);
@@ -839,24 +743,14 @@
                 });
 
                 if (response.ok) {
-                    btn.innerText = '상담 신청 완료! 담당자가 곧 연락드립니다.';
-                    btn.classList.replace('bg-emerald-700', 'bg-emerald-500');
-                    setTimeout(() => { 
-                        btn.innerText = originalText; 
-                        btn.classList.replace('bg-emerald-500', 'bg-emerald-700'); 
-                        btn.disabled = false; this.reset();
-                    }, 3000);
+                    btn.innerText = '신청 완료 / Submitted!';
+                    setTimeout(() => { btn.innerText = originalText; btn.disabled = false; this.reset(); }, 3000);
                 } else {
                     throw new Error('전송 오류');
                 }
             } catch (error) {
-                btn.innerText = '전송 실패. 다시 시도해주세요.';
-                btn.classList.replace('bg-emerald-700', 'bg-red-500');
-                setTimeout(() => { 
-                    btn.innerText = originalText; 
-                    btn.classList.replace('bg-red-500', 'bg-emerald-700'); 
-                    btn.disabled = false; 
-                }, 3000);
+                btn.innerText = '실패 / Failed. Try again.';
+                setTimeout(() => { btn.innerText = originalText; btn.disabled = false; }, 3000);
             }
         });
     </script>
