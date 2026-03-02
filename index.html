@@ -257,14 +257,14 @@
         </div>
     </section>
 
-    <!-- 🌟 3D 시뮬레이터 (6단 랙 & 정렬된 수평 배지) 🌟 -->
+    <!-- 🌟 3D 시뮬레이터 🌟 -->
     <section id="technology" class="py-40 bg-gray-50 overflow-hidden border-t border-gray-200">
         <div class="max-w-[1600px] mx-auto px-8 text-center">
             
             <div class="text-center mb-16 reveal">
                 <span class="text-emerald-500 font-bold tracking-[0.2em] uppercase mb-4 block text-sm text-center">Keunoreum 3D Control Center</span>
                 <h2 class="text-4xl md:text-5xl font-black mb-6 text-center italic" data-tkey="tech_title">초실감형 3D 스마트팜 모듈</h2>
-                <p class="text-gray-500 text-lg max-w-2xl mx-auto text-center" data-tkey="tech_desc">실제 참송이버섯 재배동의 6단 철제 선반과 가로로 눕혀진 수백 개의 배지를 완벽하게 구현했습니다. 공기의 흐름과 빛의 변화를 체험하세요.</p>
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto text-center" data-tkey="tech_desc">실제 참송이버섯 재배동의 6단 철제 선반과 가로로 정렬된 배지를 완벽하게 구현했습니다. 공기의 흐름과 빛의 변화를 직접 체험하세요.</p>
             </div>
 
             <div class="grid lg:grid-cols-4 gap-12 items-start">
@@ -317,7 +317,7 @@
                         <div id="canvas-container"></div>
                         <div id="loading-text" data-tkey="loading">Engine Synchronizing...</div>
 
-                        <!-- 🌟 전체화면 버튼 및 키보드 이동 안내 UI 추가 -->
+                        <!-- 전체화면 버튼 및 키보드 이동 안내 UI 추가 -->
                         <button onclick="toggleFullScreen()" class="absolute top-6 right-6 bg-black/60 text-white w-10 h-10 rounded-full hover:bg-emerald-500 transition-all z-30 flex items-center justify-center border border-white/20 shadow-lg cursor-pointer" title="전체화면 전환">
                             <i class="fas fa-expand"></i>
                         </button>
@@ -398,7 +398,7 @@
 
     <script>
         /* -----------------------------------------------------------
-           🌐 다국어 번역 시스템 (한국어 기본값으로 완전 재정렬)
+           🌐 다국어 번역 시스템
            ----------------------------------------------------------- */
         const translations = {
             ko: {
@@ -483,28 +483,27 @@
         }
 
         /* -----------------------------------------------------------
-           ✨ Three.js Hyper-Biological Engine (Robust uniform3fv Fix)
+           ✨ Three.js Hyper-Biological Engine 
            ----------------------------------------------------------- */
         let scene, camera, renderer, controls, clock = new THREE.Clock();
         let doorGroup, ledStrips = [];
         let isDoorOpen = false, isLightOn = true, isMistOn = false;
         let substrateMesh, stemMesh, capMesh, mistParticles;
 
-        // 🌟 이동 제어 변수 추가 (WASD)
+        // 이동 제어 변수 (WASD)
         let moveForward = false;
         let moveBackward = false;
         let moveLeft = false;
         let moveRight = false;
         const moveSpeed = 0.15;
 
-        // 🌟 절차적 텍스처(Procedural Texture) 생성 함수
+        // 절차적 텍스처(Procedural Texture) 생성 함수
         function generateTexture(type) {
             const canvas = document.createElement('canvas');
             canvas.width = 512; canvas.height = 512;
             const ctx = canvas.getContext('2d');
 
             if (type === 'substrate') {
-                // 톱밥 배지 질감: 짙은 갈색 톱밥 + 균사체
                 ctx.fillStyle = '#2c1b12'; 
                 ctx.fillRect(0, 0, 512, 512);
                 for(let i=0; i<15000; i++) {
@@ -519,22 +518,22 @@
                     ctx.fill();
                 }
             } else if (type === 'stem') {
-                // 버섯 기둥 질감: 세로 섬유질
-                ctx.fillStyle = '#f5f5dc'; 
+                // 참송이버섯(송이버섯 형태) 기둥 질감
+                ctx.fillStyle = '#f0e6d2'; 
                 ctx.fillRect(0, 0, 512, 512);
-                ctx.fillStyle = '#e3dac9'; 
-                ctx.globalAlpha = 0.6;
-                for(let i=0; i<4000; i++) {
-                    ctx.fillRect(Math.random()*512, Math.random()*512, 2, Math.random()*60 + 20);
+                ctx.fillStyle = '#dcd0bc'; 
+                ctx.globalAlpha = 0.5;
+                for(let i=0; i<5000; i++) {
+                    ctx.fillRect(Math.random()*512, Math.random()*512, 1, Math.random()*80 + 30);
                 }
             } else if (type === 'cap') {
-                // 버섯 갓 질감: 불규칙한 표면
-                ctx.fillStyle = '#4e342e'; 
+                // 참송이버섯 갓 질감 (진한 갈색, 거북등껍질처럼 살짝 갈라진 패턴)
+                ctx.fillStyle = '#3a241b'; 
                 ctx.fillRect(0, 0, 512, 512);
-                ctx.fillStyle = '#3e2723'; 
-                ctx.globalAlpha = 0.7;
-                for(let i=0; i<8000; i++) {
-                    ctx.fillRect(Math.random()*512, Math.random()*512, Math.random()*5, Math.random()*5);
+                ctx.fillStyle = '#2b1a13'; 
+                ctx.globalAlpha = 0.8;
+                for(let i=0; i<9000; i++) {
+                    ctx.fillRect(Math.random()*512, Math.random()*512, Math.random()*6, Math.random()*6);
                 }
             }
 
@@ -554,7 +553,7 @@
             scene.fog = new THREE.FogExp2(0x050505, 0.03);
 
             camera = new THREE.PerspectiveCamera(35, w/h, 0.1, 1000);
-            camera.position.set(24, 18, 24); // 6단을 한눈에 보기 위해 카메라 높이 상향
+            camera.position.set(24, 18, 24); 
 
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(w, h);
@@ -564,14 +563,11 @@
             renderer.toneMappingExposure = 1.2; 
             container.appendChild(renderer.domElement);
 
-            // 4. Controls
             if (typeof THREE.OrbitControls !== 'undefined') {
                 controls = new THREE.OrbitControls(camera, renderer.domElement);
                 controls.enableDamping = true;
                 controls.autoRotate = true;
                 controls.autoRotateSpeed = 0.25;
-                
-                // 🌟 마우스 조작 설정 (줌, 팬 허용 및 시야 하단 제한)
                 controls.enablePan = true;
                 controls.enableZoom = true;
                 controls.maxPolarAngle = Math.PI / 2 + 0.1; 
@@ -590,7 +586,7 @@
             
             document.getElementById('loading-text').style.opacity = '0';
             window.addEventListener('resize', onWindowResize);
-            document.addEventListener('fullscreenchange', onWindowResize); // 🌟 전체화면 감지 리스너
+            document.addEventListener('fullscreenchange', onWindowResize); 
             document.addEventListener('webkitfullscreenchange', onWindowResize);
             animate();
         }
@@ -624,14 +620,13 @@
             farmGroup.name = 'farm_module';
             ledStrips = [];
 
-            // 산업용 스마트팜 사이즈 설정
             let L = (type==='50')?32:(type==='30')?22:18, W = 5.5;
             
-            const tiers = 6; // 🌟 6단 선반 적용
-            const zSpacing = 0.35; // 배지 간 간격 (촘촘하게)
-            const zCount = Math.floor((L - 3) / zSpacing); // 선반 길이에 꽉 차게 배지 개수 계산
+            const tiers = 6; 
+            const zSpacing = 0.35; 
+            const zCount = Math.floor((L - 3) / zSpacing); 
             
-            const shellHeight = tiers * 0.85 + 1.5; // 6단 높이에 맞춘 쉘 컨테이너 높이 확장
+            const shellHeight = tiers * 0.85 + 1.5; 
 
             // 컨테이너
             const shellMat = new THREE.MeshStandardMaterial({ 
@@ -656,27 +651,28 @@
             doorGroup = doorPivot;
             farmGroup.add(doorPivot);
 
-            // 🌟 텍스처 및 6단 모델링 적용 🌟
             const rackMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0x8892b0), metalness: 0.6, roughness: 0.4 });
             
             // 배지 (원통)
             const subTex = generateTexture('substrate');
-            // 가로로 길게 눕힘: 지름 0.24, 길이 0.8
             const subGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.8, 32);
-            subGeo.rotateZ(Math.PI / 2); // 핵심: 배지를 정갈하게 X축(가로) 방향으로 눕힘
+            subGeo.rotateZ(Math.PI / 2); 
             
-            const maxLogs = 2 * tiers * zCount; // 좌우 랙 * 6단 * Z축 개수
+            const maxLogs = 2 * tiers * zCount; 
             const maxMushrooms = maxLogs * 3;
 
             const subMat = new THREE.MeshStandardMaterial({ map: subTex, roughness: 0.9 });
             substrateMesh = new THREE.InstancedMesh(subGeo, subMat, maxLogs);
             substrateMesh.castShadow = true; substrateMesh.receiveShadow = true;
 
-            // 버섯 기둥 형태 생성
+            // 🌟 버섯 기둥 형태 수정 (참송이/송이버섯 스타일로 길고 곧게 뻗은 형태) 🌟
             const pts = [];
-            for (let i = 0; i < 20; i++) {
-                const r = (Math.sin(i * 0.15) * 0.05 + 0.09); // 두꺼운 기둥
-                pts.push(new THREE.Vector2(r, i * 0.02));
+            for (let i = 0; i <= 20; i++) {
+                // y축 방향(높이) 스케일을 증가시켜 더 길게 만듦
+                const yPos = i * 0.04; 
+                // 아래쪽은 살짝 두껍고 위로 갈수록 약간 얇아지면서 곧은 형태 유지
+                const radius = 0.04 + (Math.sin(i * 0.1) * 0.015); 
+                pts.push(new THREE.Vector2(radius, yPos));
             }
             const stemTex = generateTexture('stem');
             const stemGeo = new THREE.LatheGeometry(pts, 24); 
@@ -684,11 +680,14 @@
             stemMesh = new THREE.InstancedMesh(stemGeo, stemMat, maxMushrooms);
             stemMesh.castShadow = true;
             
-            // 버섯 갓 생성
+            // 🌟 버섯 갓 형태 수정 (참송이 스타일로 도톰하고 둥근 갓) 🌟
             const capTex = generateTexture('cap');
-            const capGeo = new THREE.SphereGeometry(0.12, 32, 24, 0, Math.PI*2, 0, Math.PI/1.55);
-            capGeo.scale(1.4, 0.65, 1.4); capGeo.translate(0, 0.35, 0); 
-            const capMat = new THREE.MeshStandardMaterial({ map: capTex, roughness: 0.6 });
+            // Sphere를 약간 납작하게 누르되 너무 퍼지지 않게 조절
+            const capGeo = new THREE.SphereGeometry(0.09, 32, 24, 0, Math.PI*2, 0, Math.PI/1.3);
+            capGeo.scale(1.2, 0.8, 1.2); 
+            // 기둥 상단에 맞게 위치 이동 (기둥 높이가 길어졌으므로 Y축 이동값 증가)
+            capGeo.translate(0, 0.78, 0); 
+            const capMat = new THREE.MeshStandardMaterial({ map: capTex, roughness: 0.8 });
             capMesh = new THREE.InstancedMesh(capGeo, capMat, maxMushrooms);
             capMesh.castShadow = true;
             
@@ -696,9 +695,8 @@
             const d = new THREE.Object3D(), md = new THREE.Object3D();
 
             for(let c=0; c<2; c++){
-                const x = (c===0)? -1.7 : 1.7; // 좌우 랙
+                const x = (c===0)? -1.7 : 1.7; 
 
-                // 세로 랙 프레임 기둥 (6단 높이에 맞춰 연장)
                 for (let zIdx=0; zIdx<=20; zIdx+=5) {
                     const zPos = -(L/2) + 2.0 + (zIdx * 0.8);
                     const pillarHeight = tiers * 0.85 + 0.5;
@@ -710,16 +708,13 @@
                     farmGroup.add(pillar2);
                 }
 
-                // 6단 선반 및 배지 생성
                 for(let t=0; t<tiers; t++){
-                    const y = t * 0.85 + 0.4; // 각 층의 Y 좌표
+                    const y = t * 0.85 + 0.4; 
                     
-                    // 철제 선반
                     const shelf = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.02, L-2), rackMat);
                     shelf.position.set(x, y, 0);
                     farmGroup.add(shelf);
 
-                    // 층별 LED 조명
                     const ledMat = new THREE.MeshStandardMaterial({ 
                         color: new THREE.Color(0xffffff), emissive: new THREE.Color(0xffffff), emissiveIntensity: 1.5 
                     });
@@ -728,35 +723,30 @@
                     farmGroup.add(led); 
                     ledStrips.push(led);
 
-                    // 배지를 Z축으로 촘촘히 눕혀서 배치 (오차 없이 평행하게 정렬)
                     for(let zIdx=0; zIdx<zCount; zIdx++){
                         const z = -(L/2) + 1.5 + (zIdx * zSpacing);
                         
-                        // 배지 1개를 선반 가로에 딱 맞게 배치 (Radius 0.12 + shelf Y)
                         d.position.set(x, y + 0.13, z); 
-                        
-                        // 🌟 무작위 회전을 제거하여 롤케이크처럼 완벽히 평행하게 눕혀 정렬 🌟
                         d.rotation.set(0, 0, 0); 
                         d.updateMatrix(); 
                         
                         if(lIdx < maxLogs) substrateMesh.setMatrixAt(lIdx++, d.matrix);
                         
-                        // 눕혀진 배지 윗면(곡면)에서 버섯이 자라나도록 위치 세팅
                         const count = 1 + Math.floor(Math.random() * 3); 
                         for(let m=0; m<count; m++){
                             if(mIdx >= maxMushrooms) break;
                             
                             md.position.copy(d.position);
-                            md.position.y += 0.11; // 눕혀진 원통 배지의 가장 높은 윗면 부근
-                            md.position.x += (Math.random() - 0.5) * 0.65; // 배지 길이(0.8)를 따라 흩어지게 배치
-                            md.position.z += (Math.random() - 0.5) * 0.08; // 좁은 Z축 편차
+                            md.position.y += 0.11; 
+                            md.position.x += (Math.random() - 0.5) * 0.65; 
+                            md.position.z += (Math.random() - 0.5) * 0.08; 
                             
-                            // 위를 향해 자라되 자연스러운 각도 부여
-                            md.rotation.x = (Math.random() - 0.5) * 0.2; 
-                            md.rotation.z = (Math.random() - 0.5) * 0.2;
+                            md.rotation.x = (Math.random() - 0.5) * 0.15; 
+                            md.rotation.z = (Math.random() - 0.5) * 0.15;
                             md.rotation.y = Math.random() * Math.PI;
                             
-                            md.scale.setScalar(0.6 + Math.random() * 0.8);
+                            // 스케일 조절을 통해 크기 다양성 부여
+                            md.scale.setScalar(0.7 + Math.random() * 0.5);
                             md.updateMatrix(); 
                             
                             stemMesh.setMatrixAt(mIdx, md.matrix); 
@@ -767,7 +757,6 @@
                 }
             }
             
-            // 실제 사용된 개수만큼 렌더링하도록 카운트 고정 (에러 방지)
             substrateMesh.count = lIdx;
             stemMesh.count = mIdx;
             capMesh.count = mIdx;
@@ -784,13 +773,12 @@
             requestAnimationFrame(animate);
             const time = clock.getElapsedTime();
             
-            // 🌟 키보드 워크스루(이동) 로직 적용
             if (controls && (moveForward || moveBackward || moveLeft || moveRight)) {
-                controls.autoRotate = false; // 직접 이동 시 자동 회전 멈춤
+                controls.autoRotate = false; 
                 
                 const forward = new THREE.Vector3();
                 camera.getWorldDirection(forward);
-                forward.y = 0; // 수평으로만 이동하도록 제한
+                forward.y = 0; 
                 forward.normalize();
                 
                 const right = new THREE.Vector3();
@@ -838,33 +826,32 @@
 
             if(view === 'inside') { 
                 isDoorOpen = true; 
-                camera.position.set(0, 2.5, 12); 
-                controls.target.set(0, 2.0, -8); 
-                if(instructions) instructions.classList.remove('hidden'); // 🌟 이동 안내문 표시
+                camera.position.set(0, 3.5, 12); 
+                controls.target.set(0, 2.5, -8); 
+                if(instructions) instructions.classList.remove('hidden'); 
             } else { 
                 camera.position.set(26, 18, 26); 
                 controls.target.set(0, 2.0, 0); 
-                if(instructions) instructions.classList.add('hidden'); // 🌟 이동 안내문 숨김
+                if(instructions) instructions.classList.add('hidden'); 
             }
         }
 
-        // 🌟 전체화면 제어 함수
         function toggleFullScreen() {
             const container = document.getElementById('canvas-parent');
             if (!document.fullscreenElement && !document.webkitFullscreenElement) {
                 if (container.requestFullscreen) {
                     container.requestFullscreen();
-                } else if (container.webkitRequestFullscreen) { /* Safari */
+                } else if (container.webkitRequestFullscreen) { 
                     container.webkitRequestFullscreen();
-                } else if (container.msRequestFullscreen) { /* IE11 */
+                } else if (container.msRequestFullscreen) { 
                     container.msRequestFullscreen();
                 }
             } else {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) { /* Safari */
+                } else if (document.webkitExitFullscreen) { 
                     document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) { /* IE11 */
+                } else if (document.msExitFullscreen) { 
                     document.msExitFullscreen();
                 }
             }
@@ -929,9 +916,7 @@
         document.getElementById('menu-open').onclick = function() { toggleMenu(true); };
         document.getElementById('menu-close').onclick = function() { toggleMenu(false); };
 
-        // 🌟 키보드 입력 이벤트 리스너 (WASD 이동 제어)
         document.addEventListener('keydown', (event) => {
-            // 폼(input)에 입력 중일 때는 이동 로직 무시
             if(document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return; 
             switch (event.code) {
                 case 'ArrowUp':
@@ -983,15 +968,13 @@
             window.addEventListener("scroll", revealOnScroll);
             revealOnScroll();
 
-            // 초기 렌더링 및 하얀 화면 방지
             setTimeout(() => { 
                 init3D(); 
-                changeLang('ko'); // 명시적으로 한국어 기본 세팅
+                changeLang('ko'); 
                 onWindowResize(); 
             }, 100);
         };
 
-        // Web3Forms 폼 데이터 전송 처리
         document.getElementById('contact-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.querySelector('button[type="submit"]');
