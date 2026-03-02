@@ -257,14 +257,14 @@
         </div>
     </section>
 
-    <!-- 🌟 3D 시뮬레이터 (텍스처 입힌 초실감 렌더링) 🌟 -->
+    <!-- 🌟 3D 시뮬레이터 (가로로 눕혀진 배지 및 텍스처 입힌 초실감 렌더링) 🌟 -->
     <section id="technology" class="py-40 bg-gray-50 overflow-hidden border-t border-gray-200">
         <div class="max-w-[1600px] mx-auto px-8 text-center">
             
             <div class="text-center mb-16 reveal">
                 <span class="text-emerald-500 font-bold tracking-[0.2em] uppercase mb-4 block text-sm text-center">Keunoreum 3D Control Center</span>
                 <h2 class="text-4xl md:text-5xl font-black mb-6 text-center italic" data-tkey="tech_title">초실감형 3D 스마트팜 모듈</h2>
-                <p class="text-gray-500 text-lg max-w-2xl mx-auto text-center" data-tkey="tech_desc">실제 참송이버섯 재배동의 철제 다단 선반과 배지를 완벽하게 구현했습니다. 공기의 흐름과 빛의 변화를 직접 체험하세요.</p>
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto text-center" data-tkey="tech_desc">실제 참송이버섯 재배동의 철제 다단 선반과 가로로 눕혀진 배지를 완벽하게 구현했습니다. 공기의 흐름과 빛의 변화를 직접 체험하세요.</p>
             </div>
 
             <div class="grid lg:grid-cols-4 gap-12 items-start">
@@ -407,7 +407,7 @@
                 tab1_h3: "위탁 운영형:<br>전문가 전담 관리 시스템", tab1_p: "재배부터 유통까지 본사가 책임집니다. 투자자는 정기 배당 수익에만 집중할 수 있는 안정형 모델입니다.",
                 tab2_h3: "직접 운영형:<br>경영 및 기술 전수", tab2_p: "직접 농장을 운영하며 큰오름의 독자적 솔루션과 재배 노하우를 전수받아 수익을 극대화합니다.",
                 tab3_h3: "부지 개발형:<br>토지 가치 창조", tab3_p: "유휴 부지를 현대적 참송이버섯 단지로 개발하여 지가 상승과 장기 운영 수익을 동시에 노리는 프로젝트입니다.",
-                tab_btn: "상담 예약하기", tech_title: "초실감형 3D 스마트팜 모듈", tech_desc: "실제 참송이버섯 재배동의 철제 다단 선반과 배지를 완벽하게 구현했습니다. 공기의 흐름과 빛의 변화를 직접 체험하세요.",
+                tab_btn: "상담 예약하기", tech_title: "초실감형 3D 스마트팜 모듈", tech_desc: "실제 참송이버섯 재배동의 철제 다단 선반과 가로로 눕혀진 배지를 완벽하게 구현했습니다. 공기의 흐름과 빛의 변화를 직접 체험하세요.",
                 dash_title: "관제 대시보드", sens_temp: "실내 온도", sens_hum: "습도", sens_co2: "CO2 농도",
                 btn_door: "모듈 출입문 열기", btn_light: "LED 끄기", btn_mist: "가습 켜기",
                 loading: "엔진 동기화 중...", btn_outside: "외부 전경", btn_inside: "내부 진입",
@@ -431,7 +431,7 @@
                 tab1_h3: "Managed Operation:<br>Expert Management", tab1_p: "We handle everything from cultivation to distribution. A stable model focusing on dividend returns.",
                 tab2_h3: "Direct Operation:<br>Tech Transfer", tab2_p: "Operate the farm yourself and maximize profits by inheriting our exclusive solutions and know-how.",
                 tab3_h3: "Site Development:<br>Land Value Creation", tab3_p: "Develop idle land into a modern mushroom complex, aiming for both land value appreciation and long-term profit.",
-                tab_btn: "Book a Consultation", tech_title: "Hyper-Realistic 3D Module", tech_desc: "Perfectly implemented multi-tier steel shelves and substrates. Experience air flow and lighting changes.",
+                tab_btn: "Book a Consultation", tech_title: "Hyper-Realistic 3D Module", tech_desc: "Perfectly implemented multi-tier steel shelves and horizontally laid substrates. Experience air flow and lighting changes.",
                 dash_title: "OS DASHBOARD", sens_temp: "TEMP", sens_hum: "HUMIDITY", sens_co2: "CO2",
                 btn_door: "OPEN MODULE DOOR", btn_light: "LED OFF", btn_mist: "MIST ON",
                 loading: "ENGINE SYNCING...", btn_outside: "OUTSIDE VIEW", btn_inside: "INSIDE TOUR",
@@ -475,7 +475,7 @@
         }
 
         /* -----------------------------------------------------------
-           ✨ Three.js Hyper-Biological Engine (텍스처 제너레이터 탑재)
+           ✨ Three.js Hyper-Biological Engine (가로 배치 적용)
            ----------------------------------------------------------- */
         let scene, camera, renderer, controls, clock = new THREE.Clock();
         let doorGroup, ledStrips = [];
@@ -626,18 +626,20 @@
             doorGroup = doorPivot;
             farmGroup.add(doorPivot);
 
-            // 🌟 텍스처 및 모델링 적용 🌟
+            // 🌟 텍스처 및 모델링 적용 (배지를 가로로 눕힘) 🌟
             const rackMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0x8892b0), metalness: 0.6, roughness: 0.4 });
             
-            // 배지: 텍스처 적용
+            // 배지 지오메트리를 가로(Z축 방향)로 눕힘
             const subTex = generateTexture('substrate');
-            const subGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.55, 32);
+            const subGeo = new THREE.CylinderGeometry(0.15, 0.15, 0.6, 32);
+            subGeo.rotateX(Math.PI / 2); // 핵심: 배지를 눕히는 코드
+            
             const logs = 2 * 4 * 16 * 2; 
             const subMat = new THREE.MeshStandardMaterial({ map: subTex, roughness: 0.9 });
             substrateMesh = new THREE.InstancedMesh(subGeo, subMat, logs);
             substrateMesh.castShadow = true; substrateMesh.receiveShadow = true;
 
-            // 버섯 기둥
+            // 버섯 기둥 형태 생성
             const pts = [];
             for (let i = 0; i < 20; i++) {
                 const r = (Math.sin(i * 0.15) * 0.05 + 0.08); 
@@ -649,10 +651,10 @@
             stemMesh = new THREE.InstancedMesh(stemGeo, stemMat, logs * 3);
             stemMesh.castShadow = true;
             
-            // 버섯 갓
+            // 버섯 갓 생성
             const capTex = generateTexture('cap');
             const capGeo = new THREE.SphereGeometry(0.12, 32, 24, 0, Math.PI*2, 0, Math.PI/1.55);
-            capGeo.scale(1.4, 0.65, 1.4); capGeo.translate(0, 0.35, 0);
+            capGeo.scale(1.4, 0.65, 1.4); capGeo.translate(0, 0.38, 0); // 갓의 위치 조정
             const capMat = new THREE.MeshStandardMaterial({ map: capTex, roughness: 0.6 });
             capMesh = new THREE.InstancedMesh(capGeo, capMat, logs * 3);
             capMesh.castShadow = true;
@@ -663,7 +665,7 @@
             for(let c=0; c<2; c++){
                 const x = (c===0)?-1.7:1.7;
 
-                // 랙(프레임) 기둥
+                // 랙(프레임) 기둥 설치
                 for (let zIdx=0; zIdx<=18; zIdx+=6) {
                     const zPos = -(L/2) + 2.5 + zIdx*1.2;
                     const pillar1 = new THREE.Mesh(new THREE.BoxGeometry(0.05, 4, 0.05), rackMat);
@@ -687,28 +689,41 @@
                     const led = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.02, L-2), ledMat);
                     led.position.set(x, y + 0.65, 0); farmGroup.add(led); ledStrips.push(led);
 
-                    // 배지 및 버섯 배치
+                    // 눕혀진 배지 및 버섯 배치
                     for(let zIdx=0; zIdx<16; zIdx++){
                         const z = -(L/2) + 3.0 + zIdx*0.8;
                         
+                        // 하나의 선반에 배지 2개씩 나란히 눕혀서 배치
                         for(let sx=-1; sx<=1; sx+=2) {
-                            d.position.set(x + sx*0.25, y + 0.28, z); 
-                            d.rotation.y = (Math.random()-0.5)*0.5; 
+                            // 선반 y 위치에 배지 반지름(0.15)을 더해 바닥에 닿게 함
+                            d.position.set(x + sx*0.25, y + 0.16, z); 
+                            
+                            // 눕혀진 배지가 자연스럽게 보이도록 약간의 무작위 회전 추가
+                            d.rotation.x = (Math.random()-0.5)*0.1;
+                            d.rotation.y = (Math.random()-0.5)*0.2; 
+                            d.rotation.z = (Math.random()-0.5)*0.1; 
                             d.updateMatrix(); 
                             if(lIdx < logs) substrateMesh.setMatrixAt(lIdx++, d.matrix);
                             
-                            const count = 2 + Math.floor(Math.random()*2); 
+                            // 눕혀진 배지 윗면(곡면)에서 버섯이 자라나도록 위치 및 각도 계산
+                            const count = 2 + Math.floor(Math.random()*3); 
                             for(let m=0; m<count; m++){
                                 if(mIdx >= logs*3) break;
-                                md.position.copy(d.position);
-                                md.position.y += 0.28; 
-                                md.position.x += (Math.random()-0.5)*0.12;
-                                md.position.z += (Math.random()-0.5)*0.12;
                                 
+                                const angle = (Math.random()-0.5) * Math.PI * 0.6; // 윗면을 중심으로 좌우 분산
+                                const radius = 0.15; // 배지 반지름
+                                const lengthOffset = (Math.random()-0.5) * 0.45; // 배지 길이(0.6) 내에서 무작위 위치
+                                
+                                md.position.copy(d.position);
+                                md.position.x += Math.sin(angle) * radius; // 원통 표면의 x 좌표
+                                md.position.y += Math.cos(angle) * radius; // 원통 표면의 y 좌표 (위쪽으로 돌출)
+                                md.position.z += lengthOffset;             // 원통 길이를 따른 z 좌표
+                                
+                                md.rotation.z = -angle; // 곡면의 수직 방향으로 자라도록 회전
                                 md.rotation.x = (Math.random()-0.5)*0.4;
-                                md.rotation.z = (Math.random()-0.5)*0.4;
                                 md.rotation.y = Math.random()*Math.PI;
-                                md.scale.setScalar(0.7 + Math.random()*0.8);
+                                
+                                md.scale.setScalar(0.4 + Math.random()*0.5); // 버섯 크기를 눕혀진 배지에 맞게 스케일링
                                 md.updateMatrix(); 
                                 
                                 stemMesh.setMatrixAt(mIdx, md.matrix); 
@@ -776,7 +791,7 @@
             }
         }
 
-        // 이벤트 바인딩
+        // 제어 패널 이벤트 바인딩
         document.getElementById('btn-door').onclick = function() { isDoorOpen = !isDoorOpen; };
         
         document.getElementById('btn-light').onclick = function() {
@@ -837,15 +852,15 @@
             window.addEventListener("scroll", revealOnScroll);
             revealOnScroll();
 
-            // 렌더링 로딩 타이밍 확보
+            // 초기 렌더링 및 하얀 화면 방지
             setTimeout(() => { 
                 init3D(); 
-                changeLang('ko'); // 명시적 한글 셋팅
+                changeLang('ko'); // 명시적으로 한국어 기본 세팅
                 onWindowResize(); 
             }, 100);
         };
 
-        // 이메일 폼 로직
+        // Web3Forms 폼 데이터 전송 처리
         document.getElementById('contact-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.querySelector('button[type="submit"]');
