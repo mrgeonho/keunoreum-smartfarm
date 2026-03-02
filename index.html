@@ -591,7 +591,7 @@
 
             buildFarm('25');
             createMist();
-            initJoystick(); // 조이스틱 초기화
+            initJoystick(); 
             
             document.getElementById('loading-text').style.opacity = '0';
             window.addEventListener('resize', onWindowResize);
@@ -642,7 +642,6 @@
             
             knob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
             
-            // 이동 방향 정규화 (-1.0 ~ 1.0)
             joyVector.x = dx / joyMaxRadius;
             joyVector.y = dy / joyMaxRadius; 
         }
@@ -721,10 +720,14 @@
             substrateMesh = new THREE.InstancedMesh(subGeo, subMat, maxLogs);
             substrateMesh.castShadow = true; substrateMesh.receiveShadow = true;
 
+            // 🌟 버섯 기둥 형태 수정 (참송이/송이버섯 스타일로 짧고 굵으며 단단한 형태) 🌟
             const pts = [];
             for (let i = 0; i <= 20; i++) {
-                const yPos = i * 0.04; 
-                const radius = 0.04 + (Math.sin(i * 0.1) * 0.015); 
+                const t = i / 20;
+                const yPos = t * 0.45; // 최대 높이를 0.45로 줄여서 짧고 안정적인 비율로 설정
+                
+                // 아래쪽이 약간 굵고, 위로 갈수록 완만하게 얇아지는 단단한 송이버섯 기둥 형태
+                const radius = 0.07 - (t * 0.01) + (Math.sin(t * Math.PI) * 0.015);
                 pts.push(new THREE.Vector2(radius, yPos));
             }
             const stemTex = generateTexture('stem');
@@ -733,10 +736,11 @@
             stemMesh = new THREE.InstancedMesh(stemGeo, stemMat, maxMushrooms);
             stemMesh.castShadow = true;
             
+            // 🌟 버섯 갓 형태 수정 (송이버섯처럼 기둥에 밀착되어 둥글고 도톰한 형태) 🌟
             const capTex = generateTexture('cap');
-            const capGeo = new THREE.SphereGeometry(0.09, 32, 24, 0, Math.PI*2, 0, Math.PI/1.3);
-            capGeo.scale(1.2, 0.8, 1.2); 
-            capGeo.translate(0, 0.78, 0); 
+            const capGeo = new THREE.SphereGeometry(0.11, 32, 24, 0, Math.PI*2, 0, Math.PI/1.4);
+            capGeo.scale(1.0, 0.85, 1.0); 
+            capGeo.translate(0, 0.44, 0); // 줄기 최상단(0.45 부근)에 딱 맞물리도록 위치 하향 조정
             const capMat = new THREE.MeshStandardMaterial({ map: capTex, roughness: 0.8 });
             capMesh = new THREE.InstancedMesh(capGeo, capMat, maxMushrooms);
             capMesh.castShadow = true;
@@ -787,7 +791,7 @@
                             if(mIdx >= maxMushrooms) break;
                             
                             md.position.copy(d.position);
-                            md.position.y += 0.11; 
+                            md.position.y += 0.11; // 배지 윗면
                             md.position.x += (Math.random() - 0.5) * 0.65; 
                             md.position.z += (Math.random() - 0.5) * 0.08; 
                             
@@ -823,15 +827,14 @@
             const time = clock.getElapsedTime();
             
             // 🌟 키보드 및 조이스틱 이동 로직 🌟
-            let inputZ = 0; // 전후 이동
-            let inputX = 0; // 좌우 이동
+            let inputZ = 0; 
+            let inputX = 0; 
 
             if (moveForward) inputZ -= 1;
             if (moveBackward) inputZ += 1;
             if (moveLeft) inputX -= 1;
             if (moveRight) inputX += 1;
 
-            // 조이스틱 Y값은 아래가 양수이므로, 앞으로 가려면 조이스틱을 위(음수)로 밀어야 함
             inputZ += joyVector.y; 
             inputX += joyVector.x;
 
