@@ -826,17 +826,19 @@
             requestAnimationFrame(animate);
             const time = clock.getElapsedTime();
             
-            // 🌟 키보드 및 조이스틱 이동 로직 🌟
+            // 🌟 키보드 및 조이스틱 이동 로직 (A/D 방향 수정 적용) 🌟
             let inputZ = 0; 
             let inputX = 0; 
 
             if (moveForward) inputZ -= 1;
             if (moveBackward) inputZ += 1;
-            if (moveLeft) inputX -= 1;
-            if (moveRight) inputX += 1;
+            // 🌟 키보드 A, D 방향 수정: A(Left)는 양수 방향, D(Right)는 음수 방향으로 조정
+            if (moveLeft) inputX += 1; 
+            if (moveRight) inputX -= 1;
 
             inputZ += joyVector.y; 
-            inputX += joyVector.x;
+            // 조이스틱 좌우 방향 수정: X값의 부호 반전
+            inputX -= joyVector.x;
 
             if (Math.abs(inputZ) > 0.01 || Math.abs(inputX) > 0.01) {
                 controls.autoRotate = false; 
