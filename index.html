@@ -137,7 +137,7 @@
         </div>
     </section>
 
-    <!-- 복구된 회사소개 섹션 -->
+    <!-- 회사소개 섹션 -->
     <section id="about" class="py-32 bg-white overflow-hidden text-center md:text-left">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid md:grid-cols-2 gap-20 items-center">
@@ -170,7 +170,7 @@
         </div>
     </section>
 
-    <!-- 복구된 제품안내 섹션 -->
+    <!-- 제품안내 섹션 -->
     <section id="product" class="py-32 bg-gray-50 text-center">
         <div class="max-w-7xl mx-auto px-6">
             <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6 reveal" data-tkey="prod_title">주력 생산 품종</h2>
@@ -205,7 +205,7 @@
         </div>
     </section>
 
-    <!-- 복구된 분양안내 탭 섹션 -->
+    <!-- 분양안내 탭 섹션 -->
     <section id="benefit" class="py-32 bg-white text-center">
         <div class="max-w-7xl mx-auto px-6">
             <div class="inline-block relative mb-12 reveal">
@@ -257,7 +257,7 @@
         </div>
     </section>
 
-    <!-- 🌟 3D 시뮬레이터 (배지와 랙을 강조한 버섯 생태계 렌더링) 🌟 -->
+    <!-- 🌟 3D 시뮬레이터 (에러 완전 해결 & 실사 렌더링) 🌟 -->
     <section id="technology" class="py-40 bg-gray-50 overflow-hidden border-t border-gray-200">
         <div class="max-w-[1600px] mx-auto px-8 text-center">
             
@@ -299,8 +299,8 @@
                                 <i class="fas fa-door-open mr-3"></i> Open Module Door
                             </button>
                             <div class="grid grid-cols-2 gap-4 text-center">
-                                <button id="btn-light" class="bg-gray-100 text-gray-400 py-5 rounded-2xl font-black text-[10px] tracking-widest border border-gray-200 uppercase transition-all hover:bg-purple-50" data-tkey="btn_light">LED OFF</button>
-                                <button id="btn-mist" class="bg-gray-100 text-gray-400 py-5 rounded-2xl font-black text-[10px] tracking-widest border border-gray-200 uppercase transition-all hover:bg-blue-50" data-tkey="btn_mist">MIST OFF</button>
+                                <button id="btn-light" class="bg-emerald-50 text-emerald-700 py-5 rounded-2xl font-black text-[10px] tracking-widest border border-emerald-200 uppercase transition-all" data-tkey="btn_light">LED OFF</button>
+                                <button id="btn-mist" class="bg-gray-100 text-gray-400 py-5 rounded-2xl font-black text-[10px] tracking-widest border border-gray-200 uppercase transition-all" data-tkey="btn_mist">MIST OFF</button>
                             </div>
                         </div>
                         
@@ -369,7 +369,7 @@
 
                     <div class="space-y-3 text-left text-gray-500">
                         <label class="text-xs font-black uppercase tracking-widest" data-tkey="form_msg">Details</label>
-                        <textarea name="문의사항" rows="5" class="input-field resize-none"></textarea>
+                        <textarea name="문의사항" rows="5" class="input-field resize-none" placeholder="궁금한 사항을 상세히 남겨주세요."></textarea>
                     </div>
 
                     <button type="submit" id="submit-btn" class="btn-premium w-full shadow-2xl uppercase tracking-widest" data-tkey="form_submit">Submit Consult</button>
@@ -409,7 +409,7 @@
                 tab3_h3: "부지 개발형:<br>토지 가치 창조", tab3_p: "유휴 부지를 현대적 참송이버섯 단지로 개발하여 지가 상승과 장기 운영 수익을 동시에 노리는 프로젝트입니다.",
                 tab_btn: "상담 예약하기", tech_title: "초실감형 3D 스마트팜 모듈", tech_desc: "실제 참송이버섯 재배동의 철제 다단 선반과 배지를 완벽하게 구현했습니다. 공기의 흐름과 빛의 변화를 직접 체험하세요.",
                 dash_title: "관제 대시보드", sens_temp: "실내 온도", sens_hum: "습도", sens_co2: "CO2 농도",
-                btn_door: "모듈 출입문 열기", btn_light: "LED 끄기", btn_mist: "가습 끄기",
+                btn_door: "모듈 출입문 열기", btn_light: "LED 끄기", btn_mist: "가습 켜기",
                 loading: "엔진 동기화 중...", btn_outside: "외부 전경", btn_inside: "내부 진입",
                 form_title: "분양 상담 신청서", form_p: "전문 상담원이 영업일 기준 24시간 이내에 직접 연락드립니다.",
                 form_name: "성함 (실명) *", form_phone: "연락처 *", form_land: "토지 보유 현황",
@@ -432,7 +432,7 @@
                 tab3_h3: "Site Development:<br>Land Value Creation", tab3_p: "Develop idle land into a modern mushroom complex, aiming for both land value appreciation and long-term profit.",
                 tab_btn: "Book a Consultation", tech_title: "Hyper-Realistic 3D Module", tech_desc: "Perfectly implemented multi-tier steel shelves and substrates. Experience air flow and lighting changes.",
                 dash_title: "OS DASHBOARD", sens_temp: "TEMP", sens_hum: "HUMIDITY", sens_co2: "CO2",
-                btn_door: "OPEN MODULE DOOR", btn_light: "LED OFF", btn_mist: "MIST OFF",
+                btn_door: "OPEN MODULE DOOR", btn_light: "LED OFF", btn_mist: "MIST ON",
                 loading: "ENGINE SYNCING...", btn_outside: "OUTSIDE VIEW", btn_inside: "INSIDE TOUR",
                 form_title: "Consultation", form_p: "A professional consultant will contact you within 24 hours.",
                 form_name: "NAME (FULL NAME) *", form_phone: "CONTACT *", form_land: "LAND OWNERSHIP",
@@ -448,6 +448,12 @@
             });
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('lang-' + lang).classList.add('active');
+
+            // 버튼 상태 텍스트 업데이트
+            const lightBtn = document.getElementById('btn-light');
+            if(lightBtn) lightBtn.innerText = isLightOn ? (lang === 'en' ? "LED OFF" : "LED 끄기") : (lang === 'en' ? "LED ON" : "LED 켜기");
+            const mistBtn = document.getElementById('btn-mist');
+            if(mistBtn) mistBtn.innerText = isMistOn ? (lang === 'en' ? "MIST OFF" : "가습 끄기") : (lang === 'en' ? "MIST ON" : "가습 켜기");
         }
 
         function showTab(tabId) {
@@ -468,7 +474,7 @@
         }
 
         /* -----------------------------------------------------------
-           ✨ Three.js Hyper-Biological Engine (Absolute Error Free)
+           ✨ Three.js Hyper-Biological Engine (WebGL Iterator Error Fixed)
            ----------------------------------------------------------- */
         let scene, camera, renderer, controls, clock = new THREE.Clock();
         let doorGroup, ledStrips = [];
@@ -480,25 +486,25 @@
             if(!container) return;
             const w = container.clientWidth, h = container.clientHeight;
 
-            // Scene 설정
+            // 1. Scene
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0x050505); 
             scene.fog = new THREE.FogExp2(0x050505, 0.035);
 
-            // Camera 설정
+            // 2. Camera
             camera = new THREE.PerspectiveCamera(35, w/h, 0.1, 1000);
             camera.position.set(24, 16, 24);
 
-            // Renderer 설정
+            // 3. Renderer
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(w, h);
             renderer.setPixelRatio(window.devicePixelRatio || 1);
             renderer.shadowMap.enabled = true;
             renderer.toneMapping = THREE.ACESFilmicToneMapping;
-            renderer.toneMappingExposure = 1.2; 
+            renderer.toneMappingExposure = 1.3; 
             container.appendChild(renderer.domElement);
 
-            // Controls 설정
+            // 4. Controls
             if (typeof THREE.OrbitControls !== 'undefined') {
                 controls = new THREE.OrbitControls(camera, renderer.domElement);
                 controls.enableDamping = true;
@@ -506,15 +512,11 @@
                 controls.autoRotateSpeed = 0.25;
             }
 
-            // 💡 라이팅: 에러 방지를 위해 명시적 new THREE.Color() 할당
-            const ambient = new THREE.AmbientLight(new THREE.Color(0xffffff), 0.5);
-            scene.add(ambient);
-            
-            const mainLight = new THREE.DirectionalLight(new THREE.Color(0xfff5e6), 2.0); // 따뜻한 햇빛 톤 추가
+            // 5. Lighting (에러 방지를 위해 hex 값 주입 방식 사용)
+            scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+            const mainLight = new THREE.DirectionalLight(0xffffff, 1.8);
             mainLight.position.set(20, 40, 20); 
             mainLight.castShadow = true;
-            mainLight.shadow.mapSize.width = 2048;
-            mainLight.shadow.mapSize.height = 2048;
             scene.add(mainLight);
 
             buildFarm('25');
@@ -534,11 +536,7 @@
             mistParticles = new THREE.Points(
                 geo, 
                 new THREE.PointsMaterial({ 
-                    color: new THREE.Color(0xffffff), 
-                    size: 0.02, 
-                    transparent: true, 
-                    opacity: 0, 
-                    blending: THREE.AdditiveBlending 
+                    color: 0xffffff, size: 0.03, transparent: true, opacity: 0, blending: THREE.AdditiveBlending 
                 })
             );
             scene.add(mistParticles);
@@ -557,55 +555,58 @@
             let L = (type==='50')?32:(type==='30')?22:18, W = 5.5;
             
             // 컨테이너
-            const shellMat = new THREE.MeshStandardMaterial({ 
-                color: new THREE.Color(0xffffff), roughness: 0.2, metalness: 0.1, side: THREE.DoubleSide
-            });
-            const shell = new THREE.Mesh(new THREE.BoxGeometry(W, 4.5, L), shellMat);
+            const shell = new THREE.Mesh(
+                new THREE.BoxGeometry(W, 4.5, L), 
+                new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2, metalness: 0.1, side: THREE.DoubleSide })
+            );
             shell.position.y = 1.8;
             farmGroup.add(shell);
 
-            const frameMat = new THREE.MeshStandardMaterial({ 
-                color: new THREE.Color(0x111827), side: THREE.BackSide 
-            });
-            const frame = new THREE.Mesh(new THREE.BoxGeometry(W+0.4, 4.6, L+0.4), frameMat);
+            const frame = new THREE.Mesh(
+                new THREE.BoxGeometry(W+0.4, 4.6, L+0.4), 
+                new THREE.MeshStandardMaterial({ color: 0x111827, side: THREE.BackSide })
+            );
             frame.position.copy(shell.position);
             farmGroup.add(frame);
 
             // 도어
             const doorPivot = new THREE.Group();
-            const doorMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0x050505) });
-            const door = new THREE.Mesh(new THREE.BoxGeometry(W-0.3, 4.3, 0.2), doorMat);
+            const door = new THREE.Mesh(
+                new THREE.BoxGeometry(W-0.3, 4.3, 0.2), 
+                new THREE.MeshStandardMaterial({ color: 0x050505 })
+            );
             door.position.x = (W-0.3)/2;
             doorPivot.add(door);
             doorPivot.position.set(-(W-0.3)/2, 1.8, L/2);
             doorGroup = doorPivot;
             farmGroup.add(doorPivot);
 
-            // 🌟 랙(철제 선반) 및 배지 렌더링 🌟
-            const rackMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0x8892b0), metalness: 0.6, roughness: 0.4 });
-            
-            // 배지: 위로 세워진 원기둥 형태 (실제 버섯 배지 고증)
-            const subGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.5, 32);
-            const logs = 2 * 4 * 16 * 2; // 2열 x 4층 x (길이당 2개씩)
-            const subMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0x3b2818), roughness: 0.9 });
+            // 🌟 철제 선반(Rack) 재질
+            const rackMat = new THREE.MeshStandardMaterial({ color: 0x8892b0, metalness: 0.6, roughness: 0.4 });
+
+            // 🌟 배지 (원기둥 형태, 위로 세워짐)
+            const logs = 2 * 4 * 16 * 2; // 2열, 4층, 16칸, 칸당 2개
+            const subGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.55, 32); 
+            // 실사 렌더링 에러 방지를 위해 MeshStandardMaterial 사용
+            const subMat = new THREE.MeshStandardMaterial({ color: 0x3b2818, roughness: 0.9 });
             substrateMesh = new THREE.InstancedMesh(subGeo, subMat, logs);
             substrateMesh.castShadow = true; substrateMesh.receiveShadow = true;
 
-            // 버섯 기둥 (유기적 비정형 곡선)
+            // 🌟 버섯 기둥 (유기적 비정형 곡선)
             const pts = [];
             for (let i = 0; i < 20; i++) {
-                const r = (Math.sin(i * 0.15) * 0.05 + 0.08); // 두툼한 참송이 기둥
+                const r = (Math.sin(i * 0.15) * 0.05 + 0.08); 
                 pts.push(new THREE.Vector2(r, i * 0.02));
             }
             const stemGeo = new THREE.LatheGeometry(pts, 24); 
-            const stemMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0xf5f5dc), roughness: 0.9 });
+            const stemMat = new THREE.MeshStandardMaterial({ color: 0xf5f5dc, roughness: 0.9 });
             stemMesh = new THREE.InstancedMesh(stemGeo, stemMat, logs * 3);
             stemMesh.castShadow = true;
             
-            // 버섯 갓
+            // 🌟 버섯 갓
             const capGeo = new THREE.SphereGeometry(0.12, 32, 24, 0, Math.PI*2, 0, Math.PI/1.55);
             capGeo.scale(1.4, 0.65, 1.4); capGeo.translate(0, 0.35, 0);
-            const capMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0x4e342e), roughness: 0.6 });
+            const capMat = new THREE.MeshStandardMaterial({ color: 0x4e342e, roughness: 0.6 });
             capMesh = new THREE.InstancedMesh(capGeo, capMat, logs * 3);
             capMesh.castShadow = true;
             
@@ -621,58 +622,67 @@
                     const pillar1 = new THREE.Mesh(new THREE.BoxGeometry(0.05, 4, 0.05), rackMat);
                     pillar1.position.set(x - 0.45, 1.8, zPos);
                     farmGroup.add(pillar1);
+                    
                     const pillar2 = new THREE.Mesh(new THREE.BoxGeometry(0.05, 4, 0.05), rackMat);
                     pillar2.position.set(x + 0.45, 1.8, zPos);
                     farmGroup.add(pillar2);
                 }
 
                 for(let t=0; t<4; t++){
-                    const y = t*1.0 + 0.3; // 층 높이
+                    const y = t*1.0 + 0.3; // 층 기준 높이
                     
                     // 선반 판넬
                     const shelf = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.02, L-2), rackMat);
-                    shelf.position.set(x, y - 0.25, 0);
+                    shelf.position.set(x, y, 0);
                     farmGroup.add(shelf);
 
                     // LED 조명
-                    const ledMat = new THREE.MeshStandardMaterial({ 
-                        color: new THREE.Color(0xffffff), emissive: new THREE.Color(0xffffff), emissiveIntensity: 1.5 
-                    });
+                    const ledMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 2 });
                     const led = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.02, L-2), ledMat);
-                    led.position.set(x, y + 0.65, 0); farmGroup.add(led); ledStrips.push(led);
+                    led.position.set(x, y + 0.85, 0); 
+                    farmGroup.add(led); 
+                    ledStrips.push(led);
 
-                    // 배지 및 버섯 배치 (세워진 배지 윗면에서 생장)
+                    // 배지 배치
                     for(let zIdx=0; zIdx<16; zIdx++){
                         const z = -(L/2) + 3.0 + zIdx*0.8;
                         
-                        // 왼쪽, 오른쪽 배지 두 개씩 나란히 배치
+                        // 하나의 라인에 2개의 배지를 나란히 배치
                         for(let sx=-1; sx<=1; sx+=2) {
-                            d.position.set(x + sx*0.25, y, z);
+                            d.position.set(x + sx*0.25, y + 0.28, z); // 선반 위, 높이 절반 고려
                             d.rotation.y = (Math.random()-0.5)*0.5; 
                             d.updateMatrix(); 
                             if(lIdx < logs) substrateMesh.setMatrixAt(lIdx++, d.matrix);
                             
-                            // 하나의 배지에 버섯 2~4개씩 배치
-                            const count = 2 + Math.floor(Math.random()*3);
+                            // 배지 윗면에서 버섯 자라남
+                            const count = 2 + Math.floor(Math.random()*2); 
                             for(let m=0; m<count; m++){
                                 if(mIdx >= logs*3) break;
                                 md.position.copy(d.position);
-                                md.position.y += 0.25; // 배지 윗면으로 이동
-                                md.position.x += (Math.random()-0.5)*0.15;
-                                md.position.z += (Math.random()-0.5)*0.15;
+                                md.position.y += 0.28; // 배지 상단에서 시작
+                                md.position.x += (Math.random()-0.5)*0.12;
+                                md.position.z += (Math.random()-0.5)*0.12;
                                 
-                                // 바깥을 향해 자연스럽게 기울어짐
                                 md.rotation.x = (Math.random()-0.5)*0.4;
                                 md.rotation.z = (Math.random()-0.5)*0.4;
                                 md.rotation.y = Math.random()*Math.PI;
-                                md.scale.setScalar(0.7 + Math.random()*1.0);
+                                md.scale.setScalar(0.7 + Math.random()*0.8);
                                 md.updateMatrix(); 
-                                stemMesh.setMatrixAt(mIdx, md.matrix); capMesh.setMatrixAt(mIdx, md.matrix); mIdx++;
+                                
+                                stemMesh.setMatrixAt(mIdx, md.matrix); 
+                                capMesh.setMatrixAt(mIdx, md.matrix); 
+                                mIdx++;
                             }
                         }
                     }
                 }
             }
+            
+            // 필수: GPU로 인스턴스 데이터 전송 (렌더링 누락 방지)
+            substrateMesh.instanceMatrix.needsUpdate = true;
+            stemMesh.instanceMatrix.needsUpdate = true;
+            capMesh.instanceMatrix.needsUpdate = true;
+
             farmGroup.add(substrateMesh, stemMesh, capMesh);
             scene.add(farmGroup);
         }
@@ -685,6 +695,7 @@
             if(isDoorOpen) doorGroup.rotation.y = THREE.MathUtils.lerp(doorGroup.rotation.y, Math.PI/1.2, 0.08);
             else doorGroup.rotation.y = THREE.MathUtils.lerp(doorGroup.rotation.y, 0, 0.08);
             
+            // 가습 및 LED 상태 업데이트
             if(isMistOn && mistParticles) {
                 mistParticles.material.opacity = THREE.MathUtils.lerp(mistParticles.material.opacity, 0.4, 0.05);
                 const pos = mistParticles.geometry.attributes.position.array;
@@ -726,25 +737,37 @@
             }
         }
 
-        // UI 이벤트 바인딩
+        // 제어 이벤트 바인딩
         document.getElementById('btn-door').onclick = function() { isDoorOpen = !isDoorOpen; };
         
         document.getElementById('btn-light').onclick = function() {
             isLightOn = !isLightOn;
-            // WebGL 오류 방지를 위해 명시적인 색상 객체 주입
-            const targetColor = isLightOn ? new THREE.Color(0xffffff) : new THREE.Color(0x000000);
+            const targetColor = isLightOn ? 0xffffff : 0x000000;
             ledStrips.forEach(s => {
-                s.material.emissive = targetColor;
-                s.material.needsUpdate = true;
+                s.material.emissive.setHex(targetColor);
             });
-            this.classList.toggle('bg-purple-50');
-            this.innerText = isLightOn ? (document.getElementById('lang-en').classList.contains('active') ? "LED OFF" : "LED 끄기") : (document.getElementById('lang-en').classList.contains('active') ? "LED ON" : "LED 켜기");
+            this.classList.toggle('bg-emerald-50');
+            this.classList.toggle('text-emerald-700');
+            this.classList.toggle('border-emerald-200');
+            this.classList.toggle('bg-gray-100');
+            this.classList.toggle('text-gray-400');
+            this.classList.toggle('border-gray-200');
+            
+            const isEn = document.getElementById('lang-en').classList.contains('active');
+            this.innerText = isLightOn ? (isEn ? "LED OFF" : "LED 끄기") : (isEn ? "LED ON" : "LED 켜기");
         };
 
         document.getElementById('btn-mist').onclick = function() { 
             isMistOn = !isMistOn; 
             this.classList.toggle('bg-blue-50');
-            this.innerText = isMistOn ? (document.getElementById('lang-en').classList.contains('active') ? "MIST ON" : "가습 켜짐") : (document.getElementById('lang-en').classList.contains('active') ? "MIST OFF" : "가습 끄기");
+            this.classList.toggle('text-blue-700');
+            this.classList.toggle('border-blue-200');
+            this.classList.toggle('bg-gray-100');
+            this.classList.toggle('text-gray-400');
+            this.classList.toggle('border-gray-200');
+
+            const isEn = document.getElementById('lang-en').classList.contains('active');
+            this.innerText = isMistOn ? (isEn ? "MIST OFF" : "가습 끄기") : (isEn ? "MIST ON" : "가습 켜기");
         };
 
         document.getElementById('menu-open').onclick = function() { toggleMenu(true); };
@@ -774,7 +797,6 @@
             window.addEventListener("scroll", revealOnScroll);
             revealOnScroll();
 
-            // 렌더링 타이밍 문제(하얀 화면) 방지
             setTimeout(() => { 
                 init3D(); 
                 changeLang('ko'); 
@@ -782,7 +804,7 @@
             }, 100);
         };
 
-        // 이메일 전송 로직
+        // 이메일 전송 API
         document.getElementById('contact-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.querySelector('button[type="submit"]');
