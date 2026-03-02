@@ -257,14 +257,14 @@
         </div>
     </section>
 
-    <!-- 🌟 3D 시뮬레이터 (가로로 눕혀진 배지 및 텍스처 입힌 초실감 렌더링) 🌟 -->
+    <!-- 🌟 3D 시뮬레이터 (6단 랙 & 정렬된 수평 배지) 🌟 -->
     <section id="technology" class="py-40 bg-gray-50 overflow-hidden border-t border-gray-200">
         <div class="max-w-[1600px] mx-auto px-8 text-center">
             
             <div class="text-center mb-16 reveal">
                 <span class="text-emerald-500 font-bold tracking-[0.2em] uppercase mb-4 block text-sm text-center">Keunoreum 3D Control Center</span>
                 <h2 class="text-4xl md:text-5xl font-black mb-6 text-center italic" data-tkey="tech_title">초실감형 3D 스마트팜 모듈</h2>
-                <p class="text-gray-500 text-lg max-w-2xl mx-auto text-center" data-tkey="tech_desc">실제 참송이버섯 재배동의 철제 다단 선반과 가로로 눕혀진 배지를 완벽하게 구현했습니다. 공기의 흐름과 빛의 변화를 직접 체험하세요.</p>
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto text-center" data-tkey="tech_desc">실제 참송이버섯 재배동의 6단 철제 선반과 가로로 눕혀진 수백 개의 배지를 완벽하게 구현했습니다. 공기의 흐름과 빛의 변화를 체험하세요.</p>
             </div>
 
             <div class="grid lg:grid-cols-4 gap-12 items-start">
@@ -407,7 +407,7 @@
                 tab1_h3: "위탁 운영형:<br>전문가 전담 관리 시스템", tab1_p: "재배부터 유통까지 본사가 책임집니다. 투자자는 정기 배당 수익에만 집중할 수 있는 안정형 모델입니다.",
                 tab2_h3: "직접 운영형:<br>경영 및 기술 전수", tab2_p: "직접 농장을 운영하며 큰오름의 독자적 솔루션과 재배 노하우를 전수받아 수익을 극대화합니다.",
                 tab3_h3: "부지 개발형:<br>토지 가치 창조", tab3_p: "유휴 부지를 현대적 참송이버섯 단지로 개발하여 지가 상승과 장기 운영 수익을 동시에 노리는 프로젝트입니다.",
-                tab_btn: "상담 예약하기", tech_title: "초실감형 3D 스마트팜 모듈", tech_desc: "실제 참송이버섯 재배동의 철제 다단 선반과 가로로 눕혀진 배지를 완벽하게 구현했습니다. 공기의 흐름과 빛의 변화를 직접 체험하세요.",
+                tab_btn: "상담 예약하기", tech_title: "초실감형 3D 스마트팜 모듈", tech_desc: "실제 참송이버섯 재배동의 6단 철제 선반과 가로로 정렬된 배지를 완벽하게 구현했습니다. 공기의 흐름과 빛의 변화를 직접 체험하세요.",
                 dash_title: "관제 대시보드", sens_temp: "실내 온도", sens_hum: "습도", sens_co2: "CO2 농도",
                 btn_door: "모듈 출입문 열기", btn_light: "LED 끄기", btn_mist: "가습 켜기",
                 loading: "엔진 동기화 중...", btn_outside: "외부 전경", btn_inside: "내부 진입",
@@ -431,7 +431,7 @@
                 tab1_h3: "Managed Operation:<br>Expert Management", tab1_p: "We handle everything from cultivation to distribution. A stable model focusing on dividend returns.",
                 tab2_h3: "Direct Operation:<br>Tech Transfer", tab2_p: "Operate the farm yourself and maximize profits by inheriting our exclusive solutions and know-how.",
                 tab3_h3: "Site Development:<br>Land Value Creation", tab3_p: "Develop idle land into a modern mushroom complex, aiming for both land value appreciation and long-term profit.",
-                tab_btn: "Book a Consultation", tech_title: "Hyper-Realistic 3D Module", tech_desc: "Perfectly implemented multi-tier steel shelves and horizontally laid substrates. Experience air flow and lighting changes.",
+                tab_btn: "Book a Consultation", tech_title: "Hyper-Realistic 3D Module", tech_desc: "Perfectly implemented 6-tier steel shelves and strictly aligned substrates. Experience air flow and lighting changes.",
                 dash_title: "OS DASHBOARD", sens_temp: "TEMP", sens_hum: "HUMIDITY", sens_co2: "CO2",
                 btn_door: "OPEN MODULE DOOR", btn_light: "LED OFF", btn_mist: "MIST ON",
                 loading: "ENGINE SYNCING...", btn_outside: "OUTSIDE VIEW", btn_inside: "INSIDE TOUR",
@@ -475,7 +475,7 @@
         }
 
         /* -----------------------------------------------------------
-           ✨ Three.js Hyper-Biological Engine (가로 배치 적용)
+           ✨ Three.js Hyper-Biological Engine (6 Tiers, Horizontal Aligned Logs)
            ----------------------------------------------------------- */
         let scene, camera, renderer, controls, clock = new THREE.Clock();
         let doorGroup, ledStrips = [];
@@ -489,7 +489,7 @@
             const ctx = canvas.getContext('2d');
 
             if (type === 'substrate') {
-                // 톱밥 배지 질감: 진한 갈색 바탕 + 하얀 균사체(Mycelium)
+                // 톱밥 배지 질감: 짙은 갈색 톱밥 + 균사체
                 ctx.fillStyle = '#2c1b12'; 
                 ctx.fillRect(0, 0, 512, 512);
                 for(let i=0; i<15000; i++) {
@@ -504,7 +504,7 @@
                     ctx.fill();
                 }
             } else if (type === 'stem') {
-                // 버섯 기둥 질감: 세로로 결이 있는 섬유질
+                // 버섯 기둥 질감: 세로 섬유질
                 ctx.fillStyle = '#f5f5dc'; 
                 ctx.fillRect(0, 0, 512, 512);
                 ctx.fillStyle = '#e3dac9'; 
@@ -513,7 +513,7 @@
                     ctx.fillRect(Math.random()*512, Math.random()*512, 2, Math.random()*60 + 20);
                 }
             } else if (type === 'cap') {
-                // 버섯 갓 질감: 불규칙한 표면 갈라짐
+                // 버섯 갓 질감: 불규칙한 표면
                 ctx.fillStyle = '#4e342e'; 
                 ctx.fillRect(0, 0, 512, 512);
                 ctx.fillStyle = '#3e2723'; 
@@ -536,10 +536,10 @@
 
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0x050505); 
-            scene.fog = new THREE.FogExp2(0x050505, 0.035);
+            scene.fog = new THREE.FogExp2(0x050505, 0.03);
 
             camera = new THREE.PerspectiveCamera(35, w/h, 0.1, 1000);
-            camera.position.set(24, 16, 24);
+            camera.position.set(24, 18, 24); // 6단을 한눈에 보기 위해 카메라 높이 상향
 
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(w, h);
@@ -601,140 +601,154 @@
             farmGroup.name = 'farm_module';
             ledStrips = [];
 
+            // 산업용 스마트팜 사이즈 설정
             let L = (type==='50')?32:(type==='30')?22:18, W = 5.5;
             
+            const tiers = 6; // 🌟 6단 선반 적용
+            const zSpacing = 0.35; // 배지 간 간격 (촘촘하게)
+            const zCount = Math.floor((L - 3) / zSpacing); // 선반 길이에 꽉 차게 배지 개수 계산
+            
+            const shellHeight = tiers * 0.85 + 1.5; // 6단 높이에 맞춘 쉘 컨테이너 높이 확장
+
             // 컨테이너
             const shellMat = new THREE.MeshStandardMaterial({ 
                 color: new THREE.Color(0xffffff), roughness: 0.2, metalness: 0.1, side: THREE.DoubleSide
             });
-            const shell = new THREE.Mesh(new THREE.BoxGeometry(W, 4.5, L), shellMat);
-            shell.position.y = 1.8;
+            const shell = new THREE.Mesh(new THREE.BoxGeometry(W, shellHeight, L), shellMat);
+            shell.position.y = shellHeight / 2;
             farmGroup.add(shell);
 
             const frameMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0x111827), side: THREE.BackSide });
-            const frame = new THREE.Mesh(new THREE.BoxGeometry(W+0.4, 4.6, L+0.4), frameMat);
+            const frame = new THREE.Mesh(new THREE.BoxGeometry(W+0.4, shellHeight + 0.1, L+0.4), frameMat);
             frame.position.copy(shell.position);
             farmGroup.add(frame);
 
             // 도어
             const doorPivot = new THREE.Group();
             const doorMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0x050505) });
-            const door = new THREE.Mesh(new THREE.BoxGeometry(W-0.3, 4.3, 0.2), doorMat);
+            const door = new THREE.Mesh(new THREE.BoxGeometry(W-0.3, shellHeight - 0.2, 0.2), doorMat);
             door.position.x = (W-0.3)/2;
             doorPivot.add(door);
-            doorPivot.position.set(-(W-0.3)/2, 1.8, L/2);
+            doorPivot.position.set(-(W-0.3)/2, shellHeight / 2, L/2);
             doorGroup = doorPivot;
             farmGroup.add(doorPivot);
 
-            // 🌟 텍스처 및 모델링 적용 (배지를 가로로 눕힘) 🌟
+            // 🌟 텍스처 및 6단 모델링 적용 🌟
             const rackMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0x8892b0), metalness: 0.6, roughness: 0.4 });
             
-            // 배지 지오메트리를 가로(Z축 방향)로 눕힘
+            // 배지 (원통)
             const subTex = generateTexture('substrate');
-            const subGeo = new THREE.CylinderGeometry(0.15, 0.15, 0.6, 32);
-            subGeo.rotateX(Math.PI / 2); // 핵심: 배지를 눕히는 코드
+            // 가로로 길게 눕힘: 지름 0.24, 길이 0.8
+            const subGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.8, 32);
+            subGeo.rotateZ(Math.PI / 2); // 핵심: 배지를 정갈하게 X축(가로) 방향으로 눕힘
             
-            const logs = 2 * 4 * 16 * 2; 
+            const maxLogs = 2 * tiers * zCount; // 좌우 랙 * 6단 * Z축 개수
+            const maxMushrooms = maxLogs * 3;
+
             const subMat = new THREE.MeshStandardMaterial({ map: subTex, roughness: 0.9 });
-            substrateMesh = new THREE.InstancedMesh(subGeo, subMat, logs);
+            substrateMesh = new THREE.InstancedMesh(subGeo, subMat, maxLogs);
             substrateMesh.castShadow = true; substrateMesh.receiveShadow = true;
 
             // 버섯 기둥 형태 생성
             const pts = [];
             for (let i = 0; i < 20; i++) {
-                const r = (Math.sin(i * 0.15) * 0.05 + 0.08); 
+                const r = (Math.sin(i * 0.15) * 0.05 + 0.09); // 두꺼운 기둥
                 pts.push(new THREE.Vector2(r, i * 0.02));
             }
             const stemTex = generateTexture('stem');
             const stemGeo = new THREE.LatheGeometry(pts, 24); 
             const stemMat = new THREE.MeshStandardMaterial({ map: stemTex, roughness: 0.9 });
-            stemMesh = new THREE.InstancedMesh(stemGeo, stemMat, logs * 3);
+            stemMesh = new THREE.InstancedMesh(stemGeo, stemMat, maxMushrooms);
             stemMesh.castShadow = true;
             
             // 버섯 갓 생성
             const capTex = generateTexture('cap');
             const capGeo = new THREE.SphereGeometry(0.12, 32, 24, 0, Math.PI*2, 0, Math.PI/1.55);
-            capGeo.scale(1.4, 0.65, 1.4); capGeo.translate(0, 0.38, 0); // 갓의 위치 조정
+            capGeo.scale(1.4, 0.65, 1.4); capGeo.translate(0, 0.35, 0); 
             const capMat = new THREE.MeshStandardMaterial({ map: capTex, roughness: 0.6 });
-            capMesh = new THREE.InstancedMesh(capGeo, capMat, logs * 3);
+            capMesh = new THREE.InstancedMesh(capGeo, capMat, maxMushrooms);
             capMesh.castShadow = true;
             
             let lIdx=0, mIdx=0;
             const d = new THREE.Object3D(), md = new THREE.Object3D();
 
             for(let c=0; c<2; c++){
-                const x = (c===0)?-1.7:1.7;
+                const x = (c===0)? -1.7 : 1.7; // 좌우 랙
 
-                // 랙(프레임) 기둥 설치
-                for (let zIdx=0; zIdx<=18; zIdx+=6) {
-                    const zPos = -(L/2) + 2.5 + zIdx*1.2;
-                    const pillar1 = new THREE.Mesh(new THREE.BoxGeometry(0.05, 4, 0.05), rackMat);
-                    pillar1.position.set(x - 0.45, 1.8, zPos);
+                // 세로 랙 프레임 기둥 (6단 높이에 맞춰 연장)
+                for (let zIdx=0; zIdx<=20; zIdx+=5) {
+                    const zPos = -(L/2) + 2.0 + (zIdx * 0.8);
+                    const pillarHeight = tiers * 0.85 + 0.5;
+                    const pillar1 = new THREE.Mesh(new THREE.BoxGeometry(0.05, pillarHeight, 0.05), rackMat);
+                    pillar1.position.set(x - 0.45, pillarHeight/2, zPos);
                     farmGroup.add(pillar1);
-                    const pillar2 = new THREE.Mesh(new THREE.BoxGeometry(0.05, 4, 0.05), rackMat);
-                    pillar2.position.set(x + 0.45, 1.8, zPos);
+                    const pillar2 = new THREE.Mesh(new THREE.BoxGeometry(0.05, pillarHeight, 0.05), rackMat);
+                    pillar2.position.set(x + 0.45, pillarHeight/2, zPos);
                     farmGroup.add(pillar2);
                 }
 
-                for(let t=0; t<4; t++){
-                    const y = t*1.0 + 0.3;
+                // 6단 선반 및 배지 생성
+                for(let t=0; t<tiers; t++){
+                    const y = t * 0.85 + 0.4; // 각 층의 Y 좌표
                     
+                    // 철제 선반
                     const shelf = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.02, L-2), rackMat);
                     shelf.position.set(x, y, 0);
                     farmGroup.add(shelf);
 
+                    // 층별 LED 조명
                     const ledMat = new THREE.MeshStandardMaterial({ 
                         color: new THREE.Color(0xffffff), emissive: new THREE.Color(0xffffff), emissiveIntensity: 1.5 
                     });
                     const led = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.02, L-2), ledMat);
-                    led.position.set(x, y + 0.65, 0); farmGroup.add(led); ledStrips.push(led);
+                    led.position.set(x, y + 0.7, 0); 
+                    farmGroup.add(led); 
+                    ledStrips.push(led);
 
-                    // 눕혀진 배지 및 버섯 배치
-                    for(let zIdx=0; zIdx<16; zIdx++){
-                        const z = -(L/2) + 3.0 + zIdx*0.8;
+                    // 배지를 Z축으로 촘촘히 눕혀서 배치 (오차 없이 평행하게 정렬)
+                    for(let zIdx=0; zIdx<zCount; zIdx++){
+                        const z = -(L/2) + 1.5 + (zIdx * zSpacing);
                         
-                        // 하나의 선반에 배지 2개씩 나란히 눕혀서 배치
-                        for(let sx=-1; sx<=1; sx+=2) {
-                            // 선반 y 위치에 배지 반지름(0.15)을 더해 바닥에 닿게 함
-                            d.position.set(x + sx*0.25, y + 0.16, z); 
+                        // 배지 1개를 선반 가로에 딱 맞게 배치 (Radius 0.12 + shelf Y)
+                        d.position.set(x, y + 0.13, z); 
+                        
+                        // 🌟 무작위 회전을 제거하여 롤케이크처럼 완벽히 평행하게 눕혀 정렬 🌟
+                        d.rotation.set(0, 0, 0); 
+                        d.updateMatrix(); 
+                        
+                        if(lIdx < maxLogs) substrateMesh.setMatrixAt(lIdx++, d.matrix);
+                        
+                        // 눕혀진 배지 윗면(곡면)에서 버섯이 자라나도록 위치 세팅
+                        const count = 1 + Math.floor(Math.random() * 3); 
+                        for(let m=0; m<count; m++){
+                            if(mIdx >= maxMushrooms) break;
                             
-                            // 눕혀진 배지가 자연스럽게 보이도록 약간의 무작위 회전 추가
-                            d.rotation.x = (Math.random()-0.5)*0.1;
-                            d.rotation.y = (Math.random()-0.5)*0.2; 
-                            d.rotation.z = (Math.random()-0.5)*0.1; 
-                            d.updateMatrix(); 
-                            if(lIdx < logs) substrateMesh.setMatrixAt(lIdx++, d.matrix);
+                            md.position.copy(d.position);
+                            md.position.y += 0.11; // 눕혀진 원통 배지의 가장 높은 윗면 부근
+                            md.position.x += (Math.random() - 0.5) * 0.65; // 배지 길이(0.8)를 따라 흩어지게 배치
+                            md.position.z += (Math.random() - 0.5) * 0.08; // 좁은 Z축 편차
                             
-                            // 눕혀진 배지 윗면(곡면)에서 버섯이 자라나도록 위치 및 각도 계산
-                            const count = 2 + Math.floor(Math.random()*3); 
-                            for(let m=0; m<count; m++){
-                                if(mIdx >= logs*3) break;
-                                
-                                const angle = (Math.random()-0.5) * Math.PI * 0.6; // 윗면을 중심으로 좌우 분산
-                                const radius = 0.15; // 배지 반지름
-                                const lengthOffset = (Math.random()-0.5) * 0.45; // 배지 길이(0.6) 내에서 무작위 위치
-                                
-                                md.position.copy(d.position);
-                                md.position.x += Math.sin(angle) * radius; // 원통 표면의 x 좌표
-                                md.position.y += Math.cos(angle) * radius; // 원통 표면의 y 좌표 (위쪽으로 돌출)
-                                md.position.z += lengthOffset;             // 원통 길이를 따른 z 좌표
-                                
-                                md.rotation.z = -angle; // 곡면의 수직 방향으로 자라도록 회전
-                                md.rotation.x = (Math.random()-0.5)*0.4;
-                                md.rotation.y = Math.random()*Math.PI;
-                                
-                                md.scale.setScalar(0.4 + Math.random()*0.5); // 버섯 크기를 눕혀진 배지에 맞게 스케일링
-                                md.updateMatrix(); 
-                                
-                                stemMesh.setMatrixAt(mIdx, md.matrix); 
-                                capMesh.setMatrixAt(mIdx, md.matrix); 
-                                mIdx++;
-                            }
+                            // 위를 향해 자라되 자연스러운 각도 부여
+                            md.rotation.x = (Math.random() - 0.5) * 0.2; 
+                            md.rotation.z = (Math.random() - 0.5) * 0.2;
+                            md.rotation.y = Math.random() * Math.PI;
+                            
+                            md.scale.setScalar(0.6 + Math.random() * 0.8);
+                            md.updateMatrix(); 
+                            
+                            stemMesh.setMatrixAt(mIdx, md.matrix); 
+                            capMesh.setMatrixAt(mIdx, md.matrix); 
+                            mIdx++;
                         }
                     }
                 }
             }
             
+            // 실제 사용된 개수만큼 렌더링하도록 카운트 고정 (에러 방지)
+            substrateMesh.count = lIdx;
+            stemMesh.count = mIdx;
+            capMesh.count = mIdx;
+
             substrateMesh.instanceMatrix.needsUpdate = true;
             stemMesh.instanceMatrix.needsUpdate = true;
             capMesh.instanceMatrix.needsUpdate = true;
@@ -745,6 +759,7 @@
 
         function animate() {
             requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
             if(controls) controls.update();
             
             if(isDoorOpen) doorGroup.rotation.y = THREE.MathUtils.lerp(doorGroup.rotation.y, Math.PI/1.2, 0.08);
@@ -765,7 +780,8 @@
         function cameraTo(view) {
             if(!controls) return;
             controls.autoRotate = false;
-            if(view === 'inside') { isDoorOpen = true; camera.position.set(0, 2.5, 12); controls.target.set(0, 2.0, -8); }
+            // 6단 랙을 다 담기 위해 내부 워크스루 시 카메라 시야 높임
+            if(view === 'inside') { isDoorOpen = true; camera.position.set(0, 3.5, 12); controls.target.set(0, 2.5, -8); }
             else { camera.position.set(26, 18, 26); controls.target.set(0, 2.0, 0); }
         }
 
