@@ -315,7 +315,15 @@
                 <div class="lg:col-span-3 relative reveal">
                     <div id="canvas-parent">
                         <div id="canvas-container"></div>
-                        <div id="loading-text" data-tkey="loading">엔진 동기화 중...</div>
+                        <div id="loading-text" data-tkey="loading">Engine Synchronizing...</div>
+
+                        <!-- 🌟 전체화면 버튼 및 키보드 이동 안내 UI 추가 -->
+                        <button onclick="toggleFullScreen()" class="absolute top-6 right-6 bg-black/60 text-white w-10 h-10 rounded-full hover:bg-emerald-500 transition-all z-30 flex items-center justify-center border border-white/20 shadow-lg cursor-pointer" title="전체화면 전환">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                        <div id="move-instructions" class="absolute top-6 left-6 bg-black/60 text-white px-4 py-2 rounded-xl text-[11px] font-bold z-30 hidden border border-white/20 backdrop-blur shadow-lg">
+                            <i class="fas fa-keyboard mr-2 text-emerald-400"></i> W, A, S, D 키로 이동 / 마우스로 시야 회전
+                        </div>
                     </div>
                     <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex gap-8 z-20">
                         <button onclick="cameraTo('outside')" class="bg-white/95 backdrop-blur shadow-2xl px-12 py-5 rounded-full text-xs font-black text-gray-900 hover:bg-black hover:text-white transition-all border border-gray-100 uppercase tracking-widest" data-tkey="btn_outside">외부 전경</button>
@@ -475,12 +483,19 @@
         }
 
         /* -----------------------------------------------------------
-           ✨ Three.js Hyper-Biological Engine (6 Tiers, Horizontal Aligned Logs)
+           ✨ Three.js Hyper-Biological Engine (Robust uniform3fv Fix)
            ----------------------------------------------------------- */
         let scene, camera, renderer, controls, clock = new THREE.Clock();
         let doorGroup, ledStrips = [];
         let isDoorOpen = false, isLightOn = true, isMistOn = false;
         let substrateMesh, stemMesh, capMesh, mistParticles;
+
+        // 🌟 이동 제어 변수 추가 (WASD)
+        let moveForward = false;
+        let moveBackward = false;
+        let moveLeft = false;
+        let moveRight = false;
+        const moveSpeed = 0.15;
 
         // 🌟 절차적 텍스처(Procedural Texture) 생성 함수
         function generateTexture(type) {
@@ -549,11 +564,17 @@
             renderer.toneMappingExposure = 1.2; 
             container.appendChild(renderer.domElement);
 
+            // 4. Controls
             if (typeof THREE.OrbitControls !== 'undefined') {
                 controls = new THREE.OrbitControls(camera, renderer.domElement);
                 controls.enableDamping = true;
                 controls.autoRotate = true;
                 controls.autoRotateSpeed = 0.25;
+                
+                // 🌟 마우스 조작 설정 (줌, 팬 허용 및 시야 하단 제한)
+                controls.enablePan = true;
+                controls.enableZoom = true;
+                controls.maxPolarAngle = Math.PI / 2 + 0.1; 
             }
 
             const ambient = new THREE.AmbientLight(new THREE.Color(0xffffff), 0.5);
@@ -569,6 +590,8 @@
             
             document.getElementById('loading-text').style.opacity = '0';
             window.addEventListener('resize', onWindowResize);
+            document.addEventListener('fullscreenchange', onWindowResize); // 🌟 전체화면 감지 리스너
+            document.addEventListener('webkitfullscreenchange', onWindowResize);
             animate();
         }
 
@@ -760,6 +783,37 @@
         function animate() {
             requestAnimationFrame(animate);
             const time = clock.getElapsedTime();
+            
+            // 🌟 키보드 워크스루(이동) 로직 적용
+            if (controls && (moveForward || moveBackward || moveLeft || moveRight)) {
+                controls.autoRotate = false; // 직접 이동 시 자동 회전 멈춤
+                
+                const forward = new THREE.Vector3();
+                camera.getWorldDirection(forward);
+                forward.y = 0; // 수평으로만 이동하도록 제한
+                forward.normalize();
+                
+                const right = new THREE.Vector3();
+                right.crossVectors(camera.up, forward).normalize();
+
+                if (moveForward) {
+                    camera.position.addScaledVector(forward, moveSpeed);
+                    controls.target.addScaledVector(forward, moveSpeed);
+                }
+                if (moveBackward) {
+                    camera.position.addScaledVector(forward, -moveSpeed);
+                    controls.target.addScaledVector(forward, -moveSpeed);
+                }
+                if (moveLeft) {
+                    camera.position.addScaledVector(right, moveSpeed);
+                    controls.target.addScaledVector(right, moveSpeed);
+                }
+                if (moveRight) {
+                    camera.position.addScaledVector(right, -moveSpeed);
+                    controls.target.addScaledVector(right, -moveSpeed);
+                }
+            }
+
             if(controls) controls.update();
             
             if(isDoorOpen) doorGroup.rotation.y = THREE.MathUtils.lerp(doorGroup.rotation.y, Math.PI/1.2, 0.08);
@@ -780,9 +834,40 @@
         function cameraTo(view) {
             if(!controls) return;
             controls.autoRotate = false;
-            // 6단 랙을 다 담기 위해 내부 워크스루 시 카메라 시야 높임
-            if(view === 'inside') { isDoorOpen = true; camera.position.set(0, 3.5, 12); controls.target.set(0, 2.5, -8); }
-            else { camera.position.set(26, 18, 26); controls.target.set(0, 2.0, 0); }
+            const instructions = document.getElementById('move-instructions');
+
+            if(view === 'inside') { 
+                isDoorOpen = true; 
+                camera.position.set(0, 2.5, 12); 
+                controls.target.set(0, 2.0, -8); 
+                if(instructions) instructions.classList.remove('hidden'); // 🌟 이동 안내문 표시
+            } else { 
+                camera.position.set(26, 18, 26); 
+                controls.target.set(0, 2.0, 0); 
+                if(instructions) instructions.classList.add('hidden'); // 🌟 이동 안내문 숨김
+            }
+        }
+
+        // 🌟 전체화면 제어 함수
+        function toggleFullScreen() {
+            const container = document.getElementById('canvas-parent');
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                if (container.requestFullscreen) {
+                    container.requestFullscreen();
+                } else if (container.webkitRequestFullscreen) { /* Safari */
+                    container.webkitRequestFullscreen();
+                } else if (container.msRequestFullscreen) { /* IE11 */
+                    container.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) { /* Safari */
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { /* IE11 */
+                    document.msExitFullscreen();
+                }
+            }
         }
 
         function onWindowResize() {
@@ -843,6 +928,36 @@
 
         document.getElementById('menu-open').onclick = function() { toggleMenu(true); };
         document.getElementById('menu-close').onclick = function() { toggleMenu(false); };
+
+        // 🌟 키보드 입력 이벤트 리스너 (WASD 이동 제어)
+        document.addEventListener('keydown', (event) => {
+            // 폼(input)에 입력 중일 때는 이동 로직 무시
+            if(document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return; 
+            switch (event.code) {
+                case 'ArrowUp':
+                case 'KeyW': moveForward = true; break;
+                case 'ArrowLeft':
+                case 'KeyA': moveLeft = true; break;
+                case 'ArrowDown':
+                case 'KeyS': moveBackward = true; break;
+                case 'ArrowRight':
+                case 'KeyD': moveRight = true; break;
+            }
+        });
+
+        document.addEventListener('keyup', (event) => {
+            if(document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+            switch (event.code) {
+                case 'ArrowUp':
+                case 'KeyW': moveForward = false; break;
+                case 'ArrowLeft':
+                case 'KeyA': moveLeft = false; break;
+                case 'ArrowDown':
+                case 'KeyS': moveBackward = false; break;
+                case 'ArrowRight':
+                case 'KeyD': moveRight = false; break;
+            }
+        });
 
         function changeFarmSize(s) { 
             document.querySelectorAll('.size-btn').forEach(btn => {
