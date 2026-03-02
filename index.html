@@ -31,7 +31,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         /* 3D 캔버스 영역 */
-        #canvas-parent { width: 100%; height: 750px; position: relative; border-radius: 50px; overflow: hidden; background: #050505; }
+        #canvas-parent { width: 100%; height: 750px; position: relative; border-radius: 50px; overflow: hidden; background: #050505; touch-action: none; }
         #canvas-container { width: 100%; height: 100%; cursor: grab; display: block; }
 
         .iot-panel {
@@ -317,17 +317,23 @@
                         <div id="canvas-container"></div>
                         <div id="loading-text" data-tkey="loading">Engine Synchronizing...</div>
 
-                        <!-- 전체화면 버튼 및 키보드 이동 안내 UI 추가 -->
+                        <!-- 전체화면 및 이동 안내 UI -->
                         <button onclick="toggleFullScreen()" class="absolute top-6 right-6 bg-black/60 text-white w-10 h-10 rounded-full hover:bg-emerald-500 transition-all z-30 flex items-center justify-center border border-white/20 shadow-lg cursor-pointer" title="전체화면 전환">
                             <i class="fas fa-expand"></i>
                         </button>
+                        
                         <div id="move-instructions" class="absolute top-6 left-6 bg-black/60 text-white px-4 py-2 rounded-xl text-[11px] font-bold z-30 hidden border border-white/20 backdrop-blur shadow-lg">
-                            <i class="fas fa-keyboard mr-2 text-emerald-400"></i> W, A, S, D 키로 이동 / 마우스로 시야 회전
+                            <i class="fas fa-keyboard mr-2 text-emerald-400"></i> W, A, S, D 조작 및 마우스 회전 지원
+                        </div>
+
+                        <!-- 🌟 모바일 전용 가상 조이스틱 UI 🌟 -->
+                        <div id="joystick-zone" class="absolute bottom-8 left-8 w-28 h-28 bg-white/10 border-2 border-white/30 rounded-full z-40 hidden md:hidden backdrop-blur-sm touch-none">
+                            <div id="joystick-knob" class="absolute top-1/2 left-1/2 w-10 h-10 bg-emerald-500 rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-[0_0_15px_rgba(16,185,129,0.5)] pointer-events-none"></div>
                         </div>
                     </div>
-                    <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex gap-8 z-20">
-                        <button onclick="cameraTo('outside')" class="bg-white/95 backdrop-blur shadow-2xl px-12 py-5 rounded-full text-xs font-black text-gray-900 hover:bg-black hover:text-white transition-all border border-gray-100 uppercase tracking-widest" data-tkey="btn_outside">외부 전경</button>
-                        <button onclick="cameraTo('inside')" class="bg-emerald-700/95 backdrop-blur shadow-2xl px-12 py-5 rounded-full text-xs font-black text-white hover:bg-black transition-all border border-emerald-500 uppercase tracking-widest" data-tkey="btn_inside">내부 진입</button>
+                    <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex gap-4 md:gap-8 z-20 w-[90%] md:w-auto justify-center">
+                        <button onclick="cameraTo('outside')" class="bg-white/95 backdrop-blur shadow-2xl px-6 md:px-12 py-4 md:py-5 rounded-full text-[10px] md:text-xs font-black text-gray-900 hover:bg-black hover:text-white transition-all border border-gray-100 uppercase tracking-widest whitespace-nowrap" data-tkey="btn_outside">외부 전경</button>
+                        <button onclick="cameraTo('inside')" class="bg-emerald-700/95 backdrop-blur shadow-2xl px-6 md:px-12 py-4 md:py-5 rounded-full text-[10px] md:text-xs font-black text-white hover:bg-black transition-all border border-emerald-500 uppercase tracking-widest whitespace-nowrap" data-tkey="btn_inside">내부 진입</button>
                     </div>
                 </div>
             </div>
@@ -414,7 +420,7 @@
                 tab_title: "분양 모델 상세 안내", tab_1: "위탁 운영형", tab_2: "직접 운영형", tab_3: "부지 개발형",
                 tab1_h3: "위탁 운영형:<br>전문가 전담 관리 시스템", tab1_p: "재배부터 유통까지 본사가 책임집니다. 투자자는 정기 배당 수익에만 집중할 수 있는 안정형 모델입니다.",
                 tab2_h3: "직접 운영형:<br>경영 및 기술 전수", tab2_p: "직접 농장을 운영하며 큰오름의 독자적 솔루션과 재배 노하우를 전수받아 수익을 극대화합니다.",
-                tab3_h3: "부지 개발형:<br>토지 가치 창조", tab3_p: "유휴 부지를 현대적 참송이버섯 단지로 개발하여 지가 상승과 장기 운영 수익을 동시에 노리는 프로젝트입니다.",
+                tab3_h3: "부지 개발형:<br>토지 가치 창조", tab3_p: "유휴 부지를 현대적 참송이버섯 단지로 개발하여 지가 상승과 장기 운영 수익을 동시에 노리는 프로젝트 가이드입니다.",
                 tab_btn: "상담 예약하기", tech_title: "초실감형 3D 스마트팜 모듈", tech_desc: "실제 참송이버섯 재배동의 6단 철제 선반과 가로로 정렬된 배지를 완벽하게 구현했습니다. 공기의 흐름과 빛의 변화를 직접 체험하세요.",
                 dash_title: "관제 대시보드", sens_temp: "실내 온도", sens_hum: "습도", sens_co2: "CO2 농도",
                 btn_door: "모듈 출입문 열기", btn_light: "LED 끄기", btn_mist: "가습 켜기",
@@ -490,14 +496,18 @@
         let isDoorOpen = false, isLightOn = true, isMistOn = false;
         let substrateMesh, stemMesh, capMesh, mistParticles;
 
-        // 이동 제어 변수 (WASD)
+        // 이동 제어 변수 (WASD 및 가상 조이스틱)
         let moveForward = false;
         let moveBackward = false;
         let moveLeft = false;
         let moveRight = false;
+        
+        let joyActive = false;
+        let joyVector = { x: 0, y: 0 };
+        const joyMaxRadius = 40; // 조이스틱 가동 범위
         const moveSpeed = 0.15;
 
-        // 절차적 텍스처(Procedural Texture) 생성 함수
+        // 절차적 텍스처 생성
         function generateTexture(type) {
             const canvas = document.createElement('canvas');
             canvas.width = 512; canvas.height = 512;
@@ -518,7 +528,6 @@
                     ctx.fill();
                 }
             } else if (type === 'stem') {
-                // 참송이버섯(송이버섯 형태) 기둥 질감
                 ctx.fillStyle = '#f0e6d2'; 
                 ctx.fillRect(0, 0, 512, 512);
                 ctx.fillStyle = '#dcd0bc'; 
@@ -527,7 +536,6 @@
                     ctx.fillRect(Math.random()*512, Math.random()*512, 1, Math.random()*80 + 30);
                 }
             } else if (type === 'cap') {
-                // 참송이버섯 갓 질감 (진한 갈색, 거북등껍질처럼 살짝 갈라진 패턴)
                 ctx.fillStyle = '#3a241b'; 
                 ctx.fillRect(0, 0, 512, 512);
                 ctx.fillStyle = '#2b1a13'; 
@@ -583,12 +591,60 @@
 
             buildFarm('25');
             createMist();
+            initJoystick(); // 조이스틱 초기화
             
             document.getElementById('loading-text').style.opacity = '0';
             window.addEventListener('resize', onWindowResize);
             document.addEventListener('fullscreenchange', onWindowResize); 
             document.addEventListener('webkitfullscreenchange', onWindowResize);
             animate();
+        }
+
+        // 🌟 모바일 가상 조이스틱 이벤트 초기화 🌟
+        function initJoystick() {
+            const zone = document.getElementById('joystick-zone');
+            const knob = document.getElementById('joystick-knob');
+            if(!zone || !knob) return;
+
+            zone.addEventListener('touchstart', (e) => {
+                e.preventDefault(); e.stopPropagation();
+                joyActive = true;
+                updateJoyPos(e.touches[0], zone, knob);
+            }, {passive: false});
+
+            zone.addEventListener('touchmove', (e) => {
+                e.preventDefault(); e.stopPropagation();
+                if (!joyActive) return;
+                updateJoyPos(e.touches[0], zone, knob);
+            }, {passive: false});
+
+            zone.addEventListener('touchend', (e) => {
+                e.preventDefault(); e.stopPropagation();
+                joyActive = false;
+                joyVector = { x: 0, y: 0 };
+                knob.style.transform = `translate(-50%, -50%)`;
+            });
+        }
+
+        function updateJoyPos(touch, zone, knob) {
+            const rect = zone.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            let dx = touch.clientX - centerX;
+            let dy = touch.clientY - centerY;
+            
+            const distance = Math.sqrt(dx*dx + dy*dy);
+            if (distance > joyMaxRadius) {
+                dx = (dx / distance) * joyMaxRadius;
+                dy = (dy / distance) * joyMaxRadius;
+            }
+            
+            knob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+            
+            // 이동 방향 정규화 (-1.0 ~ 1.0)
+            joyVector.x = dx / joyMaxRadius;
+            joyVector.y = dy / joyMaxRadius; 
         }
 
         function createMist() {
@@ -665,12 +721,9 @@
             substrateMesh = new THREE.InstancedMesh(subGeo, subMat, maxLogs);
             substrateMesh.castShadow = true; substrateMesh.receiveShadow = true;
 
-            // 🌟 버섯 기둥 형태 수정 (참송이/송이버섯 스타일로 길고 곧게 뻗은 형태) 🌟
             const pts = [];
             for (let i = 0; i <= 20; i++) {
-                // y축 방향(높이) 스케일을 증가시켜 더 길게 만듦
                 const yPos = i * 0.04; 
-                // 아래쪽은 살짝 두껍고 위로 갈수록 약간 얇아지면서 곧은 형태 유지
                 const radius = 0.04 + (Math.sin(i * 0.1) * 0.015); 
                 pts.push(new THREE.Vector2(radius, yPos));
             }
@@ -680,12 +733,9 @@
             stemMesh = new THREE.InstancedMesh(stemGeo, stemMat, maxMushrooms);
             stemMesh.castShadow = true;
             
-            // 🌟 버섯 갓 형태 수정 (참송이 스타일로 도톰하고 둥근 갓) 🌟
             const capTex = generateTexture('cap');
-            // Sphere를 약간 납작하게 누르되 너무 퍼지지 않게 조절
             const capGeo = new THREE.SphereGeometry(0.09, 32, 24, 0, Math.PI*2, 0, Math.PI/1.3);
             capGeo.scale(1.2, 0.8, 1.2); 
-            // 기둥 상단에 맞게 위치 이동 (기둥 높이가 길어졌으므로 Y축 이동값 증가)
             capGeo.translate(0, 0.78, 0); 
             const capMat = new THREE.MeshStandardMaterial({ map: capTex, roughness: 0.8 });
             capMesh = new THREE.InstancedMesh(capGeo, capMat, maxMushrooms);
@@ -745,7 +795,6 @@
                             md.rotation.z = (Math.random() - 0.5) * 0.15;
                             md.rotation.y = Math.random() * Math.PI;
                             
-                            // 스케일 조절을 통해 크기 다양성 부여
                             md.scale.setScalar(0.7 + Math.random() * 0.5);
                             md.updateMatrix(); 
                             
@@ -773,7 +822,20 @@
             requestAnimationFrame(animate);
             const time = clock.getElapsedTime();
             
-            if (controls && (moveForward || moveBackward || moveLeft || moveRight)) {
+            // 🌟 키보드 및 조이스틱 이동 로직 🌟
+            let inputZ = 0; // 전후 이동
+            let inputX = 0; // 좌우 이동
+
+            if (moveForward) inputZ -= 1;
+            if (moveBackward) inputZ += 1;
+            if (moveLeft) inputX -= 1;
+            if (moveRight) inputX += 1;
+
+            // 조이스틱 Y값은 아래가 양수이므로, 앞으로 가려면 조이스틱을 위(음수)로 밀어야 함
+            inputZ += joyVector.y; 
+            inputX += joyVector.x;
+
+            if (Math.abs(inputZ) > 0.01 || Math.abs(inputX) > 0.01) {
                 controls.autoRotate = false; 
                 
                 const forward = new THREE.Vector3();
@@ -784,22 +846,11 @@
                 const right = new THREE.Vector3();
                 right.crossVectors(camera.up, forward).normalize();
 
-                if (moveForward) {
-                    camera.position.addScaledVector(forward, moveSpeed);
-                    controls.target.addScaledVector(forward, moveSpeed);
-                }
-                if (moveBackward) {
-                    camera.position.addScaledVector(forward, -moveSpeed);
-                    controls.target.addScaledVector(forward, -moveSpeed);
-                }
-                if (moveLeft) {
-                    camera.position.addScaledVector(right, moveSpeed);
-                    controls.target.addScaledVector(right, moveSpeed);
-                }
-                if (moveRight) {
-                    camera.position.addScaledVector(right, -moveSpeed);
-                    controls.target.addScaledVector(right, -moveSpeed);
-                }
+                camera.position.addScaledVector(forward, -inputZ * moveSpeed);
+                controls.target.addScaledVector(forward, -inputZ * moveSpeed);
+                
+                camera.position.addScaledVector(right, inputX * moveSpeed);
+                controls.target.addScaledVector(right, inputX * moveSpeed);
             }
 
             if(controls) controls.update();
@@ -823,16 +874,20 @@
             if(!controls) return;
             controls.autoRotate = false;
             const instructions = document.getElementById('move-instructions');
+            const joyZone = document.getElementById('joystick-zone');
 
             if(view === 'inside') { 
                 isDoorOpen = true; 
                 camera.position.set(0, 3.5, 12); 
                 controls.target.set(0, 2.5, -8); 
                 if(instructions) instructions.classList.remove('hidden'); 
+                // 모바일 환경일 때만 조이스틱 표시
+                if(joyZone && window.innerWidth <= 768) joyZone.classList.remove('hidden');
             } else { 
                 camera.position.set(26, 18, 26); 
                 controls.target.set(0, 2.0, 0); 
                 if(instructions) instructions.classList.add('hidden'); 
+                if(joyZone) joyZone.classList.add('hidden'); // 외부 전경에서는 조이스틱 숨김
             }
         }
 
@@ -864,6 +919,14 @@
             renderer.setSize(w, h);
             camera.aspect = w / h;
             camera.updateProjectionMatrix();
+
+            // 리사이즈 시 화면 너비가 넓어지면 조이스틱 숨김 보장
+            const joyZone = document.getElementById('joystick-zone');
+            if(joyZone && window.innerWidth > 768) {
+                joyZone.classList.add('hidden');
+            } else if (joyZone && isDoorOpen && window.innerWidth <= 768) {
+                joyZone.classList.remove('hidden');
+            }
         }
 
         function scrollToSection(id) { 
