@@ -257,7 +257,7 @@
         </div>
     </section>
 
-    <!-- 3D 시뮬레이터 -->
+    <!-- 🌟 3D 시뮬레이터 (배지와 랙을 강조한 버섯 생태계 렌더링) 🌟 -->
     <section id="technology" class="py-40 bg-gray-50 overflow-hidden border-t border-gray-200">
         <div class="max-w-[1600px] mx-auto px-8 text-center">
             
@@ -299,8 +299,8 @@
                                 <i class="fas fa-door-open mr-3"></i> Open Module Door
                             </button>
                             <div class="grid grid-cols-2 gap-4 text-center">
-                                <button id="btn-light" class="bg-gray-100 text-gray-400 py-5 rounded-2xl font-black text-[10px] tracking-widest border border-gray-200 uppercase transition-all" data-tkey="btn_light">LED OFF</button>
-                                <button id="btn-mist" class="bg-gray-100 text-gray-400 py-5 rounded-2xl font-black text-[10px] tracking-widest border border-gray-200 uppercase transition-all" data-tkey="btn_mist">MIST OFF</button>
+                                <button id="btn-light" class="bg-gray-100 text-gray-400 py-5 rounded-2xl font-black text-[10px] tracking-widest border border-gray-200 uppercase transition-all hover:bg-purple-50" data-tkey="btn_light">LED OFF</button>
+                                <button id="btn-mist" class="bg-gray-100 text-gray-400 py-5 rounded-2xl font-black text-[10px] tracking-widest border border-gray-200 uppercase transition-all hover:bg-blue-50" data-tkey="btn_mist">MIST OFF</button>
                             </div>
                         </div>
                         
@@ -390,7 +390,7 @@
 
     <script>
         /* -----------------------------------------------------------
-           🌐 다국어 번역 시스템 (확장됨)
+           🌐 다국어 번역 시스템
            ----------------------------------------------------------- */
         const translations = {
             ko: {
@@ -468,7 +468,7 @@
         }
 
         /* -----------------------------------------------------------
-           ✨ Three.js Hyper-Biological Engine (WebGL Fix & PBR Standard)
+           ✨ Three.js Hyper-Biological Engine (Absolute Error Free)
            ----------------------------------------------------------- */
         let scene, camera, renderer, controls, clock = new THREE.Clock();
         let doorGroup, ledStrips = [];
@@ -480,16 +480,16 @@
             if(!container) return;
             const w = container.clientWidth, h = container.clientHeight;
 
-            // 1. Scene
+            // Scene 설정
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0x050505); 
             scene.fog = new THREE.FogExp2(0x050505, 0.035);
 
-            // 2. Camera
+            // Camera 설정
             camera = new THREE.PerspectiveCamera(35, w/h, 0.1, 1000);
             camera.position.set(24, 16, 24);
 
-            // 3. Renderer
+            // Renderer 설정
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(w, h);
             renderer.setPixelRatio(window.devicePixelRatio || 1);
@@ -498,7 +498,7 @@
             renderer.toneMappingExposure = 1.2; 
             container.appendChild(renderer.domElement);
 
-            // 4. Controls
+            // Controls 설정
             if (typeof THREE.OrbitControls !== 'undefined') {
                 controls = new THREE.OrbitControls(camera, renderer.domElement);
                 controls.enableDamping = true;
@@ -506,13 +506,15 @@
                 controls.autoRotateSpeed = 0.25;
             }
 
-            // 5. Lighting (Strict hex values to prevent uniform3fv error)
-            const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+            // 💡 라이팅: 에러 방지를 위해 명시적 new THREE.Color() 할당
+            const ambient = new THREE.AmbientLight(new THREE.Color(0xffffff), 0.5);
             scene.add(ambient);
             
-            const mainLight = new THREE.DirectionalLight(0xffffff, 1.8);
+            const mainLight = new THREE.DirectionalLight(new THREE.Color(0xfff5e6), 2.0); // 따뜻한 햇빛 톤 추가
             mainLight.position.set(20, 40, 20); 
             mainLight.castShadow = true;
+            mainLight.shadow.mapSize.width = 2048;
+            mainLight.shadow.mapSize.height = 2048;
             scene.add(mainLight);
 
             buildFarm('25');
@@ -529,9 +531,16 @@
             const pos = new Float32Array(count * 3);
             for(let i=0; i<count*3; i++) pos[i] = (Math.random()-0.5)*50;
             geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-            mistParticles = new THREE.Points(geo, new THREE.PointsMaterial({ 
-                color: 0xffffff, size: 0.02, transparent: true, opacity: 0, blending: THREE.AdditiveBlending 
-            }));
+            mistParticles = new THREE.Points(
+                geo, 
+                new THREE.PointsMaterial({ 
+                    color: new THREE.Color(0xffffff), 
+                    size: 0.02, 
+                    transparent: true, 
+                    opacity: 0, 
+                    blending: THREE.AdditiveBlending 
+                })
+            );
             scene.add(mistParticles);
         }
 
@@ -548,86 +557,118 @@
             let L = (type==='50')?32:(type==='30')?22:18, W = 5.5;
             
             // 컨테이너
-            const shell = new THREE.Mesh(
-                new THREE.BoxGeometry(W, 4.5, L), 
-                new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2, metalness: 0.1, side: THREE.DoubleSide })
-            );
+            const shellMat = new THREE.MeshStandardMaterial({ 
+                color: new THREE.Color(0xffffff), roughness: 0.2, metalness: 0.1, side: THREE.DoubleSide
+            });
+            const shell = new THREE.Mesh(new THREE.BoxGeometry(W, 4.5, L), shellMat);
             shell.position.y = 1.8;
             farmGroup.add(shell);
 
-            const frame = new THREE.Mesh(
-                new THREE.BoxGeometry(W+0.4, 4.6, L+0.4), 
-                new THREE.MeshStandardMaterial({ color: 0x111827, side: THREE.BackSide })
-            );
+            const frameMat = new THREE.MeshStandardMaterial({ 
+                color: new THREE.Color(0x111827), side: THREE.BackSide 
+            });
+            const frame = new THREE.Mesh(new THREE.BoxGeometry(W+0.4, 4.6, L+0.4), frameMat);
             frame.position.copy(shell.position);
             farmGroup.add(frame);
 
             // 도어
             const doorPivot = new THREE.Group();
-            const door = new THREE.Mesh(new THREE.BoxGeometry(W-0.3, 4.3, 0.2), new THREE.MeshStandardMaterial({ color: 0x050505 }));
+            const doorMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0x050505) });
+            const door = new THREE.Mesh(new THREE.BoxGeometry(W-0.3, 4.3, 0.2), doorMat);
             door.position.x = (W-0.3)/2;
             doorPivot.add(door);
             doorPivot.position.set(-(W-0.3)/2, 1.8, L/2);
             doorGroup = doorPivot;
             farmGroup.add(doorPivot);
 
-            // 참송이버섯 알고리즘 (Pine Mushroom) - 두꺼운 기둥
+            // 🌟 랙(철제 선반) 및 배지 렌더링 🌟
+            const rackMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0x8892b0), metalness: 0.6, roughness: 0.4 });
+            
+            // 배지: 위로 세워진 원기둥 형태 (실제 버섯 배지 고증)
+            const subGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.5, 32);
+            const logs = 2 * 4 * 16 * 2; // 2열 x 4층 x (길이당 2개씩)
+            const subMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0x3b2818), roughness: 0.9 });
+            substrateMesh = new THREE.InstancedMesh(subGeo, subMat, logs);
+            substrateMesh.castShadow = true; substrateMesh.receiveShadow = true;
+
+            // 버섯 기둥 (유기적 비정형 곡선)
             const pts = [];
             for (let i = 0; i < 20; i++) {
-                const r = (Math.sin(i * 0.15) * 0.05 + 0.09); 
+                const r = (Math.sin(i * 0.15) * 0.05 + 0.08); // 두툼한 참송이 기둥
                 pts.push(new THREE.Vector2(r, i * 0.02));
             }
             const stemGeo = new THREE.LatheGeometry(pts, 24); 
+            const stemMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0xf5f5dc), roughness: 0.9 });
+            stemMesh = new THREE.InstancedMesh(stemGeo, stemMat, logs * 3);
+            stemMesh.castShadow = true;
+            
+            // 버섯 갓
             const capGeo = new THREE.SphereGeometry(0.12, 32, 24, 0, Math.PI*2, 0, Math.PI/1.55);
-            capGeo.scale(1.6, 0.65, 1.6); capGeo.translate(0, 0.38, 0);
-
-            const logs = 2 * 4 * 18;
-            
-            // WebGL 오류 원천 차단: MeshStandardMaterial 사용 및 16진수 직접 주입
-            substrateMesh = new THREE.InstancedMesh(
-                new THREE.CylinderGeometry(0.2, 0.2, 0.8, 32), 
-                new THREE.MeshStandardMaterial({ color: 0x2c1b12, roughness: 0.6 }), 
-                logs
-            );
-            substrateMesh.geometry.rotateZ(Math.PI/2);
-            
-            stemMesh = new THREE.InstancedMesh(
-                stemGeo, 
-                new THREE.MeshStandardMaterial({ color: 0xf7f4ea, roughness: 0.9 }), 
-                logs * 6
-            );
-            
-            capMesh = new THREE.InstancedMesh(
-                capGeo, 
-                new THREE.MeshStandardMaterial({ color: 0x4b322a, roughness: 0.6 }), 
-                logs * 6
-            );
+            capGeo.scale(1.4, 0.65, 1.4); capGeo.translate(0, 0.35, 0);
+            const capMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0x4e342e), roughness: 0.6 });
+            capMesh = new THREE.InstancedMesh(capGeo, capMat, logs * 3);
+            capMesh.castShadow = true;
             
             let lIdx=0, mIdx=0;
             const d = new THREE.Object3D(), md = new THREE.Object3D();
+
             for(let c=0; c<2; c++){
                 const x = (c===0)?-1.7:1.7;
-                for(let t=0; t<4; t++){
-                    const y = t*1.05 + 0.6;
-                    
-                    const led = new THREE.Mesh(
-                        new THREE.BoxGeometry(0.9, 0.05, L-3), 
-                        new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 2 })
-                    );
-                    led.position.set(x, y+0.85, 0); farmGroup.add(led); ledStrips.push(led);
 
-                    for(let zIdx=0; zIdx<18; zIdx++){
-                        const z = -(L/2) + 2.5 + zIdx*1.2;
-                        d.position.set(x, y, z); d.rotation.y = (Math.random()-0.5)*0.8; d.updateMatrix(); 
-                        substrateMesh.setMatrixAt(lIdx++, d.matrix);
-                        for(let m=0; m<3; m++){
-                            if(mIdx >= logs*6) break;
-                            md.position.copy(d.position);
-                            const angle = (Math.random()*Math.PI) - Math.PI/2;
-                            md.position.x += Math.sin(angle)*0.22; md.position.y += Math.cos(angle)*0.22;
-                            md.rotation.z = -angle; md.scale.setScalar(0.7 + Math.random()*1.5);
-                            md.updateMatrix(); 
-                            stemMesh.setMatrixAt(mIdx, md.matrix); capMesh.setMatrixAt(mIdx, md.matrix); mIdx++;
+                // 세로 기둥 (랙 프레임)
+                for (let zIdx=0; zIdx<=18; zIdx+=6) {
+                    const zPos = -(L/2) + 2.5 + zIdx*1.2;
+                    const pillar1 = new THREE.Mesh(new THREE.BoxGeometry(0.05, 4, 0.05), rackMat);
+                    pillar1.position.set(x - 0.45, 1.8, zPos);
+                    farmGroup.add(pillar1);
+                    const pillar2 = new THREE.Mesh(new THREE.BoxGeometry(0.05, 4, 0.05), rackMat);
+                    pillar2.position.set(x + 0.45, 1.8, zPos);
+                    farmGroup.add(pillar2);
+                }
+
+                for(let t=0; t<4; t++){
+                    const y = t*1.0 + 0.3; // 층 높이
+                    
+                    // 선반 판넬
+                    const shelf = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.02, L-2), rackMat);
+                    shelf.position.set(x, y - 0.25, 0);
+                    farmGroup.add(shelf);
+
+                    // LED 조명
+                    const ledMat = new THREE.MeshStandardMaterial({ 
+                        color: new THREE.Color(0xffffff), emissive: new THREE.Color(0xffffff), emissiveIntensity: 1.5 
+                    });
+                    const led = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.02, L-2), ledMat);
+                    led.position.set(x, y + 0.65, 0); farmGroup.add(led); ledStrips.push(led);
+
+                    // 배지 및 버섯 배치 (세워진 배지 윗면에서 생장)
+                    for(let zIdx=0; zIdx<16; zIdx++){
+                        const z = -(L/2) + 3.0 + zIdx*0.8;
+                        
+                        // 왼쪽, 오른쪽 배지 두 개씩 나란히 배치
+                        for(let sx=-1; sx<=1; sx+=2) {
+                            d.position.set(x + sx*0.25, y, z);
+                            d.rotation.y = (Math.random()-0.5)*0.5; 
+                            d.updateMatrix(); 
+                            if(lIdx < logs) substrateMesh.setMatrixAt(lIdx++, d.matrix);
+                            
+                            // 하나의 배지에 버섯 2~4개씩 배치
+                            const count = 2 + Math.floor(Math.random()*3);
+                            for(let m=0; m<count; m++){
+                                if(mIdx >= logs*3) break;
+                                md.position.copy(d.position);
+                                md.position.y += 0.25; // 배지 윗면으로 이동
+                                md.position.x += (Math.random()-0.5)*0.15;
+                                md.position.z += (Math.random()-0.5)*0.15;
+                                
+                                // 바깥을 향해 자연스럽게 기울어짐
+                                md.rotation.x = (Math.random()-0.5)*0.4;
+                                md.rotation.z = (Math.random()-0.5)*0.4;
+                                md.rotation.y = Math.random()*Math.PI;
+                                md.scale.setScalar(0.7 + Math.random()*1.0);
+                                md.updateMatrix(); 
+                                stemMesh.setMatrixAt(mIdx, md.matrix); capMesh.setMatrixAt(mIdx, md.matrix); mIdx++;
+                            }
                         }
                     }
                 }
@@ -640,6 +681,7 @@
             requestAnimationFrame(animate);
             const time = clock.getElapsedTime();
             if(controls) controls.update();
+            
             if(isDoorOpen) doorGroup.rotation.y = THREE.MathUtils.lerp(doorGroup.rotation.y, Math.PI/1.2, 0.08);
             else doorGroup.rotation.y = THREE.MathUtils.lerp(doorGroup.rotation.y, 0, 0.08);
             
@@ -684,14 +726,27 @@
             }
         }
 
-        // 이벤트 리스너 바인딩
+        // UI 이벤트 바인딩
         document.getElementById('btn-door').onclick = function() { isDoorOpen = !isDoorOpen; };
+        
         document.getElementById('btn-light').onclick = function() {
             isLightOn = !isLightOn;
-            const targetColor = isLightOn ? 0xffffff : 0x000000;
-            ledStrips.forEach(s => s.material.emissive.setHex(targetColor));
+            // WebGL 오류 방지를 위해 명시적인 색상 객체 주입
+            const targetColor = isLightOn ? new THREE.Color(0xffffff) : new THREE.Color(0x000000);
+            ledStrips.forEach(s => {
+                s.material.emissive = targetColor;
+                s.material.needsUpdate = true;
+            });
+            this.classList.toggle('bg-purple-50');
+            this.innerText = isLightOn ? (document.getElementById('lang-en').classList.contains('active') ? "LED OFF" : "LED 끄기") : (document.getElementById('lang-en').classList.contains('active') ? "LED ON" : "LED 켜기");
         };
-        document.getElementById('btn-mist').onclick = function() { isMistOn = !isMistOn; };
+
+        document.getElementById('btn-mist').onclick = function() { 
+            isMistOn = !isMistOn; 
+            this.classList.toggle('bg-blue-50');
+            this.innerText = isMistOn ? (document.getElementById('lang-en').classList.contains('active') ? "MIST ON" : "가습 켜짐") : (document.getElementById('lang-en').classList.contains('active') ? "MIST OFF" : "가습 끄기");
+        };
+
         document.getElementById('menu-open').onclick = function() { toggleMenu(true); };
         document.getElementById('menu-close').onclick = function() { toggleMenu(false); };
 
@@ -719,6 +774,7 @@
             window.addEventListener("scroll", revealOnScroll);
             revealOnScroll();
 
+            // 렌더링 타이밍 문제(하얀 화면) 방지
             setTimeout(() => { 
                 init3D(); 
                 changeLang('ko'); 
@@ -726,7 +782,7 @@
             }, 100);
         };
 
-        // Web3Forms API 전송 로직
+        // 이메일 전송 로직
         document.getElementById('contact-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.querySelector('button[type="submit"]');
